@@ -2,9 +2,15 @@ import bcrypt from 'bcrypt'
 import UserModel from 'models/UserModel'
 import UserInterface from 'interfaces/UserInterface'
 import EmptyFields from 'validations/EmptyFields'
+import GoogleProfileInterface from 'interfaces/GoogleProfileInterface'
 
 class UserController {
-	static async add({ name, email, password, avatarUrl }: UserInterface) {
+	static async signupWithEmailAndPassword({
+		name,
+		email,
+		password,
+		avatarUrl,
+	}: UserInterface) {
 		const [hasEmptyFields, emptyFieldErrors] = EmptyFields({
 			name,
 			email,
@@ -24,7 +30,67 @@ class UserController {
 			avatarUrl,
 		})
 
-		return await user.save()
+		await user.save()
+
+		return user
+	}
+
+	static async signinWithEmailAndPassword({ email, password }: UserInterface) {
+		const [hasEmptyFields, emptyFieldErrors] = EmptyFields({ email, password })
+		if (hasEmptyFields) throw emptyFieldErrors
+
+		const user = await UserModel.findOne({ email })
+
+		if (!user) throw new Error('User not found')
+		if (!user.password) {
+			throw new Error(
+				'Email/Password combination associated with this user, please use social login'
+			)
+		}
+
+		const validPassword = await bcrypt.compare(password!, user.password!)
+		if (!validPassword) throw new Error('Invalid credentials')
+
+		return user
+	}
+
+	static async signInWithGoogle({
+		googleId,
+		name,
+		email,
+		imageUrl,
+	}: GoogleProfileInterface) {
+		const [hasEmptyFields, emptyFieldErrors] = EmptyFields({
+			googleId,
+			name,
+			email,
+			imageUrl,
+		})
+
+		if (hasEmptyFields) throw emptyFieldErrors
+
+		const account = await UserModel.findOne({
+			$or: [{ googleId }, { email }],
+		})
+
+		if (account != null) {
+			if (account.googleId) return account
+
+			account.googleId = googleId
+			await account.save()
+			return account
+		}
+
+		const user = await UserModel.create({
+			googleId,
+			name,
+			email,
+			avatarUrl: imageUrl,
+		})
+
+		await user.save()
+
+		return user
 	}
 }
 

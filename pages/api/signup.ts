@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import dbConnect from 'utils/dbConnect'
-import IUser from 'interfaces/UserInterface'
+import UserInterface from 'interfaces/UserInterface'
 import UserController from 'controllers/UserController'
 
 const signup = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -14,16 +14,19 @@ const signup = async (req: NextApiRequest, res: NextApiResponse) => {
 	}
 
 	try {
-		const { name, email, password, avatarUrl } = body as IUser
-		const user = await UserController.add({ name, email, password, avatarUrl })
+		const { name, email, password, avatarUrl } = body as UserInterface
+		const user = await UserController.signupWithEmailAndPassword({
+			name,
+			email,
+			password,
+			avatarUrl,
+		})
 		res.json({ user: user.toJSON() })
 	} catch (error: any) {
 		res.statusCode = 400
 
 		if (Array.isArray(error)) return res.json({ errors: error })
-		return res.json({
-			errors: [{ name: error.name, message: error.message }],
-		})
+		return res.json({ error: { name: error.name, message: error.message } })
 	}
 }
 
