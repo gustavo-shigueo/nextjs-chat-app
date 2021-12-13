@@ -1,4 +1,4 @@
-import UserController from 'controllers/UserController'
+import AuthController from 'controllers/AuthController'
 import GoogleProfileInterface from 'interfaces/GoogleProfileInterface'
 import { NextApiRequest, NextApiResponse } from 'next'
 
@@ -13,7 +13,7 @@ const signinWithGoogle = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
 		const { googleId, name, email, imageUrl } = body as GoogleProfileInterface
 
-		const user = await UserController.signInWithGoogle({
+		const user = await AuthController.signInWithGoogle({
 			googleId,
 			name,
 			email,

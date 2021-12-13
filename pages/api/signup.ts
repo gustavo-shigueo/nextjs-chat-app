@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import dbConnect from 'utils/dbConnect'
 import UserInterface from 'interfaces/UserInterface'
-import UserController from 'controllers/UserController'
+import AuthController from 'controllers/AuthController'
 
 const signup = async (req: NextApiRequest, res: NextApiResponse) => {
 	await dbConnect()
@@ -15,7 +15,7 @@ const signup = async (req: NextApiRequest, res: NextApiResponse) => {
 
 	try {
 		const { name, email, password, avatarUrl } = body as UserInterface
-		const user = await UserController.signupWithEmailAndPassword({
+		const user = await AuthController.signupWithEmailAndPassword({
 			name,
 			email,
 			password,
