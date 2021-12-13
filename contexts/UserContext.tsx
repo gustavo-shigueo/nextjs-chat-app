@@ -8,10 +8,13 @@ interface UserContextData {
 
 const UserContext = createContext({} as UserContextData)
 
+/**
+ * Returns the UserContext data
+ */
 const useAuth = () => useContext(UserContext)
 
 export const UserProvider: FC = ({ children }) => {
-	const isAuthenticated = false
+	const [isAuthenticated, setIsAuthenticated] = useState(false)
 	const [user, setUser] = useState<UserInterface | null>(null)
 
 	// TODO: implement login, logout and signup
@@ -29,10 +32,14 @@ export const UserProvider: FC = ({ children }) => {
 		// const u: User = await signupLogic(args)
 	}
 
-	const value = {
-		user,
-		isAuthenticated,
-	}
-
-	return <UserContext.Provider value={value}>{children}</UserContext.Provider>
+	return (
+		<UserContext.Provider
+			value={{
+				user,
+				isAuthenticated,
+			}}
+		>
+			{children}
+		</UserContext.Provider>
+	)
 }
