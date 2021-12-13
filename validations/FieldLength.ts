@@ -1,4 +1,4 @@
-import InvalidFieldError from 'Errors/InvalidFieldError'
+import InvalidFieldError from 'errors/InvalidFieldError'
 import FieldInterface from 'interfaces/FieldInterface'
 
 /**

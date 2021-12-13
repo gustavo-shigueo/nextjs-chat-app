@@ -4,11 +4,11 @@ import EmptyFields from 'validations/EmptyFields'
 import GoogleProfileInterface from 'interfaces/GoogleProfileInterface'
 import FieldLength from 'validations/FieldLength'
 import UserDocumentInterface from 'interfaces/UserDocumentInterface'
-import NotFoundError from 'Errors/NotFoundError'
-import InvalidSignInMethodError from 'Errors/InvalidSignInMethodError'
+import NotFoundError from 'errors/NotFoundError'
+import InvalidSignInMethodError from 'errors/InvalidSignInMethodError'
 import UserController from './UserController'
-import EmailAlreadyInUseError from 'Errors/EmailAlreadyInUseError'
-import InvalidCredentialsError from 'Errors/InvalidCredentialsError'
+import EmailAlreadyInUseError from 'errors/EmailAlreadyInUseError'
+import InvalidCredentialsError from 'errors/InvalidCredentialsError'
 
 class AuthController {
 	/**

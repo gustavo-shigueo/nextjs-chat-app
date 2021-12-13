@@ -1,4 +1,4 @@
-import EmptyFieldError from 'Errors/EmptyFieldError'
+import EmptyFieldError from 'errors/EmptyFieldError'
 import FieldInterface from 'interfaces/FieldInterface'
 
 /**
