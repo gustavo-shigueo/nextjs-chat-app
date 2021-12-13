@@ -1,32 +1,25 @@
-interface Fields {
-	[key: string]: any
-}
+import EmptyFieldError from 'Errors/EmptyFieldError'
+import FieldInterface from 'interfaces/FieldInterface'
 
-interface EmptyFieldError {
-	name: string
-	fieldName: string
-	message: string
-}
-
+/**
+ * @param value Value to test
+ * @returns Whether the value is a string
+ */
 const isString = (value: any): value is string => typeof value === 'string'
 
-const EmptyFields = (fields: Fields): [boolean, EmptyFieldError[]] => {
-	const errors: EmptyFieldError[] = []
-	let hasError = false
-
+/**
+ * Ensures all required fields are not null or a string that is
+ * empty or contains only white spaces
+ * @param {FieldInterface<any>} fields
+ * @throws {EmptyFieldError} If an empty field is found, an error is thrown
+ */
+const EmptyFields = (fields: FieldInterface<any>): void => {
 	Object.entries(fields).forEach(([fieldName, value]) => {
 		if (isString(value) && value.trim() !== '') return
 		if (!isString(value) && value != null) return
 
-		hasError = true
-		errors.push({
-			name: 'RequiredFieldWasNotProvided',
-			fieldName,
-			message: `Field ${fieldName} cannot be blank`,
-		})
+		throw new EmptyFieldError(fieldName)
 	})
-
-	return [hasError, errors]
 }
 
 export default EmptyFields
