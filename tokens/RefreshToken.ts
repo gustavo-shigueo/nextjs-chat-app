@@ -9,18 +9,14 @@ export default class RefreshToken extends Token {
 	allowlist = refreshTokenAllowlist as RedisAllowlistInterface
 
 	static async create(id: string) {
-		return OpaqueToken.create(
-			id,
-			RefreshToken.expiration,
-			RefreshToken.allowlist
-		)
+		return OpaqueToken.create(id, this.expiration, this.allowlist)
 	}
 
 	static verify(token: string) {
-		return OpaqueToken.verify(token, RefreshToken.allowlist)
+		return OpaqueToken.verify(token, this.allowlist)
 	}
 
 	static invalidate(token: string) {
-		return OpaqueToken.invalidate(token, RefreshToken.allowlist)
+		return OpaqueToken.invalidate(token, this.allowlist)
 	}
 }

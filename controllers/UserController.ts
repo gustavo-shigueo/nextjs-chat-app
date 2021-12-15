@@ -1,9 +1,15 @@
 import GoogleProfileInterface from 'interfaces/GoogleProfileInterface'
+import PublicUserData from 'interfaces/PublicUserData'
 import UserDocumentInterface from 'interfaces/UserDocumentInterface'
 import UserInterface from 'interfaces/UserInterface'
 import UserModel from 'models/UserModel'
 
 class UserController {
+	static serializeUser(user: UserDocumentInterface): PublicUserData {
+		const { _id, name, email, avatarUrl, contacts } = user
+		return { _id, name, email, avatarUrl, contacts }
+	}
+
 	static findByEmail(email: string) {
 		return UserModel.findOne({ email })
 	}

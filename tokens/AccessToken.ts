@@ -9,14 +9,14 @@ export default class AccessToken extends Token {
 	_secret = process.env.ACCESS_TOKEN_SECRET!
 
 	static create(_id: string) {
-		return JWTToken.create(_id, AccessToken.expiration, AccessToken._secret)
+		return JWTToken.create(_id, this.expiration, this._secret)
 	}
 
 	static async verify(token: string) {
-		return JWTToken.verify(token, AccessToken.blocklist, AccessToken._secret)
+		return JWTToken.verify(token, this.blocklist, this._secret)
 	}
 
 	static invalidate(token: string) {
-		return JWTToken.invalidate(token, AccessToken.blocklist)
+		return JWTToken.invalidate(token, this.blocklist)
 	}
 }
