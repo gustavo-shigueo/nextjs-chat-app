@@ -9,6 +9,7 @@ import InvalidSignInMethodError from 'errors/InvalidSignInMethodError'
 import UserController from './UserController'
 import EmailAlreadyInUseError from 'errors/EmailAlreadyInUseError'
 import InvalidCredentialsError from 'errors/InvalidCredentialsError'
+import UserLoginData from 'interfaces/UserLoginData'
 
 class AuthController {
 	/**
@@ -39,7 +40,7 @@ class AuthController {
 	 * @returns {Promise<UserDocumentInterface>} The user document
 	 */
 	static async signinWithEmailAndPassword(
-		data: UserInterface
+		data: UserLoginData
 	): Promise<UserDocumentInterface> {
 		const { email = '', password = '' } = data
 		EmptyFields({ email, password })

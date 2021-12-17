@@ -1,5 +1,7 @@
 import { createContext, useContext, useState, FC } from 'react'
 import UserInterface from 'interfaces/UserInterface'
+import GoogleProfileInterface from 'interfaces/GoogleProfileInterface'
+import UserLoginData from 'interfaces/UserLoginData'
 
 interface UserContextData {
 	isAuthenticated: boolean
@@ -14,13 +16,21 @@ const UserContext = createContext({} as UserContextData)
 const useAuth = () => useContext(UserContext)
 
 export const UserProvider: FC = ({ children }) => {
-	const [isAuthenticated, setIsAuthenticated] = useState(false)
 	const [user, setUser] = useState<UserInterface | null>(null)
+	const [loading, setLoading] = useState(true)
 
 	// TODO: implement login, logout and signup
-	const login = async () => {
-		// const u: User = await loginLogic(args)
-		// setUser(u)
+	const login = async (
+		profile?: UserLoginData,
+		googleProfile?: GoogleProfileInterface
+	) => {
+		if (profile) {
+		}
+
+		if (googleProfile) {
+		}
+
+		console.error('No login data provided')
 	}
 
 	const logout = async () => {
@@ -36,7 +46,7 @@ export const UserProvider: FC = ({ children }) => {
 		<UserContext.Provider
 			value={{
 				user,
-				isAuthenticated,
+				isAuthenticated: !!user,
 			}}
 		>
 			{children}
