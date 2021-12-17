@@ -1,13 +1,13 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import dbConnect from 'utils/dbConnect'
-import UserInterface from 'interfaces/UserInterface'
 import AuthController from 'controllers/AuthController'
+import UserLoginData from 'interfaces/UserLoginData'
 import giveCredentials from 'middlewares/giveCredentials'
 import UserController from 'controllers/UserController'
 import MethodNotAllowedError from 'errors/MethodNotAllowed'
 import errorSerializer from 'middlewares/errorSerializer'
 
-const signup = async (req: NextApiRequest, res: NextApiResponse) => {
+const signin = async (req: NextApiRequest, res: NextApiResponse) => {
 	await dbConnect()
 
 	const { method, body } = req
@@ -15,12 +15,10 @@ const signup = async (req: NextApiRequest, res: NextApiResponse) => {
 	if (method !== 'POST') throw new MethodNotAllowedError(method)
 
 	try {
-		const { name, email, password, avatarUrl } = body as UserInterface
-		const user = await AuthController.signupWithEmailAndPassword({
-			name,
+		const { email, password } = body as UserLoginData
+		const user = await AuthController.signinWithEmailAndPassword({
 			email,
 			password,
-			avatarUrl,
 		})
 
 		giveCredentials(req, res, user._id)
@@ -31,4 +29,4 @@ const signup = async (req: NextApiRequest, res: NextApiResponse) => {
 	}
 }
 
-export default signup
+export default signin
