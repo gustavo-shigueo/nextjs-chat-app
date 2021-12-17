@@ -5,6 +5,7 @@ import Token from './tokens'
 
 export default class RefreshToken extends Token {
 	type = 'refresh'
+	maxAge = 60 * 60 * 24 * 7
 	expiration = [7, 'd']
 	allowlist = refreshTokenAllowlist as RedisAllowlistInterface
 

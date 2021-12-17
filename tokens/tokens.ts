@@ -13,6 +13,7 @@ import {
 export default class Token {
 	protected static _secret: string
 	static type: string
+	static maxAge: number
 	static allowlist: RedisAllowlistInterface
 	static blocklist: RedisBlocklistInterface
 	static expiration: ExpirationDate
