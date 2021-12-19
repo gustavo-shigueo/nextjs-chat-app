@@ -19,7 +19,7 @@ const getExpirationTimestamp = ([time, timeUnit]: ExpirationDate) => {
 	return currentTimestamp + time * timeUnits[timeUnit]
 }
 
-export default class OpaqueToken implements Token {
+export default class OpaqueToken extends Token {
 	static async create(
 		_id: string,
 		expiration: ExpirationDate,

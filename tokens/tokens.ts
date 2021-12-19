@@ -10,7 +10,7 @@ import {
 	InvalidateJWT,
 } from 'interfaces/TokenInterfaces'
 
-export default class Token {
+export default abstract class Token {
 	protected static _secret: string
 	static type: string
 	static maxAge: number
