@@ -34,7 +34,7 @@ export default class OpaqueTokenProvider implements ITokenProvider {
 	async verify(token: string): Promise<string> {
 		if (!token) throw new InvalidOrExpiredTokenError()
 
-		const id = await this.list.getValue(token)
+		const id = await this.list.get(token)
 		if (id) return id
 
 		throw new InvalidOrExpiredTokenError()

@@ -4,7 +4,7 @@ export default interface ICacheProvider {
 	 * @param {string} key
 	 * @returns {string} Cached value
 	 */
-	getValue(key: string): Promise<string>
+	get(key: string): Promise<string | null>
 
 	/**
 	 * Removes a key from the cache

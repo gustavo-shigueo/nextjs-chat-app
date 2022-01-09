@@ -19,7 +19,11 @@ const signin = async (req: NextApiRequest, res: NextApiResponse) => {
 			password
 		)
 
-		giveCredentials(req, res, user._id)
+		try {
+			await giveCredentials(req, res, user._id)
+		} catch (e) {
+			console.log(e)
+		}
 
 		res.json({ user })
 	} catch (error: any) {
