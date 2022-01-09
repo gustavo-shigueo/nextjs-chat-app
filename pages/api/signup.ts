@@ -4,6 +4,7 @@ import AuthController from 'controllers/Auth'
 import giveCredentials from 'middlewares/giveCredentials'
 import MethodNotAllowedError from 'errors/MethodNotAllowed'
 import errorSerializer from 'middlewares/errorSerializer'
+import userSerializer from 'middlewares/userSerializer'
 
 const signup = async (req: NextApiRequest, res: NextApiResponse) => {
 	await dbConnect()
@@ -24,7 +25,7 @@ const signup = async (req: NextApiRequest, res: NextApiResponse) => {
 		giveCredentials(req, res, user._id)
 
 		res.statusCode = 201
-		res.json({ user })
+		res.json({ user: userSerializer(user) })
 	} catch (error: any) {
 		errorSerializer(res, error)
 	}

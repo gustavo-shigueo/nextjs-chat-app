@@ -3,5 +3,5 @@ export default interface IPublicUserData {
 	name: string
 	email?: string
 	avatarUrl?: string
-	contacts?: string[]
+	contacts?: any[]
 }

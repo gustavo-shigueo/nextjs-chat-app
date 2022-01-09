@@ -4,6 +4,8 @@ import AuthController from 'controllers/Auth'
 import giveCredentials from 'middlewares/giveCredentials'
 import MethodNotAllowedError from 'errors/MethodNotAllowed'
 import errorSerializer from 'middlewares/errorSerializer'
+import IPublicUserData from 'interfaces/IPublicUserData'
+import userSerializer from 'middlewares/userSerializer'
 
 const signin = async (req: NextApiRequest, res: NextApiResponse) => {
 	await dbConnect()
@@ -25,7 +27,7 @@ const signin = async (req: NextApiRequest, res: NextApiResponse) => {
 			console.log(e)
 		}
 
-		res.json({ user })
+		res.json({ user: userSerializer(user) })
 	} catch (error: any) {
 		errorSerializer(res, error)
 	}
