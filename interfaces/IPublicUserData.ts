@@ -1,4 +1,4 @@
-export default interface PublicUserData {
+export default interface IPublicUserData {
 	_id: string
 	name: string
 	email?: string

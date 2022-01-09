@@ -1,7 +1,7 @@
 import InvalidOrExpiredTokenError from 'errors/InvalidOrExpiredTokenError'
 import NotAuthenticatedError from 'errors/NotAuthenticatedError'
 import { NextApiRequest } from 'next'
-import AccessToken from 'tokens/AccessToken'
+import AccessToken from 'providers/tokens/AccessTokenProvider'
 
 const authMiddleware = async (req: NextApiRequest) => {
 	const { authorization } = req.headers

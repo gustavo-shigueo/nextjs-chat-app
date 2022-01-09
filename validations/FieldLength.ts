@@ -1,5 +1,5 @@
 import InvalidFieldError from 'errors/InvalidFieldError'
-import FieldInterface from 'interfaces/FieldInterface'
+import IField from 'interfaces/IField'
 
 /**
  * Verifies that the provided field has the appropriate length
@@ -9,7 +9,7 @@ import FieldInterface from 'interfaces/FieldInterface'
  * @throws {InvalidFieldError} If the field doesn't have the correct length, an error is throwns
  */
 const FieldLength = (
-	field: FieldInterface<string>,
+	field: IField<string>,
 	minLength: number,
 	maxLength: number
 ) => {

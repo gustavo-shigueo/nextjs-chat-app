@@ -1,11 +1,15 @@
 import { createContext, useContext, useState, FC } from 'react'
-import UserInterface from 'interfaces/UserInterface'
-import GoogleProfileInterface from 'interfaces/GoogleProfileInterface'
-import UserLoginData from 'interfaces/UserLoginData'
+import User from 'entities/User'
+import IGoogleProfile from 'interfaces/IGoogleProfile'
 
 interface UserContextData {
 	isAuthenticated: boolean
-	user: UserInterface | null
+	user: User | null
+}
+
+interface UserLoginData {
+	email: string
+	password: string
 }
 
 const UserContext = createContext({} as UserContextData)
@@ -16,13 +20,13 @@ const UserContext = createContext({} as UserContextData)
 const useAuth = () => useContext(UserContext)
 
 export const UserProvider: FC = ({ children }) => {
-	const [user, setUser] = useState<UserInterface | null>(null)
+	const [user, setUser] = useState<User | null>(null)
 	const [loading, setLoading] = useState(true)
 
 	// TODO: implement login, logout and signup
 	const login = async (
 		profile?: UserLoginData,
-		googleProfile?: GoogleProfileInterface
+		googleProfile?: IGoogleProfile
 	) => {
 		if (profile) {
 		}

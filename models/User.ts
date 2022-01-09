@@ -1,9 +1,11 @@
 import { Model, model, models, Schema } from 'mongoose'
-import UserInterface from 'interfaces/UserInterface'
+import IUserDocument from 'interfaces/IUserDocument'
+import PasswordProvider from 'providers/password'
+import InvalidFieldError from 'errors/InvalidFieldError'
 const emailRegex =
 	/[a-z0-9!#$%&'*+/=?^_‘{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_‘{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
 
-const UserSchema = new Schema<UserInterface>({
+const UserSchema = new Schema<IUserDocument>({
 	name: {
 		type: String,
 		required: true,
@@ -41,7 +43,13 @@ const UserSchema = new Schema<UserInterface>({
 	],
 })
 
-const UserModel: Model<UserInterface> =
-	models.User || model<UserInterface>('User', UserSchema)
+UserSchema.pre('save', async function (next) {
+	if (!this.isModified('password') || !this.password) return next()
+
+	this.password = await PasswordProvider.hash(this.password)
+	next()
+})
+
+const UserModel: Model<IUserDocument> = models.User || model('User', UserSchema)
 
 export default UserModel

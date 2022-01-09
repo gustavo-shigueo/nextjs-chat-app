@@ -7,7 +7,7 @@ import InvalidSignInMethodError from 'errors/InvalidSignInMethodError'
 import MethodNotAllowedError from 'errors/MethodNotAllowed'
 import NotAuthenticatedError from 'errors/NotAuthenticatedError'
 import NotFoundError from 'errors/NotFoundError'
-import { NextApiRequest, NextApiResponse } from 'next'
+import { NextApiResponse } from 'next'
 
 const errorSerializer = (res: NextApiResponse, err: any) => {
 	let statusCode = 500
@@ -16,6 +16,9 @@ const errorSerializer = (res: NextApiResponse, err: any) => {
 	if (err instanceof EmailAlreadyInUseError) {
 		statusCode = 400
 		error = { name: err.name, message: err.message }
+	} else if (err instanceof EmptyFieldError) {
+		statusCode = 400
+		error = { name: err.name, message: err.message, field: err.fieldName }
 	} else if (err instanceof InvalidFieldError) {
 		statusCode = 400
 		error = { name: err.name, message: err.message, field: err.fieldName }
@@ -38,7 +41,13 @@ const errorSerializer = (res: NextApiResponse, err: any) => {
 		statusCode = 405
 		error = { name: err.name, message: err.message, method: err.method }
 	} else {
-		error = err
+		if (err.errors?.email) {
+			err = new InvalidFieldError('Invalid email', 'email')
+			statusCode = 400
+			error = { name: err.name, message: err.message, field: err.fieldName }
+		} else {
+			error = err
+		}
 	}
 
 	res.statusCode = statusCode

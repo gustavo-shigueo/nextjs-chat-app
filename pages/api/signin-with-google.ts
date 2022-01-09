@@ -1,7 +1,7 @@
-import AuthController from 'controllers/AuthController'
-import UserController from 'controllers/UserController'
+import AuthController from 'controllers/Auth'
+import UserController from 'controllers/User'
 import MethodNotAllowedError from 'errors/MethodNotAllowed'
-import GoogleProfileInterface from 'interfaces/GoogleProfileInterface'
+import IGoogleProfile from 'interfaces/IGoogleProfile'
 import errorSerializer from 'middlewares/errorSerializer'
 import giveCredentials from 'middlewares/giveCredentials'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -12,7 +12,7 @@ const signinWithGoogle = async (req: NextApiRequest, res: NextApiResponse) => {
 	if (method !== 'POST') throw new MethodNotAllowedError(method)
 
 	try {
-		const { googleId, name, email, imageUrl } = body as GoogleProfileInterface
+		const { googleId, name, email, imageUrl } = body as IGoogleProfile
 
 		const user = await AuthController.signInWithGoogle({
 			googleId,
@@ -23,7 +23,7 @@ const signinWithGoogle = async (req: NextApiRequest, res: NextApiResponse) => {
 
 		giveCredentials(req, res, user._id)
 
-		return res.json({ user: UserController.serializeUser(user) })
+		return res.json({ user })
 	} catch (error: any) {
 		errorSerializer(res, error)
 	}
