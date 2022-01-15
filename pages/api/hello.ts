@@ -1,13 +1,18 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import errorSerializer from 'middlewares/serializers/errorSerializer'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 type Data = {
-  name: string
+	name: string
 }
 
-export default function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
+export default async function handler(
+	_req: NextApiRequest,
+	_res: NextApiResponse<Data>
 ) {
-  res.status(200).json({ name: 'John Doe' })
+	try {
+		_res.status(200).json({ name: 'John Doe' })
+	} catch (e: any) {
+		errorSerializer(_res, e)
+	}
 }

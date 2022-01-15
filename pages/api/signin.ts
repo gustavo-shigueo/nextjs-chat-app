@@ -1,11 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import dbConnect from 'utils/dbConnect'
 import AuthController from 'controllers/Auth'
-import giveCredentials from 'middlewares/giveCredentials'
+import giveCredentials from 'middlewares/authentication/giveCredentials'
 import MethodNotAllowedError from 'errors/MethodNotAllowed'
-import errorSerializer from 'middlewares/errorSerializer'
-import IPublicUserData from 'interfaces/IPublicUserData'
-import userSerializer from 'middlewares/userSerializer'
+import errorSerializer from 'middlewares/serializers/errorSerializer'
+import userSerializer from 'middlewares/serializers/userSerializer'
 
 const signin = async (req: NextApiRequest, res: NextApiResponse) => {
 	await dbConnect()
@@ -21,11 +20,7 @@ const signin = async (req: NextApiRequest, res: NextApiResponse) => {
 			password
 		)
 
-		try {
-			await giveCredentials(req, res, user._id)
-		} catch (e) {
-			console.log(e)
-		}
+		await giveCredentials(req, res, user._id)
 
 		res.json({ user: userSerializer(user) })
 	} catch (error: any) {

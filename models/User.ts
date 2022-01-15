@@ -1,7 +1,6 @@
 import { Model, model, models, Schema } from 'mongoose'
 import IUserDocument from 'interfaces/IUserDocument'
 import PasswordProvider from 'providers/password'
-import InvalidFieldError from 'errors/InvalidFieldError'
 const emailRegex =
 	/[a-z0-9!#$%&'*+/=?^_‘{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_‘{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
 

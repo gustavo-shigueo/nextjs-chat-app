@@ -1,9 +1,9 @@
 import AuthController from 'controllers/Auth'
 import MethodNotAllowedError from 'errors/MethodNotAllowed'
 import IGoogleProfile from 'interfaces/IGoogleProfile'
-import errorSerializer from 'middlewares/errorSerializer'
-import giveCredentials from 'middlewares/giveCredentials'
-import userSerializer from 'middlewares/userSerializer'
+import errorSerializer from 'middlewares/serializers/errorSerializer'
+import giveCredentials from 'middlewares/authentication/giveCredentials'
+import userSerializer from 'middlewares/serializers/userSerializer'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 const signinWithGoogle = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -21,7 +21,7 @@ const signinWithGoogle = async (req: NextApiRequest, res: NextApiResponse) => {
 			imageUrl,
 		})
 
-		giveCredentials(req, res, user._id)
+		await giveCredentials(req, res, user._id)
 
 		return res.json({ user: userSerializer(user) })
 	} catch (error: any) {
