@@ -1,0 +1,23 @@
+.btn {
+	border: 1px solid;
+	padding: 0.25em 0.75em;
+	background: none;
+
+	font-weight: bold;
+	font-size: 1.2rem;
+
+	cursor: pointer;
+	transition: 100ms ease;
+}
+
+.btn:hover,
+.btn:focus-visible {
+	filter: brightness(0.95);
+	transform: scale(0.99) translate(2px, 2px);
+}
+
+.btn-primary {
+	border: none;
+	background: var(--accent-color);
+	color: white;
+}

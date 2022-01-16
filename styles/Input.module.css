@@ -1,0 +1,80 @@
+.inputControl {
+	position: relative;
+
+	font-size: 1.2rem;
+
+	width: 100%;
+	border-bottom: 2px solid var(--text-color);
+	margin-inline: auto;
+	margin-block-end: 1rem;
+}
+
+.inputControl:not(:first-of-type) {
+	margin-block-start: 4rem;
+}
+
+.inputControl:last-of-type {
+	margin-block-end: 2.5rem;
+}
+
+.input {
+	width: 100%;
+	margin: 1px;
+	padding: 0;
+	border: none;
+	background: none;
+
+	outline: none;
+
+	color: var(--text-color);
+	overflow: hidden;
+
+	transition: color 300ms;
+}
+
+.inputControl::after {
+	content: '';
+	position: relative;
+	top: 2px;
+
+	display: block;
+	height: 4px;
+	width: 100%;
+	background: var(--accent-color);
+
+	transform: scaleX(0);
+	transform-origin: 0%;
+	transition: transform 500ms ease;
+}
+
+.inputControl:focus-within {
+	border-color: transparent;
+}
+
+.inputControl:focus-within::after {
+	transform: scaleX(1);
+}
+
+.label {
+	position: absolute;
+
+	color: var(--text-color);
+
+	transform: translateY(-1.75rem);
+	transform-origin: 0%;
+	transition: transform 400ms, color 300ms;
+
+	pointer-events: none;
+	user-select: none;
+}
+
+.inputControl:focus-within .label,
+.input:not(:placeholder-shown) + .label {
+	transform: scale(0.8) translateY(-4.5rem);
+}
+
+.error {
+	position: absolute;
+	bottom: -1.5rem;
+	color: red;
+}
