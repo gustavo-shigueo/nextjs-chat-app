@@ -13,6 +13,7 @@ export default class User {
 	public password: string | null
 	public googleId: string | null
 	public avatarUrl: string
+	public onlineStatus: boolean = true
 	public contacts: User[] | string[] | null
 
 	constructor(
@@ -24,6 +25,7 @@ export default class User {
 		EmptyFields({ name })
 
 		this.contacts = contacts ?? []
+		this.onlineStatus = true
 
 		if (!emailAndPassword) {
 			const { googleId, imageUrl, email } = googleProfile!

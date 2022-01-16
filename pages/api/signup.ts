@@ -14,13 +14,13 @@ const signup = async (req: NextApiRequest, res: NextApiResponse) => {
 		const { body } = req
 		const { name, email, password } = body
 
-		const user = await AuthController.signup({
+		const user = await AuthController.signUp({
 			name,
 			email,
 			password,
 		})
 
-		giveCredentials(req, res, user._id)
+		await giveCredentials(req, res, user._id)
 
 		res.statusCode = 201
 		res.json({ user: userSerializer(user) })

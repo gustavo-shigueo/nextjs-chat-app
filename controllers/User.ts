@@ -30,7 +30,11 @@ class UserController implements IUserController {
 		}
 
 		const user = new User(name, emailAndPassword, googleProfile)
-		return (await this.usersRepository.save(user)) as User
+		return this.usersRepository.save(user)
+	}
+
+	async findById(id: string): Promise<User | null> {
+		return this.usersRepository.findById(id)
 	}
 
 	async findByName(name: string) {
@@ -45,8 +49,16 @@ class UserController implements IUserController {
 		return this.usersRepository.findByGoogleProfile(profile)
 	}
 
+	async listAll(): Promise<User[]> {
+		return this.usersRepository.listAll()
+	}
+
 	async associateGoogleProfile(user: User, profile: IGoogleProfile) {
 		return this.usersRepository.associateGoogleProfile(user, profile)
+	}
+
+	async setOnlineStatus(userId: string, status: boolean): Promise<User> {
+		return this.usersRepository.setOnlineStatus(userId, status)
 	}
 }
 

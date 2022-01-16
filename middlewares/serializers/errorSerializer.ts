@@ -55,6 +55,7 @@ const errorSerializer = (res: NextApiResponse, err: any) => {
 			error = { name: err.name, message: err.message, field: err.fieldName }
 		} else {
 			error = err
+			console.log(err)
 		}
 	}
 

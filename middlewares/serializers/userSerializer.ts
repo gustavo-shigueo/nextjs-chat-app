@@ -6,6 +6,7 @@ const userSerializer = (user: any): IPublicUserData => {
 		name: user.name,
 		email: user.email,
 		avatarUrl: user.avatarUrl,
+		onlineStatus: user.onlineStatus,
 		contacts: user.contacts,
 	}
 }

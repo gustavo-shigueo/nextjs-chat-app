@@ -21,11 +21,7 @@ const UserSchema = new Schema<IUserDocument>({
 			},
 		},
 	},
-	password: {
-		type: String,
-		minlength: [8, 'Password must be between 8 and 32 characters long'],
-		maxlength: [32, 'Password must be between 8 and 32 characters long'],
-	},
+	password: String,
 	avatarUrl: {
 		type: String,
 		required: true,
@@ -33,6 +29,11 @@ const UserSchema = new Schema<IUserDocument>({
 	googleId: {
 		type: String,
 		unique: true,
+	},
+	onlineStatus: {
+		type: Boolean,
+		required: true,
+		default: true,
 	},
 	contacts: [
 		{
