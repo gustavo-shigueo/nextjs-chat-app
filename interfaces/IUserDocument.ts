@@ -7,5 +7,6 @@ export default interface IUserDocument extends Document {
 	password?: string
 	avatarUrl: string
 	googleId?: string
+	onlineStatus: boolean
 	contacts?: any[]
 }

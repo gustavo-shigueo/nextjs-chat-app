@@ -17,7 +17,7 @@ class AuthController implements IAuthController {
 		private passwordProvider: IPasswordProvider
 	) {}
 
-	async signup(user: ICreateUserRequest): Promise<User> {
+	async signUp(user: ICreateUserRequest): Promise<User> {
 		return await this.userController.create(user)
 	}
 
@@ -35,7 +35,7 @@ class AuthController implements IAuthController {
 		const valid = await this.passwordProvider.verify(password, user.password)
 		if (!valid) throw new InvalidCredentialsError()
 
-		return user
+		return await this.userController.setOnlineStatus(user._id!, true)
 	}
 
 	async signInWithGoogle(profile: IGoogleProfile): Promise<User> {
@@ -45,9 +45,11 @@ class AuthController implements IAuthController {
 		const account = await this.userController.findByGoogleProfile(profile)
 
 		if (account) {
+			const a = await this.userController.setOnlineStatus(account._id!, true)
+
 			return account.googleId
-				? account
-				: this.userController.associateGoogleProfile(account, profile)
+				? a
+				: this.userController.associateGoogleProfile(a, profile)
 		}
 
 		const userData: ICreateUserRequest = {
@@ -57,6 +59,10 @@ class AuthController implements IAuthController {
 		}
 
 		return this.userController.create(userData)
+	}
+
+	async signOut(id: string): Promise<void> {
+		await this.userController.setOnlineStatus(id, false)
 	}
 }
 

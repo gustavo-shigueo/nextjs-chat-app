@@ -8,7 +8,7 @@ export default interface IAuthController {
 	 * @param {ICreateUserRequest} userData
 	 * @returns {Promise<User>} The created user
 	 */
-	signup(userData: ICreateUserRequest): Promise<User>
+	signUp(userData: ICreateUserRequest): Promise<User>
 
 	/**
 	 * Attempts to sign a user in through email and password
