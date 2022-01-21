@@ -16,7 +16,7 @@ const errorSerializer = (res: NextApiResponse, err: any) => {
 
 	if (err instanceof EmailAlreadyInUseError) {
 		statusCode = 400
-		error = { name: err.name, message: err.message }
+		error = { name: err.name, message: err.message, field: 'email' }
 	} else if (err instanceof EmptyFieldError) {
 		statusCode = 400
 		error = { name: err.name, message: err.message, field: err.fieldName }

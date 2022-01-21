@@ -1,33 +1,41 @@
 import { createContext, useContext, useState, FC } from 'react'
 import User from 'entities/User'
 import IGoogleProfile from 'interfaces/IGoogleProfile'
+import { api } from 'services/axios'
 
-interface UserContextData {
+interface IUserContextData {
 	isAuthenticated: boolean
 	user: User | null
+	loading: boolean
+	error: any
+	signup: ({ profile, googleProfile }: IUserData) => Promise<void>
 }
 
-interface UserLoginData {
+interface IEmailAndPassword {
 	email: string
 	password: string
 }
 
-const UserContext = createContext({} as UserContextData)
+interface IUserData {
+	profile?: IEmailAndPassword & { name?: string }
+	googleProfile?: IGoogleProfile
+}
+
+const UserContext = createContext({} as IUserContextData)
 
 /**
  * Returns the UserContext data
  */
-const useAuth = () => useContext(UserContext)
+export const useAuth = () => useContext(UserContext)
 
 export const UserProvider: FC = ({ children }) => {
 	const [user, setUser] = useState<User | null>(null)
-	const [loading, setLoading] = useState(true)
+	const [loading, setLoading] = useState(false)
+	const [error, setError] = useState<any>(null)
+	const isAuthenticated = !!user
 
 	// TODO: implement login, logout and signup
-	const login = async (
-		profile?: UserLoginData,
-		googleProfile?: IGoogleProfile
-	) => {
+	const login = async ({ profile, googleProfile }: IUserData) => {
 		if (profile) {
 		}
 
@@ -42,15 +50,34 @@ export const UserProvider: FC = ({ children }) => {
 		// setUser(null)
 	}
 
-	const signup = async () => {
-		// const u: User = await signupLogic(args)
+	const signup = async ({ profile, googleProfile }: IUserData) => {
+		if (!profile && !googleProfile) return
+		if (profile && googleProfile) return
+
+		const data = profile ?? googleProfile
+		const path = `/api/sign${profile ? 'up' : 'in-with-google'}`
+
+		setLoading(true)
+		try {
+			const res = await api.post(path, data)
+			setUser(res.data.user)
+			setError(null)
+		} catch (e: any) {
+			setUser(null)
+			setError(e.response.data.error)
+		} finally {
+			setLoading(false)
+		}
 	}
 
 	return (
 		<UserContext.Provider
 			value={{
 				user,
-				isAuthenticated: !!user,
+				loading,
+				error,
+				isAuthenticated,
+				signup,
 			}}
 		>
 			{children}

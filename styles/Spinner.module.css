@@ -1,0 +1,21 @@
+.spinner {
+	aspect-ratio: 1;
+
+	border: 3px solid white;
+	border-radius: 50%;
+	border-top: none;
+	border-left: none;
+	border-bottom: none;
+
+	animation: spinner 500ms linear infinite forwards;
+}
+
+@keyframes spinner {
+	from {
+		transform: rotate(0deg);
+	}
+
+	to {
+		transform: rotate(360deg);
+	}
+}

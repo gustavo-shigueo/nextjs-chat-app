@@ -41,6 +41,7 @@ export default class User {
 		const { email, password } = emailAndPassword!
 		EmptyFields({ email, password })
 		FieldLength({ password }, 8, 32)
+		FieldLength({ name }, 3, 50)
 
 		this.email = email
 		this.password = password

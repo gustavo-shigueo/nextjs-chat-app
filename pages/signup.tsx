@@ -1,55 +1,70 @@
 import Button from 'components/Button'
 import Form from 'components/Form'
 import Input from 'components/Input'
+import { useAuth } from 'contexts/UserContext'
 import { NextPage } from 'next'
+import { useCallback } from 'react'
 import GoogleLogin from 'react-google-login'
 import style from 'styles/AuthForms.module.css'
 
 const SignUp: NextPage = () => {
+	const { signup, error, isAuthenticated, loading } = useAuth()
+
+	const nameValidator = useCallback(({ length }) => length > 2, [])
+	const emailValidator = useCallback(value => {
+		const r =
+			/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/
+
+		return !!value.match(r)
+	}, [])
+
+	const passwordValidator = useCallback(
+		value => value.length >= 8 && value.length <= 32,
+		[]
+	)
+
 	const responseGoogle = (response: any) => {
 		const { googleId, name, email, imageUrl } = response.profileObj
-		console.log({ googleId, name, email, imageUrl })
+		signup({ googleProfile: { googleId, name, email, imageUrl } })
 	}
 
 	return (
 		<div className={style.formWrapper}>
 			<h2>Signup</h2>
-			<Form handleFormData={data => console.log(data)} className={style.form}>
+			<Form
+				handleFormData={data => signup({ profile: data })}
+				className={style.form}
+			>
 				<Input
-					validator={value => {
-						return value.length > 2
-					}}
+					validator={nameValidator}
 					required
 					type="text"
 					name="name"
 					label="Name"
-					errorMessage="Name must be at least 3 characters long"
-					valid={/* Insert validation from backend here */ true}
+					errorMessage="Name must be between 3 and 50 characters long"
+					valid={error?.field !== 'name'}
 				/>
 				<Input
-					validator={value => {
-						const r =
-							/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/
-
-						return !!value.match(r)
-					}}
+					validator={emailValidator}
 					required
 					type="email"
 					name="email"
 					label="Email"
-					errorMessage="Invalid email"
-					valid={/* Insert validation from backend here */ true}
+					errorMessage={error?.message || 'Invalid email'}
+					valid={error?.field !== 'email'}
 				/>
 				<Input
 					required
-					validator={value => value.length >= 8 && value.length <= 32}
+					validator={passwordValidator}
 					type="password"
 					name="password"
 					label="Password"
 					errorMessage="Password must be between 8 and 32 characters long"
-					valid={/* Insert validation from backend here */ true}
+					valid={error?.field !== 'password'}
 				/>
-				<Button type="submit" text="Submit" />
+				<Button type="submit" loading={loading}>
+					Submit
+				</Button>
 			</Form>
 
 			<div className={style.separator}>or</div>

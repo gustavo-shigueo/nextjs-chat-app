@@ -20,7 +20,7 @@ const Input: FC<InputProps> = ({
 	...props
 }) => {
 	const [value, setValue] = useState('')
-	const [isValid, setIsValid] = useState(true)
+	const [isValid, setIsValid] = useState(valid)
 	const accentColor: any = { '--accent-color': 'red', '--text-color': 'red' }
 
 	useEffect(() => {
@@ -29,10 +29,12 @@ const Input: FC<InputProps> = ({
 		setIsValid(validator(value))
 	}, [value, validator])
 
+	useEffect(() => setIsValid(valid), [valid])
+
 	return (
 		<div
 			className={`${style.inputControl} ${className ?? ''}`}
-			style={!isValid || !valid ? accentColor : undefined}
+			style={!isValid /* || !valid */ ? accentColor : undefined}
 		>
 			<input
 				id={name}
@@ -48,7 +50,9 @@ const Input: FC<InputProps> = ({
 			<label className={style.label} htmlFor={name}>
 				{label}
 			</label>
-			{isValid || <span className={style.error}>{errorMessage}</span>}
+			{!isValid /*  || !valid */ && (
+				<span className={style.error}>{errorMessage}</span>
+			)}
 		</div>
 	)
 }

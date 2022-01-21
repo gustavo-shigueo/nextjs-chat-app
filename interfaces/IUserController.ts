@@ -1,6 +1,5 @@
 import User from 'entities/User'
 import ICreateUserRequest from './ICreateUserRequest'
-import IGoogleProfile from './IGoogleProfile'
 import IUserOperations from './IUserOperations'
 
 export default interface IUserController extends IUserOperations {

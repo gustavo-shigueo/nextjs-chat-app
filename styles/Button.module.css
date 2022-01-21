@@ -1,4 +1,6 @@
 .btn {
+	position: relative;
+
 	border: 1px solid;
 	padding: 0.25em 0.75em;
 	background: none;
@@ -10,8 +12,23 @@
 	transition: 100ms ease;
 }
 
-.btn:hover,
-.btn:focus-visible {
+.btn::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+
+	background-color: #fff6;
+
+	pointer-events: none;
+	transition: background-color 100ms ease;
+}
+
+.btn:not([disabled])::after {
+	background-color: #fff0;
+}
+
+.btn:hover:not([disabled]),
+.btn:focus-visible:not([disabled]) {
 	filter: brightness(0.95);
 	transform: scale(0.99) translate(2px, 2px);
 }

@@ -18,6 +18,7 @@ class UserController implements IUserController {
 			: { email: userData.email ?? '', password: userData.password ?? '' }
 
 		EmptyFields({ name, ...(googleProfile ? {} : emailAndPassword) })
+		FieldLength({ name }, 3, 50)
 
 		if (!googleProfile && emailAndPassword) {
 			const { email, password } = emailAndPassword
