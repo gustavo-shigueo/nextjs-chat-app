@@ -1,6 +1,7 @@
-export default class NotAuthenticatedError extends Error {
-	constructor() {
-		super('Not authenticated')
-		this.name = 'NotAuthenticated'
-	}
+import IError from './IError'
+
+export default class NotAuthenticatedError extends Error implements IError {
+	status = 401
+	name = 'NotAuthenticated'
+	message = 'Not authenticated'
 }

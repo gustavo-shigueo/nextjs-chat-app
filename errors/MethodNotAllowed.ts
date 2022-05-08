@@ -1,9 +1,11 @@
-export default class MethodNotAllowedError extends Error {
-	public method: string
-	constructor(_method: string = '') {
-		const spacing = _method ? ' ' : ''
-		super(`Method${spacing}${_method} not allowed`)
-		this.name = 'MethodNotAllowed'
-		this.method = _method ?? ''
+import IError from './IError'
+
+export default class MethodNotAllowedError extends Error implements IError {
+	name = 'MethodNotAllowed'
+	status = 405
+
+	constructor(public method: string = '') {
+		const spacing = method ? ' ' : ''
+		super(`Method${spacing}${method} not allowed`)
 	}
 }

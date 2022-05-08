@@ -1,6 +1,10 @@
-export default class NotFoundError extends Error {
+import IError from './IError'
+
+export default class NotFoundError extends Error implements IError {
+	name = 'NotFound'
+	status = 404
+
 	constructor(entity: string) {
 		super(`${entity} not found`)
-		this.name = 'NotFound'
 	}
 }
