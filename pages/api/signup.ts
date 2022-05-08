@@ -3,7 +3,7 @@ import dbConnect from 'utils/dbConnect'
 import AuthController from 'controllers/Auth'
 import giveCredentials from 'middlewares/authentication/giveCredentials'
 import errorSerializer from 'middlewares/serializers/errorSerializer'
-import userSerializer from 'middlewares/serializers/userSerializer'
+import userSerializer from 'middlewares/serializers/publicUserSerializer'
 import allowMethods from 'middlewares/allowMethods'
 
 const signup = async (req: NextApiRequest, res: NextApiResponse) => {

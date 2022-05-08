@@ -2,7 +2,7 @@ import AuthController from 'controllers/Auth'
 import IGoogleProfile from 'interfaces/IGoogleProfile'
 import errorSerializer from 'middlewares/serializers/errorSerializer'
 import giveCredentials from 'middlewares/authentication/giveCredentials'
-import userSerializer from 'middlewares/serializers/userSerializer'
+import userSerializer from 'middlewares/serializers/publicUserSerializer'
 import { NextApiRequest, NextApiResponse } from 'next'
 import allowMethods from 'middlewares/allowMethods'
 

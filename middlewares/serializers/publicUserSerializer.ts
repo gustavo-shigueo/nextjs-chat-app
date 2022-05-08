@@ -1,13 +1,12 @@
 import User from 'entities/User'
+import IPublicUserData from 'interfaces/IPublicUserData'
 
-const userSerializer = <T extends User>(user: T): User => {
+const userSerializer = <T extends User>(user: T): IPublicUserData => {
 	return {
 		_id: user._id,
 		name: user.name,
 		email: user.email,
-		password: user.password,
 		avatarUrl: user.avatarUrl,
-		googleId: user.googleId,
 		onlineStatus: user.onlineStatus,
 		contacts: user.contacts,
 	}

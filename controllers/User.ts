@@ -1,66 +1,47 @@
 import User from 'entities/User'
-import EmailAlreadyInUseError from 'errors/EmailAlreadyInUseError'
 import ICreateUserRequest from 'interfaces/ICreateUserRequest'
 import IGoogleProfile from 'interfaces/IGoogleProfile'
 import IUserController from 'interfaces/IUserController'
-import IUsersRepository from 'interfaces/IUsersRepository'
-import UsersRepository from 'repositories/users'
-import EmptyFields from 'validations/EmptyFields'
-import FieldLength from 'validations/FieldLength'
-
+import IUserService from 'interfaces/IUserService'
+import UserService from 'services/User'
 class UserController implements IUserController {
-	constructor(private usersRepository: IUsersRepository) {}
+	#userService: IUserService
 
-	async create(userData: ICreateUserRequest): Promise<User> {
-		const { name, googleProfile } = userData
-		const emailAndPassword = googleProfile
-			? null
-			: { email: userData.email ?? '', password: userData.password ?? '' }
-
-		EmptyFields({ name, ...(googleProfile ? {} : emailAndPassword) })
-		FieldLength({ name }, 3, 50)
-
-		if (!googleProfile && emailAndPassword) {
-			const { email, password } = emailAndPassword
-
-			if (await this.usersRepository.isEmailInUse(email)) {
-				throw new EmailAlreadyInUseError()
-			}
-
-			FieldLength({ password }, 8, 32)
-		}
-
-		const user = new User(name, emailAndPassword, googleProfile)
-		return this.usersRepository.save(user)
+	constructor(userService: IUserService) {
+		this.#userService = userService
 	}
 
-	async findById(id: string): Promise<User | null> {
-		return this.usersRepository.findById(id)
+	async create(userData: ICreateUserRequest): Promise<User> {
+		return this.#userService.create(userData)
+	}
+
+	async findById(id: string): Promise<User> {
+		return this.#userService.findById(id)
 	}
 
 	async findByName(name: string) {
-		return this.usersRepository.findByName(name)
+		return this.#userService.findByName(name)
 	}
 
 	async findByEmail(email: string) {
-		return this.usersRepository.findByEmail(email)
+		return this.#userService.findByEmail(email)
 	}
 
 	async findByGoogleProfile(profile: IGoogleProfile) {
-		return this.usersRepository.findByGoogleProfile(profile)
+		return this.#userService.findByGoogleProfile(profile)
 	}
 
 	async listAll(): Promise<User[]> {
-		return this.usersRepository.listAll()
+		return this.#userService.listAll()
 	}
 
 	async associateGoogleProfile(user: User, profile: IGoogleProfile) {
-		return this.usersRepository.associateGoogleProfile(user, profile)
+		return this.#userService.associateGoogleProfile(user, profile)
 	}
 
 	async setOnlineStatus(userId: string, status: boolean): Promise<User> {
-		return this.usersRepository.setOnlineStatus(userId, status)
+		return this.#userService.setOnlineStatus(userId, status)
 	}
 }
 
-export default new UserController(UsersRepository)
+export default new UserController(UserService)

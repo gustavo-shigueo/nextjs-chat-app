@@ -1,7 +1,8 @@
 import User from 'entities/User'
 import NotFoundError from 'errors/NotFoundError'
 import IGoogleProfile from 'interfaces/IGoogleProfile'
-import IUsersRepository from 'interfaces/IUsersRepository'
+import IUsersRepository from 'interfaces/IUserRepository'
+import userSerializer from 'middlewares/serializers/userSerializer'
 import UserModel from 'models/User'
 
 export default class MongoDBUsersRepository implements IUsersRepository {
@@ -12,25 +13,29 @@ export default class MongoDBUsersRepository implements IUsersRepository {
 	async save(user: User): Promise<User> {
 		const { _id, ...data } = user
 		const u = await UserModel.create(data)
-		return (await u.save()) as User
+		return userSerializer(await u.save())
 	}
 
-	async findById(id: string): Promise<User | null> {
+	async findById(id: string): Promise<User> {
 		const user = await UserModel.findById(id)
 		if (!user) throw new NotFoundError('User')
 
-		return user as User
+		return userSerializer(user)
 	}
 
 	async findByEmail(email: string): Promise<User | null> {
 		const user = await UserModel.findOne({ email })
-		return user ? (user as User) : null
+
+		if (!user) return null
+
+		return userSerializer(user)
 	}
 
 	async findByName(name: string): Promise<User[]> {
 		const regex = new RegExp(name, 'ig')
 		const users = await UserModel.find({ name: regex })
-		return users as User[]
+
+		return users.map(user => userSerializer(user))
 	}
 
 	async findByGoogleProfile(profile: IGoogleProfile): Promise<User | null> {
@@ -40,12 +45,14 @@ export default class MongoDBUsersRepository implements IUsersRepository {
 			$or: [{ email }, { googleId }],
 		})
 
-		return user ? (user as User) : null
+		if (!user) return null
+
+		return userSerializer(user)
 	}
 
 	async listAll(): Promise<User[]> {
 		const users = await UserModel.find()
-		return users as User[]
+		return users.map(user => userSerializer(user))
 	}
 
 	async associateGoogleProfile(
@@ -59,7 +66,7 @@ export default class MongoDBUsersRepository implements IUsersRepository {
 		account.googleId = googleId
 		await account.save()
 
-		return account as User
+		return userSerializer(account)
 	}
 
 	async setOnlineStatus(userId: string, status: boolean): Promise<User> {
@@ -67,8 +74,7 @@ export default class MongoDBUsersRepository implements IUsersRepository {
 		if (!user) throw new NotFoundError('User')
 
 		user.onlineStatus = status
-		await user.save()
 
-		return user as User
+		return userSerializer(await user.save())
 	}
 }

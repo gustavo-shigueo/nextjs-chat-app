@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import UserController from 'controllers/User'
-import userSerializer from 'middlewares/serializers/userSerializer'
+import userSerializer from 'middlewares/serializers/publicUserSerializer'
 
 const listUsers = async (_req: NextApiRequest, res: NextApiResponse) => {
 	const users = await UserController.listAll()

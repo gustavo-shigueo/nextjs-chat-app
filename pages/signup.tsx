@@ -6,14 +6,14 @@ import { NextPage } from 'next'
 import { useCallback } from 'react'
 import GoogleLogin from 'react-google-login'
 import style from 'styles/AuthForms.module.css'
+import emailRegex from 'utils/emailRegex'
 
 const SignUp: NextPage = () => {
 	const { signup, error, isAuthenticated, loading } = useAuth()
 
 	const nameValidator = useCallback(({ length }) => length > 2, [])
 	const emailValidator = useCallback(value => {
-		const r =
-			/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/
+		const r = emailRegex
 
 		return !!value.match(r)
 	}, [])

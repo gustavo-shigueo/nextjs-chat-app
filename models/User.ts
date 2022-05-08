@@ -1,8 +1,6 @@
 import { Model, model, models, Schema } from 'mongoose'
 import IUserDocument from 'interfaces/IUserDocument'
 import PasswordProvider from 'providers/password'
-const emailRegex =
-	/[a-z0-9!#$%&'*+/=?^_‘{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_‘{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
 
 const UserSchema = new Schema<IUserDocument>({
 	name: {
@@ -15,11 +13,6 @@ const UserSchema = new Schema<IUserDocument>({
 		trim: true,
 		unique: true,
 		required: true,
-		validate: {
-			validator(v: string) {
-				return emailRegex.test(v)
-			},
-		},
 	},
 	password: String,
 	avatarUrl: {
