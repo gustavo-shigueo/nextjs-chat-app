@@ -20,15 +20,15 @@ class UserController implements IUserController {
 		return this.#userService.findById(id)
 	}
 
-	async findByName(name: string) {
+	async findByName(name: string): Promise<User[]> {
 		return this.#userService.findByName(name)
 	}
 
-	async findByEmail(email: string) {
+	async findByEmail(email: string): Promise<User | null> {
 		return this.#userService.findByEmail(email)
 	}
 
-	async findByGoogleProfile(profile: IGoogleProfile) {
+	async findByGoogleProfile(profile: IGoogleProfile): Promise<User | null> {
 		return this.#userService.findByGoogleProfile(profile)
 	}
 
@@ -36,7 +36,10 @@ class UserController implements IUserController {
 		return this.#userService.listAll()
 	}
 
-	async associateGoogleProfile(user: User, profile: IGoogleProfile) {
+	async associateGoogleProfile(
+		user: User,
+		profile: IGoogleProfile
+	): Promise<User> {
 		return this.#userService.associateGoogleProfile(user, profile)
 	}
 
