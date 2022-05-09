@@ -6,25 +6,31 @@ import userSerializer from 'middlewares/serializers/userSerializer'
 import UserModel from 'models/mongo/User'
 
 export default class MongoDBUsersRepository implements IUsersRepository {
+	#model: typeof UserModel
+
+	constructor(model: typeof UserModel) {
+		this.#model = model
+	}
+
 	async isEmailInUse(email: string): Promise<boolean> {
-		return UserModel.exists({ email })
+		return this.#model.exists({ email })
 	}
 
 	async save(user: User): Promise<User> {
 		const { _id, ...data } = user
-		const u = await UserModel.create(data)
+		const u = await this.#model.create(data)
 		return userSerializer(await u.save())
 	}
 
 	async findById(id: string): Promise<User> {
-		const user = await UserModel.findById(id)
+		const user = await this.#model.findById(id)
 		if (!user) throw new NotFoundError('User')
 
 		return userSerializer(user)
 	}
 
 	async findByEmail(email: string): Promise<User | null> {
-		const user = await UserModel.findOne({ email })
+		const user = await this.#model.findOne({ email })
 
 		if (!user) return null
 
@@ -33,7 +39,7 @@ export default class MongoDBUsersRepository implements IUsersRepository {
 
 	async findByName(name: string): Promise<User[]> {
 		const regex = new RegExp(name, 'ig')
-		const users = await UserModel.find({ name: regex })
+		const users = await this.#model.find({ name: regex })
 
 		return users.map(user => userSerializer(user))
 	}
@@ -41,7 +47,7 @@ export default class MongoDBUsersRepository implements IUsersRepository {
 	async findByGoogleProfile(profile: IGoogleProfile): Promise<User | null> {
 		const { email, googleId } = profile
 
-		const user = await UserModel.findOne({
+		const user = await this.#model.findOne({
 			$or: [{ email }, { googleId }],
 		})
 
@@ -51,7 +57,7 @@ export default class MongoDBUsersRepository implements IUsersRepository {
 	}
 
 	async listAll(): Promise<User[]> {
-		const users = await UserModel.find()
+		const users = await this.#model.find()
 		return users.map(user => userSerializer(user))
 	}
 
@@ -59,7 +65,7 @@ export default class MongoDBUsersRepository implements IUsersRepository {
 		user: User,
 		{ googleId }: IGoogleProfile
 	): Promise<User> {
-		const account = await UserModel.findById(user._id)
+		const account = await this.#model.findById(user._id)
 
 		if (!account) throw new NotFoundError('User')
 
@@ -70,7 +76,7 @@ export default class MongoDBUsersRepository implements IUsersRepository {
 	}
 
 	async setOnlineStatus(userId: string, status: boolean): Promise<User> {
-		const user = await UserModel.findById(userId)
+		const user = await this.#model.findById(userId)
 		if (!user) throw new NotFoundError('User')
 
 		user.onlineStatus = status
