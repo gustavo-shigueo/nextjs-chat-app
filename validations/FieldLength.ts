@@ -1,5 +1,5 @@
 import InvalidFieldError from 'errors/InvalidFieldError'
-import IField from 'interfaces/IField'
+import IField from 'validations/IField'
 
 /**
  * Verifies that the provided field has the appropriate length

@@ -1,6 +1,6 @@
 import { TExpirationDate } from 'interfaces/IToken'
-import ITokenProvider from 'interfaces/ITokenProvider'
-import AllowlistRepository from 'repositories/allowlist'
+import ITokenProvider from './ITokenProvider'
+import AllowlistRepository from 'repositories/Allowlist'
 import OpaqueTokenProvider from './OpaqueTokenProvider'
 
 class RefreshTokenProvider implements ITokenProvider {

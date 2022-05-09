@@ -1,5 +1,5 @@
 import { Model, model, models, Schema } from 'mongoose'
-import IUserDocument from 'interfaces/IUserDocument'
+import IUserDocument from './IUserDocument'
 import PasswordProvider from 'providers/password'
 
 const UserSchema = new Schema<IUserDocument>({

@@ -1,6 +1,6 @@
 import User from 'entities/User'
-import ICreateUserRequest from './ICreateUserRequest'
-import IUserOperations from './IUserOperations'
+import ICreateUserRequest from 'interfaces/ICreateUserRequest'
+import IUserOperations from 'interfaces/IUserOperations'
 
 export default interface IUserController extends IUserOperations {
 	/**

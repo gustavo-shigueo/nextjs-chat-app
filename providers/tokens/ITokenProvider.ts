@@ -1,4 +1,4 @@
-import { TExpirationDate } from './IToken'
+import { TExpirationDate } from 'interfaces/IToken'
 
 export default interface ITokenProvider {
 	// _secret: string

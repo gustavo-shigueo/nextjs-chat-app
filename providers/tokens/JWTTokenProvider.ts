@@ -1,6 +1,6 @@
-import IBlocklistRepository from 'interfaces/IBlocklistRepository'
+import IBlocklistRepository from 'repositories/Blocklist/IBlocklistRepository'
 import { TExpirationDate, TokenPayload } from 'interfaces/IToken'
-import ITokenProvider from 'interfaces/ITokenProvider'
+import ITokenProvider from './ITokenProvider'
 import {
 	decode,
 	JsonWebTokenError,

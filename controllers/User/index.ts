@@ -1,9 +1,10 @@
 import User from 'entities/User'
 import ICreateUserRequest from 'interfaces/ICreateUserRequest'
 import IGoogleProfile from 'interfaces/IGoogleProfile'
-import IUserController from 'interfaces/IUserController'
-import IUserService from 'interfaces/IUserService'
+import IUserController from './IUserController'
+import IUserService from 'services/User/IUserService'
 import UserService from 'services/User'
+
 class UserController implements IUserController {
 	#userService: IUserService
 

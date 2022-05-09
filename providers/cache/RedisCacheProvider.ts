@@ -1,4 +1,4 @@
-import ICacheProvider from 'interfaces/ICacheProvider'
+import ICacheProvider from './ICacheProvider'
 import { createClient } from 'redis'
 
 export default class RedisCacheProvider implements ICacheProvider {

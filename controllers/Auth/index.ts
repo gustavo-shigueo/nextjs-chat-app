@@ -2,14 +2,14 @@ import User from 'entities/User'
 import InvalidCredentialsError from 'errors/InvalidCredentialsError'
 import InvalidSignInMethodError from 'errors/InvalidSignInMethodError'
 import NotFoundError from 'errors/NotFoundError'
-import IAuthController from 'interfaces/IAuthController'
+import IAuthController from './IAuthController'
 import ICreateUserRequest from 'interfaces/ICreateUserRequest'
 import IGoogleProfile from 'interfaces/IGoogleProfile'
-import IPasswordProvider from 'interfaces/IPasswordProvider'
-import IUserController from 'interfaces/IUserController'
+import IPasswordProvider from 'providers/password/IPasswordProvider'
+import IUserController from 'controllers/User/IUserController'
 import PasswordProvider from 'providers/password'
 import EmptyFields from 'validations/EmptyFields'
-import UserController from './User'
+import UserController from 'controllers/User'
 
 class AuthController implements IAuthController {
 	constructor(

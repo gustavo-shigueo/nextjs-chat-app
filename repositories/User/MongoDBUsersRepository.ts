@@ -1,9 +1,9 @@
 import User from 'entities/User'
 import NotFoundError from 'errors/NotFoundError'
 import IGoogleProfile from 'interfaces/IGoogleProfile'
-import IUsersRepository from 'interfaces/IUserRepository'
+import IUsersRepository from './IUserRepository'
 import userSerializer from 'middlewares/serializers/userSerializer'
-import UserModel from 'models/User'
+import UserModel from 'models/mongo/User'
 
 export default class MongoDBUsersRepository implements IUsersRepository {
 	async isEmailInUse(email: string): Promise<boolean> {

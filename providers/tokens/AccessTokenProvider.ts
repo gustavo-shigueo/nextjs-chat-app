@@ -1,6 +1,6 @@
 import { TExpirationDate } from 'interfaces/IToken'
-import ITokenProvider from 'interfaces/ITokenProvider'
-import BlocklistRepository from 'repositories/blocklist'
+import ITokenProvider from './ITokenProvider'
+import BlocklistRepository from 'repositories/Blocklist'
 import JWTTokenProvider from './JWTTokenProvider'
 
 class AccessTokenProvider implements ITokenProvider {

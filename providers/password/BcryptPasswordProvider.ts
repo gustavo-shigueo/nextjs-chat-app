@@ -1,4 +1,4 @@
-import IPasswordProvider from 'interfaces/IPasswordProvider'
+import IPasswordProvider from './IPasswordProvider'
 import bcrypt from 'bcrypt'
 
 export default class BcryptPasswordProvider implements IPasswordProvider {

@@ -1,5 +1,5 @@
 import User from 'entities/User'
-import IUserOperations from './IUserOperations'
+import IUserOperations from 'interfaces/IUserOperations'
 
 export default interface IUsersRepository extends IUserOperations {
 	isEmailInUse(email: string): Promise<boolean>

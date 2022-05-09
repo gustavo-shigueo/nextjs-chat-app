@@ -1,6 +1,6 @@
 import User from 'entities/User'
-import ICreateUserRequest from './ICreateUserRequest'
-import IGoogleProfile from './IGoogleProfile'
+import ICreateUserRequest from 'interfaces/ICreateUserRequest'
+import IGoogleProfile from 'interfaces/IGoogleProfile'
 
 export default interface IAuthController {
 	/**

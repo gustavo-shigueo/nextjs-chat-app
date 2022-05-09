@@ -1,8 +1,8 @@
 import { randomBytes } from 'crypto'
 import InvalidOrExpiredTokenError from 'errors/InvalidOrExpiredTokenError'
-import ICacheProvider from 'interfaces/ICacheProvider'
+import ICacheProvider from 'providers/cache/ICacheProvider'
 import { TExpirationDate } from 'interfaces/IToken'
-import ITokenProvider from 'interfaces/ITokenProvider'
+import ITokenProvider from './ITokenProvider'
 
 const timeUnits = {
 	s: 1,

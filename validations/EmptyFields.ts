@@ -1,5 +1,5 @@
 import EmptyFieldError from 'errors/EmptyFieldError'
-import IField from 'interfaces/IField'
+import IField from 'validations/IField'
 
 /**
  * @param value Value to test
