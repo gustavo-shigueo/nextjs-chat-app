@@ -4,7 +4,10 @@ import Input from 'components/Input'
 import { useAuth } from 'contexts/UserContext'
 import { NextPage } from 'next'
 import { useCallback } from 'react'
-import GoogleLogin from 'react-google-login'
+import GoogleLogin, {
+	GoogleLoginResponse,
+	GoogleLoginResponseOffline,
+} from 'react-google-login'
 import style from 'styles/AuthForms.module.css'
 import emailRegex from 'utils/emailRegex'
 
@@ -23,9 +26,23 @@ const SignUp: NextPage = () => {
 		[]
 	)
 
-	const responseGoogle = (response: any) => {
-		const { googleId, name, email, imageUrl } = response.profileObj
-		signup({ googleProfile: { googleId, name, email, imageUrl } })
+	const IsGoogleLoginResponseOffline = (
+		response: GoogleLoginResponse | GoogleLoginResponseOffline
+	): response is GoogleLoginResponseOffline => {
+		return !!response?.code
+	}
+
+	const responseGoogle = (
+		response: GoogleLoginResponse | GoogleLoginResponseOffline
+	) => {
+		if (IsGoogleLoginResponseOffline(response)) return
+
+		// TODO: incorporar response.accessToken no fluxo de autenticação
+		const {
+			profileObj: { googleId, name, email, imageUrl },
+			accessToken,
+		} = response
+		signup({ googleProfile: { googleId, name, email, imageUrl, accessToken } })
 	}
 
 	return (
@@ -75,7 +92,7 @@ const SignUp: NextPage = () => {
 					buttonText="Sign up with Google"
 					onSuccess={responseGoogle}
 					style={{ width: '100%' }}
-					onFailure={console.log}
+					onFailure={console.error}
 					cookiePolicy="single_host_origin"
 				/>
 			</div>

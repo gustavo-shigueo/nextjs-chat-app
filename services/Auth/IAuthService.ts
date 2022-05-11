@@ -2,7 +2,7 @@ import User from 'entities/User'
 import ICreateUserRequest from 'interfaces/ICreateUserRequest'
 import IGoogleProfile from 'interfaces/IGoogleProfile'
 
-export default interface IAuthController {
+export default interface IAuthService {
 	/**
 	 * Creates a new user through the UserController
 	 * @param {ICreateUserRequest} userData

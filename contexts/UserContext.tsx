@@ -18,7 +18,7 @@ interface IEmailAndPassword {
 
 interface IUserData {
 	profile?: IEmailAndPassword & { name?: string }
-	googleProfile?: IGoogleProfile
+	googleProfile?: IGoogleProfile & { accessToken?: string }
 }
 
 const UserContext = createContext({} as IUserContextData)
@@ -42,7 +42,7 @@ export const UserProvider: FC = ({ children }) => {
 		if (googleProfile) {
 		}
 
-		console.error('No login data provided')
+		// console.error('No login data provided')
 	}
 
 	const logout = async () => {
@@ -54,7 +54,9 @@ export const UserProvider: FC = ({ children }) => {
 		if (!profile && !googleProfile) return
 		if (profile && googleProfile) return
 
-		const data = profile ?? googleProfile
+		const { accessToken: googleAccessToken, ...googleData } =
+			googleProfile ?? {}
+		const data = profile ?? { googleAccessToken, googleProfile: googleData }
 		const path = `/api/sign${profile ? 'up' : 'in-with-google'}`
 
 		setLoading(true)

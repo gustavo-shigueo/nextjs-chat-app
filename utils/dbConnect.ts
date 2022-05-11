@@ -1,3 +1,4 @@
+import DatabaseConnectionError from 'errors/DatabaseConnectionError'
 import mongoose from 'mongoose'
 
 let connectionState = 0
@@ -10,6 +11,6 @@ export default async function dbConnect() {
 
 		connectionState = db.connections[0].readyState
 	} catch (e: any) {
-		console.log(e.message)
+		throw new DatabaseConnectionError()
 	}
 }

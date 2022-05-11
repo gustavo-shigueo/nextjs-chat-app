@@ -1,19 +1,23 @@
 import AuthController from 'controllers/Auth'
-import IGoogleProfile from 'interfaces/IGoogleProfile'
 import errorSerializer from 'middlewares/serializers/errorSerializer'
 import giveCredentials from 'middlewares/authentication/giveCredentials'
 import userSerializer from 'middlewares/serializers/publicUserSerializer'
 import { NextApiRequest, NextApiResponse } from 'next'
 import allowMethods from 'middlewares/allowMethods'
+import dbConnect from 'utils/dbConnect'
 
 const signinWithGoogle = async (req: NextApiRequest, res: NextApiResponse) => {
-	allowMethods(req, 'POST')
-
 	try {
-		const { body } = req
-		const { googleId, name, email, imageUrl } = body as IGoogleProfile
+		allowMethods(req, 'POST')
+		await dbConnect()
 
-		const user = await AuthController.signInWithGoogle({
+		const { body } = req
+		const {
+			googleAccessToken,
+			googleProfile: { googleId, name, email, imageUrl },
+		} = body
+
+		const user = await AuthController.signInWithGoogle(googleAccessToken, {
 			googleId,
 			name,
 			email,

@@ -7,10 +7,10 @@ import userSerializer from 'middlewares/serializers/publicUserSerializer'
 import allowMethods from 'middlewares/allowMethods'
 
 const signin = async (req: NextApiRequest, res: NextApiResponse) => {
-	allowMethods(req, 'POST')
-	await dbConnect()
-
 	try {
+		allowMethods(req, 'POST')
+		await dbConnect()
+
 		const { body } = req
 		const { email, password } = body
 		const user = await AuthController.signInWithEmailAndPassword(

@@ -12,8 +12,8 @@ const signout = async (req: NextApiRequest, res: NextApiResponse) => {
 		await revokeCredentials(req, res)
 
 		res.status(204).end()
-	} catch (e: any) {
-		errorSerializer(res, e)
+	} catch (error: any) {
+		errorSerializer(res, error)
 	}
 }
 

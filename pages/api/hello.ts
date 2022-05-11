@@ -14,7 +14,7 @@ export default async function handler(
 	try {
 		allowMethods(_req, 'GET', 'POST', 'PATCH')
 		_res.status(200).json({ name: 'John Doe' })
-	} catch (e: any) {
-		errorSerializer(_res, e)
+	} catch (error: any) {
+		errorSerializer(_res, error)
 	}
 }

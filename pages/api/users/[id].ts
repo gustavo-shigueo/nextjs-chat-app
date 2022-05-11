@@ -3,16 +3,19 @@ import UserController from 'controllers/User'
 import errorSerializer from 'middlewares/serializers/errorSerializer'
 import userSerializer from 'middlewares/serializers/publicUserSerializer'
 import allowMethods from 'middlewares/allowMethods'
+import dbConnect from 'utils/dbConnect'
 
 const getUser = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
 		allowMethods(req, 'GET')
+		await dbConnect()
+
 		const { id } = req.query
 		const user = await UserController.findById(id as string)
 
 		res.json(userSerializer(user))
-	} catch (e: any) {
-		errorSerializer(res, e)
+	} catch (error: any) {
+		errorSerializer(res, error)
 	}
 }
 

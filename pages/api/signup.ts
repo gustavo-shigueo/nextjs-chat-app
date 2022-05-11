@@ -7,10 +7,10 @@ import userSerializer from 'middlewares/serializers/publicUserSerializer'
 import allowMethods from 'middlewares/allowMethods'
 
 const signup = async (req: NextApiRequest, res: NextApiResponse) => {
-	await dbConnect()
-	allowMethods(req, 'POST')
-
 	try {
+		allowMethods(req, 'POST')
+		await dbConnect()
+
 		const { body } = req
 		const { name, email, password } = body
 

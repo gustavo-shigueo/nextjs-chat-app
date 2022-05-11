@@ -9,8 +9,8 @@ const refreshToken = async (req: NextApiRequest, res: NextApiResponse) => {
 
 		await refreshCredentials(req, res)
 		res.status(204).end()
-	} catch (e: any) {
-		errorSerializer(res, e)
+	} catch (error: any) {
+		errorSerializer(res, error)
 	}
 }
 
