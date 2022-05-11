@@ -8,6 +8,7 @@ import IUserService from './IUserService'
 import emailRegex from 'utils/emailRegex'
 import EmptyFields from 'validations/EmptyFields'
 import FieldLength from 'validations/FieldLength'
+import { randomUUID } from 'crypto'
 
 export default class UserService implements IUserService {
 	#userRepository: IUserRepository
@@ -31,7 +32,14 @@ export default class UserService implements IUserService {
 			}
 		}
 
-		const user = new User(name, email, password, googleProfile?.googleId)
+		const dicebearUrl = 'https://avatars.dicebear.com/api/bottts'
+		const user = new User(
+			name,
+			email,
+			password,
+			googleProfile?.googleId,
+			googleProfile?.imageUrl ?? `${dicebearUrl}/${name}-${randomUUID()}.svg`
+		)
 		return await this.#userRepository.save(user)
 	}
 
