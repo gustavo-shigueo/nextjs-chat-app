@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import UserController from 'controllers/User'
 import errorSerializer from 'middlewares/serializers/errorSerializer'
-import userSerializer from 'middlewares/serializers/publicUserSerializer'
+import publicUserSerializer from 'middlewares/serializers/publicUserSerializer'
 import allowMethods from 'middlewares/allowMethods'
 import dbConnect from 'utils/dbConnect'
 
@@ -13,7 +13,7 @@ const getUser = async (req: NextApiRequest, res: NextApiResponse) => {
 		const { id } = req.query
 		const user = await UserController.findById(id as string)
 
-		res.json(userSerializer(user))
+		res.json(publicUserSerializer(user))
 	} catch (error: any) {
 		errorSerializer(res, error)
 	}

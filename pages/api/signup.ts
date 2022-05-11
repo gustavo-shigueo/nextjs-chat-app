@@ -3,7 +3,7 @@ import dbConnect from 'utils/dbConnect'
 import AuthController from 'controllers/Auth'
 import giveCredentials from 'middlewares/authentication/giveCredentials'
 import errorSerializer from 'middlewares/serializers/errorSerializer'
-import userSerializer from 'middlewares/serializers/publicUserSerializer'
+import publicUserSerializer from 'middlewares/serializers/publicUserSerializer'
 import allowMethods from 'middlewares/allowMethods'
 
 const signup = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -23,7 +23,7 @@ const signup = async (req: NextApiRequest, res: NextApiResponse) => {
 		await giveCredentials(req, res, user._id)
 
 		res.statusCode = 201
-		res.json({ user: userSerializer(user) })
+		res.json({ user: publicUserSerializer(user) })
 	} catch (error: any) {
 		errorSerializer(res, error)
 	}
