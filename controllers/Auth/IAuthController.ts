@@ -23,8 +23,5 @@ export default interface IAuthController {
 	 * @param {IGoogleProfile} googleProfile
 	 * @returns {Promise<User>} The signed in user
 	 */
-	signInWithGoogle(
-		accessToken: string,
-		googleProfile: IGoogleProfile
-	): Promise<User>
+	signInWithGoogle(accessToken: string): Promise<User>
 }

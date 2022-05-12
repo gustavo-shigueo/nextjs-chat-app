@@ -11,18 +11,9 @@ const signinWithGoogle = async (req: NextApiRequest, res: NextApiResponse) => {
 		allowMethods(req, 'POST')
 		await dbConnect()
 
-		const { body } = req
-		const {
-			googleAccessToken,
-			googleProfile: { googleId, name, email, imageUrl },
-		} = body
+		const { googleAccessToken } = req.body
 
-		const user = await AuthController.signInWithGoogle(googleAccessToken, {
-			googleId,
-			name,
-			email,
-			imageUrl,
-		})
+		const user = await AuthController.signInWithGoogle(googleAccessToken)
 
 		await giveCredentials(req, res, user._id)
 

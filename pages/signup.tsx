@@ -4,10 +4,7 @@ import Input from 'components/Input'
 import { useAuth } from 'contexts/UserContext'
 import { NextPage } from 'next'
 import { useCallback } from 'react'
-import GoogleLogin, {
-	GoogleLoginResponse,
-	GoogleLoginResponseOffline,
-} from 'react-google-login'
+import { GoogleLogin } from '@react-oauth/google'
 import style from 'styles/AuthForms.module.css'
 import emailRegex from 'utils/emailRegex'
 
@@ -26,23 +23,11 @@ const SignUp: NextPage = () => {
 		[]
 	)
 
-	const IsGoogleLoginResponseOffline = (
-		response: GoogleLoginResponse | GoogleLoginResponseOffline
-	): response is GoogleLoginResponseOffline => {
-		return !!response?.code
-	}
-
-	const responseGoogle = (
-		response: GoogleLoginResponse | GoogleLoginResponseOffline
-	) => {
-		if (IsGoogleLoginResponseOffline(response)) return
-
+	const responseGoogle = async (response: any) => {
 		// TODO: incorporar response.accessToken no fluxo de autenticação
-		const {
-			profileObj: { googleId, name, email, imageUrl },
-			accessToken,
-		} = response
-		signup({ googleProfile: { googleId, name, email, imageUrl, accessToken } })
+		const { credential: accessToken } = response
+
+		signup({ googleAccessToken: accessToken })
 	}
 
 	return (
@@ -88,12 +73,10 @@ const SignUp: NextPage = () => {
 
 			<div className={style.social}>
 				<GoogleLogin
-					clientId={process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID!}
-					buttonText="Sign up with Google"
 					onSuccess={responseGoogle}
-					style={{ width: '100%' }}
-					onFailure={console.error}
-					cookiePolicy="single_host_origin"
+					onError={console.error}
+					text="signup_with"
+					auto_select={false}
 				/>
 			</div>
 		</div>

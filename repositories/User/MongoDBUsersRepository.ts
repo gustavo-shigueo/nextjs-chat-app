@@ -38,17 +38,16 @@ export default class MongoDBUsersRepository implements IUsersRepository {
 	}
 
 	async findByName(name: string): Promise<User[]> {
-		const regex = new RegExp(name, 'ig')
-		const users = await this.#model.find({ name: regex })
+		const users = await this.#model.find({
+			name: { $regex: name, $options: 'ig' },
+		})
 
 		return users.map(user => userSerializer(user))
 	}
 
-	async findByGoogleProfile(profile: IGoogleProfile): Promise<User | null> {
-		const { email, googleId } = profile
-
+	async findByGoogleAssociatedEmail(email: string): Promise<User | null> {
 		const user = await this.#model.findOne({
-			$or: [{ email }, { googleId }],
+			$or: [{ email }, { googleAssociated: true }],
 		})
 
 		if (!user) return null
@@ -61,15 +60,12 @@ export default class MongoDBUsersRepository implements IUsersRepository {
 		return users.map(user => userSerializer(user))
 	}
 
-	async associateGoogleProfile(
-		user: User,
-		{ googleId }: IGoogleProfile
-	): Promise<User> {
+	async associateGoogleProfile(user: User): Promise<User> {
 		const account = await this.#model.findById(user._id)
 
 		if (!account) throw new NotFoundError('User')
 
-		account.googleId = googleId
+		account.googleAssociated = true
 		await account.save()
 
 		return userSerializer(account)

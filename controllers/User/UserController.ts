@@ -27,8 +27,10 @@ export default class UserController implements IUserController {
 		return this.#userService.findByEmail(email)
 	}
 
-	async findByGoogleProfile(profile: IGoogleProfile): Promise<User | null> {
-		return this.#userService.findByGoogleProfile(profile)
+	async findByGoogleAssociatedEmail(
+		profile: IGoogleProfile
+	): Promise<User | null> {
+		return this.#userService.findByGoogleAssociatedEmail(profile)
 	}
 
 	async listAll(): Promise<User[]> {

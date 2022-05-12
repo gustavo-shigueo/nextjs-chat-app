@@ -7,7 +7,7 @@ const userSerializer = <T extends User>(user: T): User => {
 		email: user.email,
 		password: user.password,
 		avatarUrl: user.avatarUrl,
-		googleId: user.googleId,
+		googleAssociated: user.googleAssociated,
 		onlineStatus: user.onlineStatus,
 		contacts: user.contacts,
 	}

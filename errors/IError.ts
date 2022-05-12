@@ -3,4 +3,5 @@ export default interface IError extends Error {
 	name: string
 	method?: string
 	field?: string
+	message: string
 }

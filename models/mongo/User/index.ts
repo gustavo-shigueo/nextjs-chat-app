@@ -19,9 +19,10 @@ const UserSchema = new Schema<IUserDocument>({
 		type: String,
 		required: true,
 	},
-	googleId: {
-		type: String,
-		unique: true,
+	googleAssociated: {
+		type: Boolean,
+		required: true,
+		default: false,
 	},
 	onlineStatus: {
 		type: Boolean,

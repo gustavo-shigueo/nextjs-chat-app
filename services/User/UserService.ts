@@ -37,8 +37,8 @@ export default class UserService implements IUserService {
 			name,
 			email,
 			password,
-			googleProfile?.googleId,
-			googleProfile?.imageUrl ?? `${dicebearUrl}/${name}-${randomUUID()}.svg`
+			googleProfile?.picture ?? `${dicebearUrl}/${name}-${randomUUID()}.svg`,
+			!!googleProfile
 		)
 		return await this.#userRepository.save(user)
 	}
@@ -55,16 +55,16 @@ export default class UserService implements IUserService {
 		return this.#userRepository.findByEmail(email)
 	}
 
-	findByGoogleProfile(profile: IGoogleProfile): Promise<User | null> {
-		return this.#userRepository.findByGoogleProfile(profile)
+	findByGoogleAssociatedEmail(email: string): Promise<User | null> {
+		return this.#userRepository.findByGoogleAssociatedEmail(email)
 	}
 
 	listAll(): Promise<User[]> {
 		return this.#userRepository.listAll()
 	}
 
-	associateGoogleProfile(user: User, profile: IGoogleProfile): Promise<User> {
-		return this.#userRepository.associateGoogleProfile(user, profile)
+	associateGoogleProfile(user: User): Promise<User> {
+		return this.#userRepository.associateGoogleProfile(user)
 	}
 
 	setOnlineStatus(userId: string, status: boolean): Promise<User> {

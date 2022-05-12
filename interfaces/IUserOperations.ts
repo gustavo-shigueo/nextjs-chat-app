@@ -24,7 +24,7 @@ export default interface IUserOperations {
 	 * Finds a user through their Google Account
 	 * @param {IGoogleProfile} profile
 	 */
-	findByGoogleProfile(profile: IGoogleProfile): Promise<User | null>
+	findByGoogleAssociatedEmail(email: string): Promise<User | null>
 
 	listAll(): Promise<User[]>
 
@@ -33,7 +33,7 @@ export default interface IUserOperations {
 	 * @param {User} user
 	 * @param {IGoogleProfile} profile
 	 */
-	associateGoogleProfile(user: User, profile: IGoogleProfile): Promise<User>
+	associateGoogleProfile(user: User): Promise<User>
 
 	setOnlineStatus(userId: string, status: boolean): Promise<User>
 }

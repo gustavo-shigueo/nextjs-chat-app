@@ -5,8 +5,8 @@ export default class User {
 		public name: string,
 		public email: string | null,
 		public password: string | null,
-		public googleId: string | null = null,
 		public avatarUrl: string,
+		public googleAssociated: boolean = false,
 		public onlineStatus: boolean = true,
 		public contacts: User[] | string[] | null = []
 	) {}

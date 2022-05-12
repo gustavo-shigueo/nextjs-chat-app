@@ -19,10 +19,7 @@ export default class AuthController implements IAuthController {
 		return this.#authService.signInWithEmailAndPassword(email, password)
 	}
 
-	signInWithGoogle(
-		accessToken: string,
-		googleProfile: IGoogleProfile
-	): Promise<User> {
-		return this.#authService.signInWithGoogle(accessToken, googleProfile)
+	signInWithGoogle(accessToken: string): Promise<User> {
+		return this.#authService.signInWithGoogle(accessToken)
 	}
 }
