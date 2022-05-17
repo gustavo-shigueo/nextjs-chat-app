@@ -11,8 +11,7 @@ const signin = async (req: NextApiRequest, res: NextApiResponse) => {
 		allowMethods(req, 'POST')
 		await dbConnect()
 
-		const { body } = req
-		const { email, password } = body
+		const { email, password } = req.body
 		const user = await AuthController.signInWithEmailAndPassword(
 			email,
 			password

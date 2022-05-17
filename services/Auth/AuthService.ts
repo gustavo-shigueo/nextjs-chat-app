@@ -1,4 +1,5 @@
 import User from 'entities/User'
+import GoogleAuthError from 'errors/GoogleAuthError'
 import InvalidCredentialsError from 'errors/InvalidCredentialsError'
 import InvalidSignInMethodError from 'errors/InvalidSignInMethodError'
 import NotFoundError from 'errors/NotFoundError'
@@ -46,7 +47,7 @@ export default class AuthService implements IAuthService {
 			method: 'POST',
 		})
 
-		if (verificationResponse.status !== 200) throw new InvalidCredentialsError()
+		if (verificationResponse.status !== 200) throw new GoogleAuthError()
 
 		const verificationData = await verificationResponse.json()
 
@@ -56,7 +57,7 @@ export default class AuthService implements IAuthService {
 		if (
 			verificationData.aud !== process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID
 		) {
-			throw new InvalidCredentialsError()
+			throw new GoogleAuthError()
 		}
 
 		let account = await this.#userService.findByGoogleAssociatedEmail(email)

@@ -1,6 +1,7 @@
 import { ButtonHTMLAttributes, FC } from 'react'
-import style from 'styles/Button.module.css'
-import Spinner from './Spinner'
+import style from './Button.module.scss'
+import classNames from 'utils/classNames'
+import Spinner from 'components/Spinner'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	loading?: boolean
@@ -26,8 +27,7 @@ const Button: FC<ButtonProps> = ({
 }) => {
 	return (
 		<button
-			// className={`btn btn-${variant}`}
-			className={`${style.btn} ${style[`btn-${variant}`]}`}
+			className={classNames(style.btn, style[`btn-${variant}`])}
 			type={type}
 			onClick={onClick}
 			disabled={loading || disabled}
@@ -42,14 +42,15 @@ const Button: FC<ButtonProps> = ({
 			>
 				{children}
 			</span>
-			<Spinner
-				style={{
-					display: loading ? 'block' : 'none',
-					position: 'absolute',
-					top: 'calc(50% - 0.5rem)',
-					left: 'calc(50% - 0.5rem)',
-				}}
-			/>
+			{loading && (
+				<Spinner
+					style={{
+						position: 'absolute',
+						top: 'calc(50% - 0.5rem)',
+						left: 'calc(50% - 0.5rem)',
+					}}
+				/>
+			)}
 		</button>
 	)
 }

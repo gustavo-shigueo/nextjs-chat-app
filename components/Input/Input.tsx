@@ -1,5 +1,5 @@
 import { FC, InputHTMLAttributes, useEffect, useState } from 'react'
-import style from 'styles/Input.module.css'
+import style from './Input.module.scss'
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	label: string
@@ -34,7 +34,7 @@ const Input: FC<InputProps> = ({
 	return (
 		<div
 			className={`${style.inputControl} ${className ?? ''}`}
-			style={!isValid /* || !valid */ ? accentColor : undefined}
+			style={!isValid ? accentColor : undefined}
 		>
 			<input
 				id={name}
@@ -50,9 +50,7 @@ const Input: FC<InputProps> = ({
 			<label className={style.label} htmlFor={name}>
 				{label}
 			</label>
-			{!isValid /*  || !valid */ && (
-				<span className={style.error}>{errorMessage}</span>
-			)}
+			{!isValid && <span className={style.error}>{errorMessage}</span>}
 		</div>
 	)
 }

@@ -5,18 +5,14 @@ import { useAuth } from 'contexts/UserContext'
 import { NextPage } from 'next'
 import { useCallback } from 'react'
 import { GoogleLogin } from '@react-oauth/google'
-import style from 'styles/AuthForms.module.css'
+import style from 'styles/AuthForms.module.scss'
 import emailRegex from 'utils/emailRegex'
 
 const SignUp: NextPage = () => {
 	const { signup, error, isAuthenticated, loading } = useAuth()
 
 	const nameValidator = useCallback(({ length }) => length > 2, [])
-	const emailValidator = useCallback(value => {
-		const r = emailRegex
-
-		return !!value.match(r)
-	}, [])
+	const emailValidator = useCallback(value => !!value.match(emailRegex), [])
 
 	const passwordValidator = useCallback(
 		value => value.length >= 8 && value.length <= 32,
@@ -24,7 +20,6 @@ const SignUp: NextPage = () => {
 	)
 
 	const responseGoogle = async (response: any) => {
-		// TODO: incorporar response.accessToken no fluxo de autenticação
 		const { credential: accessToken } = response
 
 		signup({ googleAccessToken: accessToken })

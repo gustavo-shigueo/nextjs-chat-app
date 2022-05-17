@@ -1,6 +1,5 @@
 import { createContext, useContext, useState, FC } from 'react'
 import User from 'entities/User'
-import IGoogleProfile from 'interfaces/IGoogleProfile'
 import { api } from 'services/axios'
 
 interface IUserContextData {
@@ -8,16 +7,18 @@ interface IUserContextData {
 	user: User | null
 	loading: boolean
 	error: any
+	login: ({ profile, googleAccessToken }: IUserData) => Promise<void>
 	signup: ({ profile, googleAccessToken }: IUserData) => Promise<void>
 }
 
-interface IEmailAndPassword {
+interface UserProfile {
+	name?: string
 	email: string
 	password: string
 }
 
 interface IUserData {
-	profile?: IEmailAndPassword & { name?: string }
+	profile?: UserProfile
 	googleAccessToken?: string
 }
 
@@ -36,13 +37,29 @@ export const UserProvider: FC = ({ children }) => {
 
 	// TODO: implement login, logout and signup
 	const login = async ({ profile, googleAccessToken }: IUserData) => {
-		if (profile) {
-		}
+		setLoading(true)
+		try {
+			if (profile) {
+				const res = await api.post('/signin', profile)
+				setUser(res.data.user)
+				setError(null)
 
-		if (googleAccessToken) {
-		}
+				return
+			}
 
-		// console.error('No login data provided')
+			if (googleAccessToken) {
+				const res = await api.post('/signin-with-google', { googleAccessToken })
+				setUser(res.data.user)
+				setError(null)
+
+				return
+			}
+		} catch (e: any) {
+			setUser(null)
+			setError(e.response.data)
+		} finally {
+			setLoading(false)
+		}
 	}
 
 	const logout = async () => {
@@ -55,7 +72,7 @@ export const UserProvider: FC = ({ children }) => {
 		if (profile && googleAccessToken) return
 
 		const data = profile ?? { googleAccessToken }
-		const path = `/api/sign${profile ? 'up' : 'in-with-google'}`
+		const path = `/sign${profile ? 'up' : 'in-with-google'}`
 
 		setLoading(true)
 		try {
@@ -77,6 +94,7 @@ export const UserProvider: FC = ({ children }) => {
 				loading,
 				error,
 				isAuthenticated,
+				login,
 				signup,
 			}}
 		>

@@ -1,5 +1,5 @@
 import { FC, HTMLAttributes } from 'react'
-import style from 'styles/Spinner.module.css'
+import style from './Spinner.module.scss'
 
 interface SpinnerProps extends HTMLAttributes<HTMLDivElement> {
 	size?: number
