@@ -1,0 +1,17 @@
+@use '../abstracts' as *;
+
+[class*='box-shadow-'] {
+	--box-shadow: var(--offset-x, 0) var(--offset-y, 0) var(--spread, 0)
+		var(--blur, 1em) var(hsl(var(--color, black), var(--opacity, 0.4)));
+	box-shadow: var(--box-shadow);
+}
+
+.box-shadow-small {
+	--opacity: 0.3;
+	--blur: 0.75em;
+}
+
+.box-shadow-large {
+	--opacity: 0.5;
+	--blur: 1.25em;
+}

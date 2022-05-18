@@ -1,0 +1,43 @@
+$colors: (
+	primary: (
+		100: hsl(200deg, 100%, 70%),
+		200: hsl(200deg, 100%, 65%),
+		300: hsl(200deg, 100%, 60%),
+		400: hsl(200deg, 100%, 55%),
+		500: hsl(200deg, 100%, 50%),
+		600: hsl(200deg, 100%, 45%),
+		700: hsl(200deg, 100%, 40%),
+		800: hsl(200deg, 100%, 35%),
+		900: hsl(200deg, 100%, 30%),
+	),
+	neutral: (
+		100: hsl(0deg, 0%, 95%),
+		200: hsl(0deg, 0%, 85%),
+		300: hsl(0deg, 0%, 75%),
+		400: hsl(0deg, 0%, 65%),
+		500: hsl(0deg, 0%, 55%),
+		600: hsl(0deg, 0%, 45%),
+		700: hsl(0deg, 0%, 35%),
+		800: hsl(0deg, 0%, 25%),
+		900: hsl(0deg, 0%, 15%),
+	),
+	accent: (
+		100: hsl(300deg, 100%, 70%),
+		200: hsl(300deg, 100%, 65%),
+		300: hsl(300deg, 100%, 60%),
+		400: hsl(300deg, 100%, 55%),
+		500: hsl(300deg, 100%, 50%),
+		600: hsl(300deg, 100%, 45%),
+		700: hsl(300deg, 100%, 40%),
+		800: hsl(300deg, 100%, 35%),
+		900: hsl(300deg, 100%, 30%),
+	),
+);
+
+:root {
+	@each $color-name, $color in $colors {
+		@each $tone, $value in $color {
+			--color-#{$color-name}-#{$tone}: $value;
+		}
+	}
+}
