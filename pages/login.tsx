@@ -3,14 +3,17 @@ import style from 'styles/AuthForms.module.scss'
 import { NextPage } from 'next'
 import Form from 'components/Form'
 import Button from 'components/Button'
-import Input from 'components/Input'
+import Input, { InputValidator } from 'components/Input'
 import emailRegex from 'utils/emailRegex'
 import { useCallback } from 'react'
 import { GoogleLogin } from '@react-oauth/google'
 
 const LogIn: NextPage = () => {
 	const { user, login, error, loading, isAuthenticated } = useAuth()
-	const emailValidator = useCallback(value => !!value.match(emailRegex), [])
+	const emailValidator: InputValidator = useCallback(
+		value => [!!value.match(emailRegex), 'Invalid e-mail'],
+		[]
+	)
 
 	const responseGoogle = async (response: any) => {
 		const { credential: googleAccessToken } = response
@@ -31,16 +34,16 @@ const LogIn: NextPage = () => {
 					type="email"
 					name="email"
 					label="Email"
-					errorMessage={error?.message ?? 'Invalid e-mail'}
-					valid={!error}
+					serverErrorMessage={error?.message}
+					serverValid={!error?.fields?.includes('email')}
 				/>
 				<Input
 					required
 					type="password"
 					name="password"
 					label="Password"
-					errorMessage={error?.message}
-					valid={!error}
+					serverErrorMessage={error?.message}
+					serverValid={!error?.fields?.includes('password')}
 				/>
 				<Button type="submit" loading={loading}>
 					Submit

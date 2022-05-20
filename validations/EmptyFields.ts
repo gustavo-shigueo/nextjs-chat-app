@@ -18,7 +18,7 @@ const EmptyFields = (fields: IField<any>): void => {
 		if (isString(value) && value.trim() !== '') return
 		if (!isString(value) && value != null) return
 
-		throw new EmptyFieldError(fieldName)
+		throw new EmptyFieldError([fieldName])
 	})
 }
 

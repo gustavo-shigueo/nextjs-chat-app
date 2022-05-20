@@ -2,6 +2,6 @@ export default interface IError extends Error {
 	status: number
 	name: string
 	method?: string
-	field?: string
+	fields?: string[]
 	message: string
 }

@@ -2,7 +2,6 @@ import User from 'entities/User'
 import EmailAlreadyInUseError from 'errors/EmailAlreadyInUseError'
 import InvalidFieldError from 'errors/InvalidFieldError'
 import ICreateUserRequest from 'interfaces/ICreateUserRequest'
-import IGoogleProfile from 'interfaces/IGoogleProfile'
 import IUserRepository from 'repositories/User/IUserRepository'
 import IUserService from './IUserService'
 import emailRegex from 'utils/emailRegex'
@@ -74,6 +73,6 @@ export default class UserService implements IUserService {
 	#validateEmail(email: string): void {
 		if (emailRegex.test(email)) return
 
-		throw new InvalidFieldError('Invalid e-mail', 'email')
+		throw new InvalidFieldError('Invalid e-mail', ['email'])
 	}
 }

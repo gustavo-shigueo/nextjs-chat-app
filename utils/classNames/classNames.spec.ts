@@ -46,4 +46,9 @@ describe('classNames utility', () => {
 		const result = classNames('foo bar', { bar: true }, 'foo', { baz: true })
 		expect(result).toBe('foo bar baz')
 	})
+
+	it('can filter out null and undefined', () => {
+		const result = classNames('foo', null, 'bar', undefined)
+		expect(result).toBe('foo bar')
+	})
 })
