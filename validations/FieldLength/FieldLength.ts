@@ -18,7 +18,7 @@ const FieldLength = (
 	if (length < minLength || length > maxLength) {
 		throw new InvalidFieldError(
 			`${fieldName} must be between ${minLength} and ${maxLength} characters long`,
-			fieldName
+			[fieldName]
 		)
 	}
 }
