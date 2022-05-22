@@ -1,14 +1,9 @@
 import IBlocklistRepository from 'repositories/Blocklist/IBlocklistRepository'
 import { TExpirationDate, TokenPayload } from 'interfaces/IToken'
 import ITokenService from './ITokenService'
-import {
-	decode,
-	JsonWebTokenError,
-	JwtPayload,
-	sign,
-	verify,
-} from 'jsonwebtoken'
+import { decode, JwtPayload, sign, verify } from 'jsonwebtoken'
 import { timeUnits } from './tokenHelperFns'
+import InvalidOrExpiredTokenError from 'errors/InvalidOrExpiredTokenError'
 
 export default class JWTTokenService implements ITokenService {
 	#list: IBlocklistRepository
@@ -36,11 +31,15 @@ export default class JWTTokenService implements ITokenService {
 
 	async verify(token: string): Promise<string> {
 		if (await this.#list?.containsKey(token)) {
-			throw new JsonWebTokenError('Token is invalid due to logout')
+			throw new InvalidOrExpiredTokenError('Token is invalid due to logout')
 		}
 
-		const { _id } = verify(token, this.#secret) as TokenPayload
-		return _id
+		try {
+			const { _id } = verify(token, this.#secret) as TokenPayload
+			return _id
+		} catch {
+			throw new InvalidOrExpiredTokenError()
+		}
 	}
 
 	async invalidate(token: string): Promise<void> {

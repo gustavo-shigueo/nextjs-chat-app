@@ -6,5 +6,8 @@ export default class InvalidOrExpiredTokenError
 {
 	status = 401
 	name = 'InvalidOrExpiredToken'
-	message = 'Invalid or expired token'
+
+	constructor(message: string = 'Invalid or expired token') {
+		super(message)
+	}
 }

@@ -1,5 +1,5 @@
 import User from 'entities/User'
 
-type IPublicUserData = Omit<Omit<User, 'password'>, 'googleId'>
+type IPublicUserData = Omit<User, 'password' | 'email' | 'googleAssociated'>
 
 export default IPublicUserData
