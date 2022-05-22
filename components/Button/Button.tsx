@@ -8,8 +8,11 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	spinner?: () => JSX.Element
 	variant?:
 		| 'primary'
-		| 'secondary'
-		| 'outline'
+		| 'accent'
+		| 'neutral'
+		| 'outline-primary'
+		| 'outline-accent'
+		| 'outline-neutral'
 		| 'danger'
 		| 'warning'
 		| 'success'
@@ -27,7 +30,11 @@ const Button: FC<ButtonProps> = ({
 }) => {
 	return (
 		<button
-			className={classNames(style.btn, style[`btn-${variant}`])}
+			className={classNames(
+				'box-shadow-small',
+				style.btn,
+				style[`btn-${variant}`]
+			)}
 			type={type}
 			onClick={onClick}
 			disabled={loading || disabled}
@@ -37,9 +44,7 @@ const Button: FC<ButtonProps> = ({
 			}}
 			{...props}
 		>
-			<span
-				style={{ visibility: loading ? 'hidden' : 'visible', font: 'inherit' }}
-			>
+			<span style={{ display: loading ? 'none' : 'initial', font: 'inherit' }}>
 				{children}
 			</span>
 			{loading && (

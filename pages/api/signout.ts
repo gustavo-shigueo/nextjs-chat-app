@@ -1,3 +1,4 @@
+import UserController from 'controllers/User'
 import revokeCredentials from 'middlewares/authentication/revokeCredentials'
 import verifyCredentials from 'middlewares/authentication/verifyCredentials'
 import errorSerializer from 'middlewares/serializers/errorSerializer'
@@ -6,6 +7,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 const signout = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
 		await verifyCredentials(req)
+		await UserController.setOnlineStatus(req.body.user.id, false)
 		await revokeCredentials(req, res)
 
 		res.status(204).end()

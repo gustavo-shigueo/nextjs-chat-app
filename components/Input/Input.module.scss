@@ -4,7 +4,7 @@
 	font-size: 1.2rem;
 
 	width: 100%;
-	border-bottom: 2px solid var(--text-color);
+	border-bottom: 2px solid var(--color-neutral-700);
 	margin-inline: auto;
 	margin-block-end: 1rem;
 }
@@ -26,7 +26,7 @@
 
 	outline: none;
 
-	color: var(--text-color);
+	color: var(--color-neutral-700);
 	overflow: hidden;
 
 	transition: color 300ms;
@@ -40,7 +40,7 @@
 	display: block;
 	height: 4px;
 	width: 100%;
-	background: var(--accent-color);
+	background: var(--color-accent-400);
 
 	transform: scaleX(0);
 	transform-origin: 0%;
@@ -58,7 +58,7 @@
 .label {
 	position: absolute;
 
-	color: var(--text-color);
+	color: var(--color-neutral-800);
 
 	transform: translateY(-1.75rem);
 	transform-origin: 0%;

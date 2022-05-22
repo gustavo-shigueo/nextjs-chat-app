@@ -1,0 +1,14 @@
+@layer components {
+	.header {
+		display: flex;
+		justify-content: space-between;
+		padding-block: 0.75em;
+
+		ul {
+			display: flex;
+			gap: 1em;
+
+			list-style: none;
+		}
+	}
+}

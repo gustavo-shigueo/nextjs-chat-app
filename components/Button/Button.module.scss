@@ -1,40 +1,68 @@
-.btn {
-	position: relative;
+@layer components {
+	.btn {
+		color: var(--text-color, var(--color-neutral-900));
+		background-color: var(--bg-color, var(--color-neutral-100));
+		border-color: var(--border-color, var(--color-neutral-900));
 
-	border: 1px solid;
-	padding: 0.25em 0.75em;
-	background: none;
+		position: relative;
 
-	font-weight: bold;
-	font-size: 1.2rem;
+		border-width: 1px;
+		border-style: solid;
+		padding-block: 0.45em;
+		padding-inline: 0.75em;
 
-	cursor: pointer;
-	transition: 100ms ease;
-}
+		border-radius: 0.25em;
 
-.btn::after {
-	content: '';
-	position: absolute;
-	inset: 0;
+		font-weight: bold;
+		font-size: 1.2rem;
 
-	background-color: #fff6;
+		cursor: pointer;
+		transition: 300ms ease;
 
-	pointer-events: none;
-	transition: background-color 100ms ease;
-}
+		&:not([class*='outline']) {
+			--border-color: var(--bg-color);
+		}
 
-.btn:not([disabled])::after {
-	background-color: #fff0;
-}
+		&[class*='outline'] {
+			--border-color: var(--text-color);
+			--bg-color: var(--color-neutral-100);
+		}
 
-.btn:hover:not([disabled]),
-.btn:focus-visible:not([disabled]) {
-	filter: brightness(0.95);
-	transform: scale(0.99) translate(2px, 2px);
-}
+		&-primary {
+			--bg-color: var(--color-primary-400);
+			--text-color: var(--color-neutral-100);
+		}
 
-.btn-primary {
-	border: none;
-	background: var(--accent-color);
-	color: white;
+		&-outline-primary {
+			--text-color: var(--color-primary-400);
+		}
+
+		&-accent {
+			--bg-color: var(--color-accent-400);
+			--text-color: var(--color-neutral-100);
+		}
+
+		&-outline-accent {
+			--text-color: var(--color-accent-400);
+		}
+
+		&-neutral {
+			--bg-color: var(--color-neutral-400);
+			--text-color: var(--color-neutral-100);
+		}
+
+		&-outline-neutral {
+			--text-color: var(--color-neutral-400);
+		}
+
+		&-danger {
+			--bg-color: var(--color-danger-400);
+			--text-color: var(--color-neutral-100);
+		}
+
+		&:is(:focus-visible, :focus-within, :hover):not([disabled]) {
+			background-color: var(--text-color);
+			color: var(--bg-color);
+		}
+	}
 }

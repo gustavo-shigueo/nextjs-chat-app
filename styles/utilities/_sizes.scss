@@ -1,0 +1,9 @@
+@use '../abstracts' as *;
+
+@layer utilities {
+	@each $key, $value in $sizes {
+		.font-size-#{$key} {
+			font-size: var(--size-#{$key});
+		}
+	}
+}

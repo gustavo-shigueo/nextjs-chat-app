@@ -1,0 +1,15 @@
+@use '../abstracts/' as *;
+
+@layer utilities {
+	@each $color-name, $color in $colors {
+		@each $tone, $value in $color {
+			.bg-color-#{$color-name}-#{$tone} {
+				background-color: var(--color-#{$color-name}-#{$tone});
+			}
+
+			.text-color-#{$color-name}-#{$tone} {
+				color: var(--color-#{$color-name}-#{$tone});
+			}
+		}
+	}
+}

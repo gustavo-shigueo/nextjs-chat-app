@@ -68,7 +68,7 @@ const SignUp: NextPage = () => {
 					serverErrorMessage={error?.message}
 					serverValid={!error?.fields?.includes('password')}
 				/>
-				<Button type="submit" loading={loading}>
+				<Button type="submit" loading={loading} variant="danger">
 					Submit
 				</Button>
 			</Form>

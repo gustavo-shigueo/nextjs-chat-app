@@ -19,6 +19,7 @@ interface IUserContextData {
 	login: ({ profile, googleAccessToken }: IUserData) => Promise<void>
 	signup: ({ profile, googleAccessToken }: IUserData) => Promise<void>
 	logout: () => Promise<void>
+	refresh: () => Promise<void>
 }
 
 interface UserProfile {
@@ -161,6 +162,7 @@ export const UserProvider: FC = ({ children }) => {
 				login,
 				logout,
 				signup,
+				refresh,
 			}}
 		>
 			{children}

@@ -1,0 +1,15 @@
+@use './abstracts/' as *;
+
+@layer base {
+	:root {
+		@each $color-name, $color in $colors {
+			@each $tone, $value in $color {
+				--color-#{$color-name}-#{$tone}: #{$value};
+			}
+		}
+
+		@each $size-name, $size in $sizes {
+			--size-#{$size-name}: #{$size};
+		}
+	}
+}
