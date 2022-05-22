@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import dbConnect from 'utils/dbConnect'
 import AuthController from 'controllers/Auth'
 import giveCredentials from 'middlewares/authentication/giveCredentials'
 import errorSerializer from 'middlewares/serializers/errorSerializer'
@@ -9,7 +8,6 @@ import allowMethods from 'middlewares/allowMethods'
 const signin = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
 		allowMethods(req, 'POST')
-		await dbConnect()
 
 		const { email, password } = req.body
 		const user = await AuthController.signInWithEmailAndPassword(
@@ -17,7 +15,7 @@ const signin = async (req: NextApiRequest, res: NextApiResponse) => {
 			password
 		)
 
-		await giveCredentials(req, res, user._id)
+		await giveCredentials(req, res, user.id)
 
 		res.json(publicUserSerializer(user))
 	} catch (error: any) {

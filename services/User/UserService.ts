@@ -8,16 +8,22 @@ import emailRegex from 'utils/emailRegex'
 import EmptyFields from 'validations/EmptyFields'
 import FieldLength from 'validations/FieldLength'
 import { randomUUID } from 'crypto'
+import IPasswordProvider from 'providers/password/IPasswordProvider'
 
 export default class UserService implements IUserService {
 	#userRepository: IUserRepository
+	#passwordProvider: IPasswordProvider
 
-	constructor(userRepository: IUserRepository) {
+	constructor(
+		userRepository: IUserRepository,
+		passwordProvider: IPasswordProvider
+	) {
 		this.#userRepository = userRepository
+		this.#passwordProvider = passwordProvider
 	}
 
 	async create(userData: ICreateUserRequest): Promise<User> {
-		const { name, googleProfile = null, email = '', password = '' } = userData
+		let { name, googleProfile = null, email = '', password = '' } = userData
 		FieldLength({ name }, 3, 50)
 
 		EmptyFields(googleProfile ?? { email, password })
@@ -31,6 +37,8 @@ export default class UserService implements IUserService {
 			}
 		}
 
+		if (password) password = await this.#passwordProvider.hash(password)
+
 		const dicebearUrl = 'https://avatars.dicebear.com/api/bottts'
 		const user = new User(
 			name,
@@ -39,7 +47,8 @@ export default class UserService implements IUserService {
 			googleProfile?.picture ?? `${dicebearUrl}/${name}-${randomUUID()}.svg`,
 			!!googleProfile
 		)
-		return await this.#userRepository.save(user)
+
+		return this.#userRepository.save(user)
 	}
 
 	findById(id: string): Promise<User> {

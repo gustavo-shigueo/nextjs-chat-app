@@ -1,8 +1,8 @@
 import User from 'entities/User'
 
-const userSerializer = <T extends User>(user: T): User => {
+const userSerializer = <T extends User>(user: T & { _id?: string }): User => {
 	return {
-		_id: user._id,
+		id: user.id ?? user._id,
 		name: user.name,
 		email: user.email,
 		password: user.password,
@@ -10,6 +10,8 @@ const userSerializer = <T extends User>(user: T): User => {
 		googleAssociated: user.googleAssociated,
 		onlineStatus: user.onlineStatus,
 		contacts: user.contacts,
+		messagesSent: user.messagesSent,
+		messagesReceived: user.messagesReceived,
 	}
 }
 

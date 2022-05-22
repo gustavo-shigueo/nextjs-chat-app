@@ -4,7 +4,7 @@ import IUsersRepository from './IUserRepository'
 import userSerializer from 'middlewares/serializers/userSerializer'
 import UserModel from 'models/mongo/User'
 
-export default class MongoDBUsersRepository implements IUsersRepository {
+class MongoDBUsersRepository implements IUsersRepository {
 	#model: typeof UserModel
 
 	constructor(model: typeof UserModel) {
@@ -16,7 +16,7 @@ export default class MongoDBUsersRepository implements IUsersRepository {
 	}
 
 	async save(user: User): Promise<User> {
-		const { _id, ...data } = user
+		const { id, ...data } = user
 		const u = await this.#model.create(data)
 		return userSerializer(await u.save())
 	}
@@ -41,12 +41,12 @@ export default class MongoDBUsersRepository implements IUsersRepository {
 			name: { $regex: name, $options: 'ig' },
 		})
 
-		return users.map(user => userSerializer(user))
+		return users.map(userSerializer)
 	}
 
 	async findByGoogleAssociatedEmail(email: string): Promise<User | null> {
 		const user = await this.#model.findOne({
-			$or: [{ email }, { googleAssociated: true }],
+			$and: [{ email }, { googleAssociated: true }],
 		})
 
 		if (!user) return null
@@ -60,7 +60,7 @@ export default class MongoDBUsersRepository implements IUsersRepository {
 	}
 
 	async associateGoogleProfile(user: User): Promise<User> {
-		const account = await this.#model.findById(user._id)
+		const account = await this.#model.findById(user.id)
 
 		if (!account) throw new NotFoundError('User')
 
@@ -79,3 +79,5 @@ export default class MongoDBUsersRepository implements IUsersRepository {
 		return userSerializer(await user.save())
 	}
 }
+
+export default new MongoDBUsersRepository(UserModel)

@@ -1,6 +1,5 @@
-import UserModel from 'models/mongo/User'
-import MongoDBUsersRepository from './MongoDBUsersRepository'
+import PrismaUserReopsitory from './PrismaUserRepository'
 
-const UsersRepository = new MongoDBUsersRepository(UserModel)
+const UserRepository = PrismaUserReopsitory
 
-export default UsersRepository
+export default UserRepository

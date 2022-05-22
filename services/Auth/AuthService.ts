@@ -36,7 +36,7 @@ export default class AuthService implements IAuthService {
 		const valid = await this.#passwordProvider.verify(password, user.password)
 		if (!valid) throw new InvalidCredentialsError()
 
-		return this.#userService.setOnlineStatus(user._id!, true)
+		return this.#userService.setOnlineStatus(user.id!, true)
 	}
 
 	async signInWithGoogle(accessToken: string): Promise<User> {
@@ -63,7 +63,7 @@ export default class AuthService implements IAuthService {
 		let account = await this.#userService.findByGoogleAssociatedEmail(email)
 
 		if (account) {
-			account = await this.#userService.setOnlineStatus(account._id!, true)
+			account = await this.#userService.setOnlineStatus(account.id!, true)
 
 			return account.googleAssociated
 				? account

@@ -7,7 +7,7 @@ export default async function dbConnect() {
 	try {
 		if (connectionState) return
 
-		const db = await mongoose.connect(process.env.DATABASE_URI!)
+		const db = await mongoose.connect(process.env.MONGO_DB_DATABASE_URI!)
 
 		connectionState = db.connections[0].readyState
 	} catch (e: any) {
