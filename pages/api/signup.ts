@@ -23,7 +23,7 @@ const signup = async (req: NextApiRequest, res: NextApiResponse) => {
 		await giveCredentials(req, res, user._id)
 
 		res.statusCode = 201
-		res.json({ user: publicUserSerializer(user) })
+		res.json(publicUserSerializer(user))
 	} catch (error: any) {
 		errorSerializer(res, error)
 	}

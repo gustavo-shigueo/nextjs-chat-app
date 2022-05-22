@@ -1,3 +1,6 @@
 import CacheProvider from 'providers/cache'
+import AllowlistRepository from './AllowlistRepository'
 
-export default new CacheProvider('allowlist:')
+const cacheProvider = new CacheProvider('allowlist:')
+
+export default new AllowlistRepository(cacheProvider)

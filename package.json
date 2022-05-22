@@ -3,6 +3,7 @@
 	"private": true,
 	"scripts": {
 		"dev": "next dev",
+		"test": "jest --coverage --verbose",
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint"
@@ -38,6 +39,9 @@
 		"typescript": "4.5.2"
 	},
 	"jest": {
-		"preset": "ts-jest"
+		"preset": "ts-jest",
+		"modulePaths": [
+			"./"
+		]
 	}
 }

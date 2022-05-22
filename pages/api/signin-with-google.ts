@@ -17,7 +17,7 @@ const signinWithGoogle = async (req: NextApiRequest, res: NextApiResponse) => {
 
 		await giveCredentials(req, res, user._id)
 
-		return res.json({ user: publicUserSerializer(user) })
+		return res.json(publicUserSerializer(user))
 	} catch (error: any) {
 		errorSerializer(res, error)
 	}

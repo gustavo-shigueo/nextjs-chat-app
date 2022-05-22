@@ -1,6 +1,5 @@
 import User from 'entities/User'
 import NotFoundError from 'errors/NotFoundError'
-import IGoogleProfile from 'interfaces/IGoogleProfile'
 import IUsersRepository from './IUserRepository'
 import userSerializer from 'middlewares/serializers/userSerializer'
 import UserModel from 'models/mongo/User'
@@ -13,7 +12,7 @@ export default class MongoDBUsersRepository implements IUsersRepository {
 	}
 
 	async isEmailInUse(email: string): Promise<boolean> {
-		return this.#model.exists({ email })
+		return !!this.#model.exists({ email })
 	}
 
 	async save(user: User): Promise<User> {

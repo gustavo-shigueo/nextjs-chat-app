@@ -7,15 +7,19 @@ const generateKeyHash = (key: string) => {
 }
 
 export default class BlocklistRepository implements IBlocklistRepository {
-	constructor(private cacheProvider: ICacheProvider) {}
+	#cacheProvider: ICacheProvider
+
+	constructor(cacheProvider: ICacheProvider) {
+		this.#cacheProvider = cacheProvider
+	}
 
 	async add(key: string, expirationDate: number | Date): Promise<void> {
 		const keyHash = generateKeyHash(key)
-		this.cacheProvider.add(keyHash, '', expirationDate)
+		this.#cacheProvider.add(keyHash, '', expirationDate)
 	}
 
 	async containsKey(key: string): Promise<boolean> {
 		const keyHash = generateKeyHash(key)
-		return this.cacheProvider.containsKey(keyHash)
+		return this.#cacheProvider.containsKey(keyHash)
 	}
 }

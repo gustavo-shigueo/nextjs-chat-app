@@ -18,11 +18,12 @@ const giveCredentials = async (
 
 	const [accessToken, refreshToken] = await Promise.all(tokens)
 
-	res.setHeader('authorization', `Bearer: ${accessToken}`)
+	res.setHeader('authorization', accessToken)
 	destroyCookie({ res }, process.env.NEXT_PUBLIC_COOKIE_NAME!)
 	setCookie({ res }, process.env.NEXT_PUBLIC_COOKIE_NAME!, refreshToken, {
 		maxAge: RefreshTokenProvider.maxAge,
 		path: '/',
+		httpOnly: true,
 	})
 }
 

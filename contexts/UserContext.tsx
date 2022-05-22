@@ -1,15 +1,24 @@
-import { createContext, useContext, useState, FC, useCallback } from 'react'
+import {
+	createContext,
+	useContext,
+	useState,
+	FC,
+	useCallback,
+	useEffect,
+} from 'react'
 import User from 'entities/User'
-import { api } from 'services/axios'
+import api, { ApiError } from 'services/axios'
 import IError from 'errors/IError'
 
 interface IUserContextData {
 	isAuthenticated: boolean
 	user: User | null
 	loading: boolean
-	error: IError | null
+	error?: IError | null
+	accessToken: string | null
 	login: ({ profile, googleAccessToken }: IUserData) => Promise<void>
 	signup: ({ profile, googleAccessToken }: IUserData) => Promise<void>
+	logout: () => Promise<void>
 }
 
 interface UserProfile {
@@ -33,31 +42,45 @@ export const useAuth = () => useContext(UserContext)
 export const UserProvider: FC = ({ children }) => {
 	const [user, setUser] = useState<User | null>(null)
 	const [loading, setLoading] = useState(false)
-	const [error, setError] = useState<IError | null>(null)
+	const [error, setError] = useState<IError | null | undefined>(null)
+	const [accessToken, setAccessToken] = useState<string | null>(null)
 	const isAuthenticated = !!user
 
-	// TODO: implement login, logout and signup
-	const login = useCallback(
-		async ({ profile, googleAccessToken }: IUserData) => {
+	const refresh = useCallback(async () => {
+		try {
 			setUser(null)
 			setError(null)
 			setLoading(true)
 
+			const response = await api.post('/refresh-token')
+			setAccessToken(response.headers.accessToken)
+		} catch (e: any) {
+			setError(e.response.data)
+		} finally {
+			setLoading(false)
+		}
+	}, [])
+
+	useEffect(() => {
+		refresh()
+	}, [refresh])
+
+	const login = useCallback(
+		async ({ profile, googleAccessToken }: IUserData) => {
 			try {
-				if (profile) {
-					const res = await api.post('/signin', profile)
-					return setUser(res.data.user)
-				}
+				setUser(null)
+				setError(null)
+				setLoading(true)
 
-				if (googleAccessToken) {
-					const res = await api.post('/signin-with-google', {
-						googleAccessToken,
-					})
+				const url = `/signin${googleAccessToken ? '-with-google' : ''}`
+				const body = profile ?? { googleAccessToken }
 
-					return setUser(res.data.user)
-				}
+				const { data, headers } = await api.post<User>(url, body)
+				setAccessToken(headers.accessToken)
+
+				return setUser(data)
 			} catch (e: any) {
-				setError(e.response.data)
+				setError((e as ApiError).response?.data)
 			} finally {
 				setLoading(false)
 			}
@@ -66,8 +89,18 @@ export const UserProvider: FC = ({ children }) => {
 	)
 
 	const logout = useCallback(async () => {
-		// await logoutLogic(args)
-		// setUser(null)
+		try {
+			setLoading(true)
+			setError(null)
+
+			await api.post('/signout')
+
+			setAccessToken(null)
+		} catch (e: any) {
+			setError((e as ApiError).response?.data)
+		} finally {
+			setLoading(false)
+		}
 	}, [])
 
 	const signup = useCallback(
@@ -75,18 +108,19 @@ export const UserProvider: FC = ({ children }) => {
 			if (!profile && !googleAccessToken) return
 			if (profile && googleAccessToken) return
 
-			setUser(null)
-			setError(null)
-			setLoading(true)
-
-			const data = profile ?? { googleAccessToken }
-			const path = `/sign${profile ? 'up' : 'in-with-google'}`
-
 			try {
-				const res = await api.post(path, data)
-				setUser(res.data.user)
+				setUser(null)
+				setError(null)
+				setLoading(true)
+
+				const body = profile ?? { googleAccessToken }
+				const path = `/sign${profile ? 'up' : 'in-with-google'}`
+
+				const { data, headers } = await api.post<User>(path, body)
+				setUser(data)
+				setAccessToken(headers.accessToken)
 			} catch (e: any) {
-				setError(e.response.data)
+				setError((e as ApiError).response?.data)
 			} finally {
 				setLoading(false)
 			}
@@ -101,7 +135,9 @@ export const UserProvider: FC = ({ children }) => {
 				loading,
 				error,
 				isAuthenticated,
+				accessToken,
 				login,
+				logout,
 				signup,
 			}}
 		>
