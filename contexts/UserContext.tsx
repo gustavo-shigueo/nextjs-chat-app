@@ -48,13 +48,14 @@ export const UserProvider: FC = ({ children }) => {
 
 	const refresh = useCallback(async () => {
 		try {
-			setUser(null)
 			setError(null)
 			setLoading(true)
+			setAccessToken(null)
 
 			const response = await api.post('/refresh-token')
 			setAccessToken(response.headers.accessToken)
 		} catch (e: any) {
+			setUser(null)
 			setError(e.response.data)
 		} finally {
 			setLoading(false)
@@ -62,8 +63,27 @@ export const UserProvider: FC = ({ children }) => {
 	}, [])
 
 	useEffect(() => {
-		refresh()
-	}, [refresh])
+		const me = async () => {
+			try {
+				setUser(null)
+				setError(null)
+				setLoading(true)
+				setAccessToken(null)
+
+				const { data, headers } = await api.post<User>('/me')
+
+				setUser(data)
+				setAccessToken(headers.accessToken)
+			} catch (e: any) {
+				setAccessToken(null)
+				setError((e as ApiError).response?.data)
+			} finally {
+				setLoading(false)
+			}
+		}
+
+		me()
+	}, [])
 
 	const login = useCallback(
 		async ({ profile, googleAccessToken }: IUserData) => {
@@ -71,14 +91,15 @@ export const UserProvider: FC = ({ children }) => {
 				setUser(null)
 				setError(null)
 				setLoading(true)
+				setAccessToken(null)
 
 				const url = `/signin${googleAccessToken ? '-with-google' : ''}`
 				const body = profile ?? { googleAccessToken }
 
 				const { data, headers } = await api.post<User>(url, body)
-				setAccessToken(headers.accessToken)
 
-				return setUser(data)
+				setAccessToken(headers.accessToken)
+				setUser(data)
 			} catch (e: any) {
 				setError((e as ApiError).response?.data)
 			} finally {
@@ -96,6 +117,7 @@ export const UserProvider: FC = ({ children }) => {
 			await api.post('/signout')
 
 			setAccessToken(null)
+			setUser(null)
 		} catch (e: any) {
 			setError((e as ApiError).response?.data)
 		} finally {

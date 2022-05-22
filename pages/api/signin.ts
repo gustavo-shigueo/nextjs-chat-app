@@ -2,8 +2,8 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import AuthController from 'controllers/Auth'
 import giveCredentials from 'middlewares/authentication/giveCredentials'
 import errorSerializer from 'middlewares/serializers/errorSerializer'
-import publicUserSerializer from 'middlewares/serializers/publicUserSerializer'
 import allowMethods from 'middlewares/allowMethods'
+import userSerializer from 'middlewares/serializers/userSerializer'
 
 const signin = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
@@ -17,7 +17,7 @@ const signin = async (req: NextApiRequest, res: NextApiResponse) => {
 
 		await giveCredentials(req, res, user.id)
 
-		res.json(publicUserSerializer(user))
+		res.json(userSerializer(user))
 	} catch (error: any) {
 		errorSerializer(res, error)
 	}

@@ -68,9 +68,9 @@ class PrismaUserReopsitory implements IUsersRepository {
 			data: { googleAssociated: true },
 		})
 
-		if (!user) throw new NotFoundError('User')
+		if (!u) throw new NotFoundError('User')
 
-		return userSerializer(user)
+		return userSerializer(u)
 	}
 
 	async setOnlineStatus(userId: string, status: boolean): Promise<User> {

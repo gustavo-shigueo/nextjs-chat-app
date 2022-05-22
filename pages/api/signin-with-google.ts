@@ -1,9 +1,9 @@
 import AuthController from 'controllers/Auth'
 import errorSerializer from 'middlewares/serializers/errorSerializer'
 import giveCredentials from 'middlewares/authentication/giveCredentials'
-import publicUserSerializer from 'middlewares/serializers/publicUserSerializer'
 import { NextApiRequest, NextApiResponse } from 'next'
 import allowMethods from 'middlewares/allowMethods'
+import userSerializer from 'middlewares/serializers/userSerializer'
 
 const signinWithGoogle = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
@@ -15,7 +15,7 @@ const signinWithGoogle = async (req: NextApiRequest, res: NextApiResponse) => {
 
 		await giveCredentials(req, res, user.id)
 
-		return res.json(publicUserSerializer(user))
+		return res.json(userSerializer(user))
 	} catch (error: any) {
 		errorSerializer(res, error)
 	}
