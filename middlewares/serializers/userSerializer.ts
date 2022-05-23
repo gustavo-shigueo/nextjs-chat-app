@@ -5,7 +5,7 @@ const userSerializer = <T extends User>(user: T & { _id?: string }): User => {
 		id: user.id ?? user._id,
 		name: user.name,
 		email: user.email,
-		password: user.password,
+		password: undefined,
 		avatarUrl: user.avatarUrl,
 		googleAssociated: user.googleAssociated,
 		onlineStatus: user.onlineStatus,

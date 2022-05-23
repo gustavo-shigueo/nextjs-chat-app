@@ -63,28 +63,28 @@ export const UserProvider: FC = ({ children }) => {
 		}
 	}, [])
 
-	useEffect(() => {
-		const me = async () => {
-			try {
-				setUser(null)
-				setError(null)
-				setLoading(true)
-				setAccessToken(null)
+	const me = useCallback(async () => {
+		try {
+			setUser(null)
+			setError(null)
+			setLoading(true)
+			setAccessToken(null)
 
-				const { data, headers } = await api.post<User>('/me')
+			const { data, headers } = await api.post<User>('/me')
 
-				setUser(data)
-				setAccessToken(headers.accessToken)
-			} catch (e: any) {
-				setAccessToken(null)
-				setError((e as ApiError).response?.data)
-			} finally {
-				setLoading(false)
-			}
+			setUser(data)
+			setAccessToken(headers.accessToken)
+		} catch (e: any) {
+			setAccessToken(null)
+			setError((e as ApiError).response?.data)
+		} finally {
+			setLoading(false)
 		}
-
-		me()
 	}, [])
+
+	useEffect(() => {
+		me()
+	}, [me])
 
 	const login = useCallback(
 		async ({ profile, googleAccessToken }: IUserData) => {

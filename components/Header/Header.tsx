@@ -1,4 +1,4 @@
-import Button from 'components/Button'
+import LinkButton from 'components/LinkButton'
 import Link from 'next/link'
 import React from 'react'
 import styles from './Header.module.scss'
@@ -13,14 +13,14 @@ const Header = () => {
 			<nav>
 				<ul>
 					<li>
-						<Button tabIndex={-1}>
-							<Link href="/login">Entre</Link>
-						</Button>
+						<LinkButton href="/login" variant="primary" shallow>
+							Entre
+						</LinkButton>
 					</li>
 					<li>
-						<Button tabIndex={-1} variant="outline-accent">
-							<Link href="/signup">Cadastre-se</Link>
-						</Button>
+						<LinkButton href="/signup" variant="outline-accent" shallow>
+							Cadastre-se
+						</LinkButton>
 					</li>
 				</ul>
 			</nav>

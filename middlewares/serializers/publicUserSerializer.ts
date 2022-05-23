@@ -4,7 +4,6 @@ import userSerializer from './userSerializer'
 
 const publicUserSerializer = <T extends User>(user: T): IPublicUserData => {
 	const {
-		password,
 		email,
 		googleAssociated,
 		messagesReceived,

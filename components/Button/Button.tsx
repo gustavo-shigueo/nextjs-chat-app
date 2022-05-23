@@ -25,6 +25,7 @@ const Button: FC<ButtonProps> = ({
 	children,
 	loading = false,
 	disabled,
+	className,
 	style: HTMLStyle,
 	...props
 }) => {
@@ -32,6 +33,7 @@ const Button: FC<ButtonProps> = ({
 		<button
 			className={classNames(
 				'box-shadow-small',
+				className,
 				style.btn,
 				style[`btn-${variant}`]
 			)}
@@ -44,7 +46,9 @@ const Button: FC<ButtonProps> = ({
 			}}
 			{...props}
 		>
-			<span style={{ display: loading ? 'none' : 'initial', font: 'inherit' }}>
+			<span
+				style={{ visibility: loading ? 'hidden' : 'visible', font: 'inherit' }}
+			>
 				{children}
 			</span>
 			{loading && (
