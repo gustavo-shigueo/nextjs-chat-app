@@ -1,8 +1,8 @@
 import UserController from 'controllers/User'
 import refreshCredentials from 'middlewares/authentication/refreshCredentials'
 import errorSerializer from 'middlewares/serializers/errorSerializer'
-import userSerializer from 'middlewares/serializers/userSerializer'
 import { NextApiRequest, NextApiResponse } from 'next'
+import userSerializer from 'middlewares/serializers/userSerializer'
 
 const me = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {

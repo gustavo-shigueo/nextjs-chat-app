@@ -1,18 +1,9 @@
 import User from 'entities/User'
+import IUser from 'interfaces/IUser'
 
-const userSerializer = <T extends User>(user: T & { _id?: string }): User => {
-	return {
-		id: user.id ?? user._id,
-		name: user.name,
-		email: user.email,
-		password: undefined,
-		avatarUrl: user.avatarUrl,
-		googleAssociated: user.googleAssociated,
-		onlineStatus: user.onlineStatus,
-		contacts: user.contacts,
-		messagesSent: user.messagesSent,
-		messagesReceived: user.messagesReceived,
-	}
+const userSerializer = (user: User): IUser => {
+	const { password, ...userData } = user
+	return userData
 }
 
 export default userSerializer

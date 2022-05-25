@@ -3,8 +3,8 @@ import AuthController from 'controllers/Auth'
 import giveCredentials from 'middlewares/authentication/giveCredentials'
 import errorSerializer from 'middlewares/serializers/errorSerializer'
 import allowMethods from 'middlewares/allowMethods'
-import userSerializer from 'middlewares/serializers/userSerializer'
 import UserController from 'controllers/User'
+import userSerializer from 'middlewares/serializers/userSerializer'
 
 const signin = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {

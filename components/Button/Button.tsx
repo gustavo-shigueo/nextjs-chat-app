@@ -33,6 +33,7 @@ const Button: FC<ButtonProps> = ({
 		<button
 			className={classNames(
 				'box-shadow-small',
+				'border-radius-100',
 				className,
 				style.btn,
 				style[`btn-${variant}`]

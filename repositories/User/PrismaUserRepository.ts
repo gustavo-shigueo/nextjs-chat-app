@@ -2,7 +2,7 @@ import User from 'entities/User'
 import IUsersRepository from './IUserRepository'
 import { PrismaClient } from '@prisma/client'
 import NotFoundError from 'errors/NotFoundError'
-import userSerializer from 'middlewares/serializers/userSerializer'
+import userMapper from 'entityMappers/userMapper'
 import client from 'utils/db/prisma/client'
 
 class PrismaUserReopsitory implements IUsersRepository {
@@ -15,7 +15,7 @@ class PrismaUserReopsitory implements IUsersRepository {
 	async save(user: User): Promise<User> {
 		try {
 			const { id, contacts, messagesReceived, messagesSent, ...data } = user
-			return userSerializer(await this.#client.user.create({ data }))
+			return userMapper(await this.#client.user.create({ data }))
 		} finally {
 			this.#client.$disconnect()
 		}
@@ -35,7 +35,7 @@ class PrismaUserReopsitory implements IUsersRepository {
 			const user = await this.#client.user.findUnique({ where: { id } })
 			if (!user) throw new NotFoundError('User')
 
-			return userSerializer(user)
+			return userMapper(user)
 		} finally {
 			this.#client.$disconnect()
 		}
@@ -47,7 +47,7 @@ class PrismaUserReopsitory implements IUsersRepository {
 				where: { name: { contains: name } },
 			})
 
-			return users.map(userSerializer)
+			return users.map(userMapper)
 		} finally {
 			this.#client.$disconnect()
 		}
@@ -59,7 +59,7 @@ class PrismaUserReopsitory implements IUsersRepository {
 
 			if (!user) return null
 
-			return userSerializer(user)
+			return userMapper(user)
 		} finally {
 			this.#client.$disconnect()
 		}
@@ -75,7 +75,7 @@ class PrismaUserReopsitory implements IUsersRepository {
 
 			if (!user) return null
 
-			return userSerializer(user)
+			return userMapper(user)
 		} finally {
 			this.#client.$disconnect()
 		}
@@ -84,22 +84,22 @@ class PrismaUserReopsitory implements IUsersRepository {
 	async listAll(): Promise<User[]> {
 		try {
 			const users = await this.#client.user.findMany()
-			return users.map(userSerializer)
+			return users.map(userMapper)
 		} finally {
 			this.#client.$disconnect()
 		}
 	}
 
-	async associateGoogleProfile(user: User): Promise<User> {
+	async associateGoogleProfile(userId: string): Promise<User> {
 		try {
 			const u = await this.#client.user.update({
-				where: { id: user.id },
+				where: { id: userId },
 				data: { googleAssociated: true },
 			})
 
 			if (!u) throw new NotFoundError('User')
 
-			return userSerializer(u)
+			return userMapper(u)
 		} finally {
 			this.#client.$disconnect()
 		}
@@ -114,7 +114,7 @@ class PrismaUserReopsitory implements IUsersRepository {
 
 			if (!user) throw new NotFoundError('User')
 
-			return userSerializer(user)
+			return userMapper(user)
 		} finally {
 			this.#client.$disconnect()
 		}

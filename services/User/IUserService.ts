@@ -1,5 +1,5 @@
-import User from 'entities/User'
 import ICreateUserRequest from 'interfaces/ICreateUserRequest'
+import User from 'entities/User'
 import IUserOperations from 'interfaces/IUserOperations'
 
 export default interface IUserService extends IUserOperations {

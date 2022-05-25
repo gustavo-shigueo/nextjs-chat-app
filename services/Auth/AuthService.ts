@@ -67,7 +67,7 @@ export default class AuthService implements IAuthService {
 
 			return account.googleAssociated
 				? account
-				: this.#userService.associateGoogleProfile(account)
+				: this.#userService.associateGoogleProfile(account.id!)
 		}
 
 		const userData: ICreateUserRequest = {

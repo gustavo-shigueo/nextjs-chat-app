@@ -9,11 +9,11 @@ export default class AllowlistRepository implements IAllowlistRepository {
 	}
 
 	async get(key: string): Promise<string | null> {
-		return this.#cacheProvider.get(key)
+		return this.#cacheProvider.get(`allowlist:${key}`)
 	}
 
 	async destroy(key: string): Promise<void> {
-		this.#cacheProvider.destroy(key)
+		this.#cacheProvider.destroy(`allowlist:${key}`)
 	}
 
 	async add(
@@ -21,10 +21,10 @@ export default class AllowlistRepository implements IAllowlistRepository {
 		value: string,
 		expirationDate: number | Date
 	): Promise<void> {
-		this.#cacheProvider.add(key, value, expirationDate)
+		this.#cacheProvider.add(`allowlist:${key}`, value, expirationDate)
 	}
 
 	async containsKey(key: string): Promise<boolean> {
-		return this.#cacheProvider.containsKey(key)
+		return this.#cacheProvider.containsKey(`allowlist:${key}`)
 	}
 }

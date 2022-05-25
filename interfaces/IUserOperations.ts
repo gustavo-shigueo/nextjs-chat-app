@@ -1,5 +1,4 @@
 import User from 'entities/User'
-import IGoogleProfile from './IGoogleProfile'
 
 export default interface IUserOperations {
 	/**
@@ -33,7 +32,7 @@ export default interface IUserOperations {
 	 * @param {User} user
 	 * @param {IGoogleProfile} profile
 	 */
-	associateGoogleProfile(user: User): Promise<User>
+	associateGoogleProfile(userId: string): Promise<User>
 
 	setOnlineStatus(userId: string, status: boolean): Promise<User>
 }

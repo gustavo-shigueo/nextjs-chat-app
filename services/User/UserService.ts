@@ -71,8 +71,8 @@ export default class UserService implements IUserService {
 		return this.#userRepository.listAll()
 	}
 
-	associateGoogleProfile(user: User): Promise<User> {
-		return this.#userRepository.associateGoogleProfile(user)
+	associateGoogleProfile(userId: string): Promise<User> {
+		return this.#userRepository.associateGoogleProfile(userId)
 	}
 
 	setOnlineStatus(userId: string, status: boolean): Promise<User> {

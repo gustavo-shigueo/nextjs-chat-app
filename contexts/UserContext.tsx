@@ -40,11 +40,24 @@ const UserContext = createContext({} as IUserContextData)
  */
 export const useAuth = () => useContext(UserContext)
 
-export const UserProvider: FC = ({ children }) => {
-	const [user, setUser] = useState<User | null>(null)
+export interface IUserProviderProps {
+	serverSideUser: User | null
+	serverSideAccessToken: string | null
+	serverSideError?: IError | null
+}
+
+export const UserProvider: FC<IUserProviderProps> = ({
+	children,
+	serverSideAccessToken,
+	serverSideUser,
+	serverSideError,
+}) => {
+	const [user, setUser] = useState<User | null>(serverSideUser)
 	const [loading, setLoading] = useState(false)
-	const [error, setError] = useState<IError | null | undefined>(null)
-	const [accessToken, setAccessToken] = useState<string | null>(null)
+	const [error, setError] = useState<IError | null | undefined>(serverSideError)
+	const [accessToken, setAccessToken] = useState<string | null>(
+		serverSideAccessToken
+	)
 	const isAuthenticated = !!user
 
 	const refresh = useCallback(async () => {
@@ -54,7 +67,7 @@ export const UserProvider: FC = ({ children }) => {
 			setAccessToken(null)
 
 			const response = await api.post('/refresh-token')
-			setAccessToken(response.headers.accessToken)
+			setAccessToken(response.headers.authorization)
 		} catch (e: any) {
 			setUser(null)
 			setError(e.response.data)
@@ -73,7 +86,7 @@ export const UserProvider: FC = ({ children }) => {
 			const { data, headers } = await api.post<User>('/me')
 
 			setUser(data)
-			setAccessToken(headers.accessToken)
+			setAccessToken(headers.authorization)
 		} catch (e: any) {
 			setAccessToken(null)
 			setError((e as ApiError).response?.data)
@@ -83,8 +96,8 @@ export const UserProvider: FC = ({ children }) => {
 	}, [])
 
 	useEffect(() => {
-		me()
-	}, [me])
+		;(api.defaults.headers as any).Authorization = `Bearer ${accessToken}`
+	}, [accessToken])
 
 	const login = useCallback(
 		async ({ profile, googleAccessToken }: IUserData) => {
@@ -99,7 +112,7 @@ export const UserProvider: FC = ({ children }) => {
 
 				const { data, headers } = await api.post<User>(url, body)
 
-				setAccessToken(headers.accessToken)
+				setAccessToken(headers.authorization)
 				setUser(data)
 			} catch (e: any) {
 				setError((e as ApiError).response?.data)
@@ -141,7 +154,7 @@ export const UserProvider: FC = ({ children }) => {
 
 				const { data, headers } = await api.post<User>(path, body)
 				setUser(data)
-				setAccessToken(headers.accessToken)
+				setAccessToken(headers.authorization)
 			} catch (e: any) {
 				setError((e as ApiError).response?.data)
 			} finally {

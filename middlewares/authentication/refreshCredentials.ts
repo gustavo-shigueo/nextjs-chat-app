@@ -12,8 +12,8 @@ const refreshCredentials = async (
 
 	if (!id) throw new InvalidOrExpiredTokenError()
 
-	await giveCredentials(req, res, id)
 	await RefreshTokenProvider.invalidate(refreshToken)
+	await giveCredentials(req, res, id)
 }
 
 export default refreshCredentials

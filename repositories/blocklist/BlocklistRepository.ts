@@ -15,11 +15,11 @@ export default class BlocklistRepository implements IBlocklistRepository {
 
 	async add(key: string, expirationDate: number | Date): Promise<void> {
 		const keyHash = generateKeyHash(key)
-		this.#cacheProvider.add(keyHash, '', expirationDate)
+		this.#cacheProvider.add(`blocklist:${keyHash}`, '', expirationDate)
 	}
 
 	async containsKey(key: string): Promise<boolean> {
 		const keyHash = generateKeyHash(key)
-		return this.#cacheProvider.containsKey(keyHash)
+		return this.#cacheProvider.containsKey(`blocklist:${keyHash}`)
 	}
 }

@@ -1,12 +1,14 @@
-import { useAuth } from 'contexts/UserContext'
+import { IUserProviderProps, useAuth } from 'contexts/UserContext'
 import style from 'styles/AuthForms.module.scss'
-import { NextPage } from 'next'
+import { GetServerSideProps, NextPage } from 'next'
 import Form from 'components/Form'
 import Button from 'components/Button'
 import Input, { InputValidator } from 'components/Input'
 import emailRegex from 'utils/emailRegex'
 import { useCallback } from 'react'
 import { GoogleLogin } from '@react-oauth/google'
+import { User } from '@prisma/client'
+import api from 'services/axios'
 
 const LogIn: NextPage = () => {
 	const { user, login, error, loading, isAuthenticated } = useAuth()
@@ -65,3 +67,36 @@ const LogIn: NextPage = () => {
 }
 
 export default LogIn
+
+export const getServerSideProps: GetServerSideProps<{
+	initialData: IUserProviderProps
+}> = async ctx => {
+	try {
+		const { data, headers } = await api.post<User>('/me', {}, {
+			withCredentials: true,
+			headers: { Cookie: ctx.req.headers.cookie },
+		} as any)
+
+		ctx.res.setHeader('set-cookie', Object.freeze(headers['set-cookie'] ?? []))
+
+		return {
+			props: {
+				initialData: {
+					serverSideUser: data,
+					serverSideAccessToken: headers.authorization,
+					serverSideError: null,
+				},
+			},
+		}
+	} catch (error: any) {
+		return {
+			props: {
+				initialData: {
+					serverSideAccessToken: null,
+					serverSideUser: null,
+					serverSideError: error.response?.data ?? null,
+				},
+			},
+		}
+	}
+}

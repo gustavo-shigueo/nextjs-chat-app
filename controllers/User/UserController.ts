@@ -1,5 +1,4 @@
 import ICreateUserRequest from 'interfaces/ICreateUserRequest'
-import IGoogleProfile from 'interfaces/IGoogleProfile'
 import IUserService from 'services/User/IUserService'
 import User from 'entities/User'
 import IUserController from './IUserController'
@@ -27,21 +26,16 @@ export default class UserController implements IUserController {
 		return this.#userService.findByEmail(email)
 	}
 
-	async findByGoogleAssociatedEmail(
-		profile: IGoogleProfile
-	): Promise<User | null> {
-		return this.#userService.findByGoogleAssociatedEmail(profile)
+	async findByGoogleAssociatedEmail(email: string): Promise<User | null> {
+		return this.#userService.findByGoogleAssociatedEmail(email)
 	}
 
 	async listAll(): Promise<User[]> {
 		return this.#userService.listAll()
 	}
 
-	async associateGoogleProfile(
-		user: User,
-		profile: IGoogleProfile
-	): Promise<User> {
-		return this.#userService.associateGoogleProfile(user, profile)
+	async associateGoogleProfile(userId: string): Promise<User> {
+		return this.#userService.associateGoogleProfile(userId)
 	}
 
 	async setOnlineStatus(userId: string, status: boolean): Promise<User> {
