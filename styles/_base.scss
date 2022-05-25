@@ -9,7 +9,30 @@
 		}
 
 		@each $size-name, $size in $sizes {
-			--size-#{$size-name}: #{$size};
+			--size-#{$size-name}: #{$size}rem;
+		}
+
+		@each $size-name, $size in $sizes {
+			--em-size-#{$size-name}: #{$size}em;
+		}
+
+		--page-inline-padding: max(var(--size-400), 5vw);
+		font-size: clamp(8px, 2vw, 16px);
+	}
+
+	body > #__next {
+		display: grid;
+		grid-template-columns: var(--page-inline-padding) 1fr var(
+				--page-inline-padding
+			);
+
+		& > * {
+			grid-column: 2 / -2;
+		}
+
+		& > .fullbleed {
+			grid-column: 1 / -1;
+			padding-inline: var(--page-inline-padding);
 		}
 	}
 }

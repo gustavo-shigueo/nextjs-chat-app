@@ -1,0 +1,13 @@
+@use '../abstracts' as *;
+
+@layer utilities {
+	@each $key, $value in $sizes {
+		.border-radius-#{$key} {
+			border-radius: var(--em-size-#{$key});
+		}
+	}
+
+	.border-radius-full {
+		border-radius: 50%;
+	}
+}

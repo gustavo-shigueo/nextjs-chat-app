@@ -1,0 +1,7 @@
+@layer components {
+	.avatar {
+		display: flex;
+		align-items: center;
+		gap: var(--em-size-100);
+	}
+}

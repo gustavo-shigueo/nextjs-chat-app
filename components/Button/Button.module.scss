@@ -9,15 +9,14 @@
 
 		border-width: 1px;
 		border-style: solid;
-		padding-block: 0.45em;
-		padding-inline: 0.75em;
-
-		border-radius: 0.25em;
+		padding-block: var(--em-size-200);
+		padding-inline: var(--em-size-300);
 
 		font-weight: bold;
-		font-size: 1.2rem;
+		font-size: var(--em-size-400);
 
 		cursor: pointer;
+		user-select: none;
 		transition: 300ms ease;
 
 		&:not([class*='outline']) {
@@ -61,9 +60,14 @@
 			--text-color: var(--color-neutral-100);
 		}
 
-		&:is(:focus-visible, :focus-within, :hover):not([disabled]) {
+		&:is(:focus-visible, :hover):not([disabled]) {
 			background-color: var(--text-color);
 			color: var(--bg-color);
+		}
+
+		&:focus-visible:not([disabled]) {
+			outline-color: var(--border-color);
+			outline-offset: 5px;
 		}
 	}
 }

@@ -2,11 +2,13 @@
 	.header {
 		display: flex;
 		justify-content: space-between;
-		padding-block: 0.75em;
+		align-items: center;
+
+		padding-block: var(--size-300);
 
 		ul {
 			display: flex;
-			gap: 1em;
+			gap: var(--size-400);
 
 			list-style: none;
 		}
