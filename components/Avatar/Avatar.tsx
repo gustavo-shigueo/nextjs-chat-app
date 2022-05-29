@@ -12,7 +12,7 @@ interface AvatarProps {
 const Avatar: FC<AvatarProps> = ({ user }) => {
 	return (
 		<div className={classNames(style.avatar)}>
-			{user.name}
+			<span>{user.name}</span>
 			<Image
 				className="border-radius-full"
 				width={30}
@@ -20,7 +20,9 @@ const Avatar: FC<AvatarProps> = ({ user }) => {
 				src={user.avatarUrl}
 				alt="User avatar"
 			/>
-			<IoChevronDown />
+			<button className={classNames(style['avatar-btn'])}>
+				<IoChevronDown />
+			</button>
 		</div>
 	)
 }

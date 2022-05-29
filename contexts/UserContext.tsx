@@ -6,13 +6,13 @@ import {
 	useCallback,
 	useEffect,
 } from 'react'
-import User from 'entities/User'
 import api, { ApiError } from 'services/axios'
 import IError from 'errors/IError'
+import IUser from 'interfaces/IUser'
 
 interface IUserContextData {
 	isAuthenticated: boolean
-	user: User | null
+	user: IUser | null
 	loading: boolean
 	error?: IError | null
 	accessToken: string | null
@@ -41,7 +41,7 @@ const UserContext = createContext({} as IUserContextData)
 export const useAuth = () => useContext(UserContext)
 
 export interface IUserProviderProps {
-	serverSideUser: User | null
+	serverSideUser: IUser | null
 	serverSideAccessToken: string | null
 	serverSideError?: IError | null
 }
@@ -52,7 +52,7 @@ export const UserProvider: FC<IUserProviderProps> = ({
 	serverSideUser,
 	serverSideError,
 }) => {
-	const [user, setUser] = useState<User | null>(serverSideUser)
+	const [user, setUser] = useState<IUser | null>(serverSideUser)
 	const [loading, setLoading] = useState(false)
 	const [error, setError] = useState<IError | null | undefined>(serverSideError)
 	const [accessToken, setAccessToken] = useState<string | null>(
@@ -83,7 +83,7 @@ export const UserProvider: FC<IUserProviderProps> = ({
 			setLoading(true)
 			setAccessToken(null)
 
-			const { data, headers } = await api.post<User>('/me')
+			const { data, headers } = await api.post<IUser>('/me')
 
 			setUser(data)
 			setAccessToken(headers.authorization)
@@ -110,7 +110,7 @@ export const UserProvider: FC<IUserProviderProps> = ({
 				const url = `/signin${googleAccessToken ? '-with-google' : ''}`
 				const body = profile ?? { googleAccessToken }
 
-				const { data, headers } = await api.post<User>(url, body)
+				const { data, headers } = await api.post<IUser>(url, body)
 
 				setAccessToken(headers.authorization)
 				setUser(data)
@@ -152,7 +152,7 @@ export const UserProvider: FC<IUserProviderProps> = ({
 				const body = profile ?? { googleAccessToken }
 				const path = `/sign${profile ? 'up' : 'in-with-google'}`
 
-				const { data, headers } = await api.post<User>(path, body)
+				const { data, headers } = await api.post<IUser>(path, body)
 				setUser(data)
 				setAccessToken(headers.authorization)
 			} catch (e: any) {

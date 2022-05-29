@@ -7,8 +7,7 @@ import Input, { InputValidator } from 'components/Input'
 import emailRegex from 'utils/emailRegex'
 import { useCallback } from 'react'
 import { GoogleLogin } from '@react-oauth/google'
-import { User } from '@prisma/client'
-import api from 'services/axios'
+import authGuard from 'guards/autth/authGuard'
 
 const LogIn: NextPage = () => {
 	const { user, login, error, loading, isAuthenticated } = useAuth()
@@ -68,33 +67,22 @@ const LogIn: NextPage = () => {
 
 export default LogIn
 
-export const getServerSideProps: GetServerSideProps<{
-	initialData: IUserProviderProps
-}> = async ctx => {
+export const getServerSideProps: GetServerSideProps = async ctx => {
 	try {
-		const { data, headers } = await api.post<User>('/me', {}, {
-			withCredentials: true,
-			headers: { Cookie: ctx.req.headers.cookie },
-		} as any)
-
-		ctx.res.setHeader('set-cookie', Object.freeze(headers['set-cookie'] ?? []))
+		const authenticatedUserData = await authGuard(ctx)
 
 		return {
 			props: {
-				initialData: {
-					serverSideUser: data,
-					serverSideAccessToken: headers.authorization,
-					serverSideError: null,
-				},
+				authenticatedUserData,
 			},
 		}
 	} catch (error: any) {
 		return {
 			props: {
-				initialData: {
+				authenticatedUserData: {
 					serverSideAccessToken: null,
 					serverSideUser: null,
-					serverSideError: error.response?.data ?? null,
+					serverSideError: error,
 				},
 			},
 		}

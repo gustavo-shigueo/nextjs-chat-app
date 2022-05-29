@@ -3,5 +3,18 @@
 		display: flex;
 		align-items: center;
 		gap: var(--em-size-100);
+
+		svg > path {
+			transform: translateY(15%);
+		}
+	}
+
+	.avatar-btn {
+		display: block;
+
+		border: none;
+		height: 100%;
+
+		background-color: transparent;
 	}
 }

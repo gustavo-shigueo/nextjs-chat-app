@@ -1,8 +1,8 @@
-import type { NextPage } from 'next'
-import Header from 'components/Header'
+import type { GetServerSideProps, NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.scss'
+import authGuard from 'guards/autth/authGuard'
 
 const Home: NextPage = () => {
 	return (
@@ -68,6 +68,28 @@ const Home: NextPage = () => {
 			</footer>
 		</div>
 	)
+}
+
+export const getServerSideProps: GetServerSideProps = async ctx => {
+	try {
+		const authenticatedUserData = await authGuard(ctx)
+
+		return {
+			props: {
+				authenticatedUserData,
+			},
+		}
+	} catch (error: any) {
+		return {
+			props: {
+				authenticatedUserData: {
+					serverSideAccessToken: null,
+					serverSideUser: null,
+					serverSideError: error,
+				},
+			},
+		}
+	}
 }
 
 export default Home

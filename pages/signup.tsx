@@ -2,11 +2,12 @@ import Button from 'components/Button'
 import Form from 'components/Form'
 import Input, { InputValidator } from 'components/Input'
 import { useAuth } from 'contexts/UserContext'
-import { NextPage } from 'next'
+import { GetServerSideProps, NextPage } from 'next'
 import { useCallback } from 'react'
 import { GoogleLogin } from '@react-oauth/google'
 import style from 'styles/AuthForms.module.scss'
 import emailRegex from 'utils/emailRegex'
+import authGuard from 'guards/autth/authGuard'
 
 const SignUp: NextPage = () => {
 	const { signup, error, isAuthenticated, loading } = useAuth()
@@ -85,6 +86,28 @@ const SignUp: NextPage = () => {
 			</div>
 		</div>
 	)
+}
+
+export const getServerSideProps: GetServerSideProps = async ctx => {
+	try {
+		const authenticatedUserData = await authGuard(ctx)
+
+		return {
+			props: {
+				authenticatedUserData,
+			},
+		}
+	} catch (error: any) {
+		return {
+			props: {
+				authenticatedUserData: {
+					serverSideAccessToken: null,
+					serverSideUser: null,
+					serverSideError: error,
+				},
+			},
+		}
+	}
 }
 
 export default SignUp

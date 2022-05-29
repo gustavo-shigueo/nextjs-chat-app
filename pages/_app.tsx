@@ -9,7 +9,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 		<GoogleOAuthProvider
 			clientId={process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID ?? ''}
 		>
-			<UserProvider {...pageProps.initialData}>
+			<UserProvider {...pageProps.authenticatedUserData}>
 				<Header />
 				<Component {...pageProps} />
 			</UserProvider>
