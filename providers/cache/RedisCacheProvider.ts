@@ -40,4 +40,8 @@ export default class RedisCacheProvider implements ICacheProvider {
 		const exists = await this.#client.exists(`${this.#prefix}${key}`)
 		return !!exists
 	}
+
+	public async disconnect(): Promise<void> {
+		if (this.#client.isOpen) await this.#client.disconnect()
+	}
 }

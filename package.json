@@ -3,7 +3,7 @@
 	"private": true,
 	"scripts": {
 		"dev": "next dev",
-		"test": "jest --coverage --verbose",
+		"test": "jest --coverage --verbose --watch --detectOpenHandles",
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint"

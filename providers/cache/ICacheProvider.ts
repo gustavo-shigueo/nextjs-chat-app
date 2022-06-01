@@ -25,4 +25,6 @@ export default interface ICacheProvider {
 	 * @param {string} key
 	 */
 	containsKey(key: string): Promise<boolean>
+
+	disconnect(): Promise<void>
 }
