@@ -1,0 +1,39 @@
+@use '../abstracts/' as *;
+
+@mixin darktheme() {
+	@each $color-name, $color in $colors {
+		@each $tone, $value in $color {
+			--color-#{$color-name}-#{1000 - $tone}: #{$value};
+		}
+	}
+}
+
+@mixin ligththeme() {
+	@each $color-name, $color in $colors {
+		@each $tone, $value in $color {
+			--color-#{$color-name}-#{$tone}: #{$value};
+		}
+	}
+}
+
+:root {
+	@media (prefers-color-scheme: light) {
+		@include ligththeme();
+	}
+
+	@media (prefers-color-scheme: dark) {
+		@include darktheme();
+	}
+
+	@media (prefers-color-scheme: no-preference) {
+		@include ligththeme();
+	}
+}
+
+.dark {
+	@include darktheme();
+}
+
+.light {
+	@include ligththeme();
+}

@@ -1,0 +1,25 @@
+@layer utilities {
+	[class*='flex-'] {
+		display: flex;
+		align-items: center;
+		gap: 0.5em;
+	}
+
+	[class*='-space-between'] {
+		justify-content: space-between;
+	}
+
+	[class*='-stretch'] {
+		align-items: stretch;
+	}
+
+	[class*='grid-'] {
+		display: grid;
+		gap: 0.5em;
+		grid-auto-columns: 1fr;
+	}
+
+	.hide {
+		display: none;
+	}
+}

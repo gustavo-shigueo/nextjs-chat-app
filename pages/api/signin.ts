@@ -5,6 +5,7 @@ import errorSerializer from 'middlewares/serializers/errorSerializer'
 import allowMethods from 'middlewares/allowMethods'
 import UserController from 'controllers/User'
 import userSerializer from 'middlewares/serializers/userSerializer'
+import revokeCredentials from 'middlewares/authentication/revokeCredentials'
 
 const signin = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
@@ -16,12 +17,13 @@ const signin = async (req: NextApiRequest, res: NextApiResponse) => {
 			password
 		)
 
-		await UserController.setOnlineStatus(user.id ?? '', true)
-
 		await giveCredentials(req, res, user.id)
+
+		await UserController.setOnlineStatus(user.id ?? '', true)
 
 		res.json(userSerializer(user))
 	} catch (error: any) {
+		await revokeCredentials(req, res)
 		errorSerializer(res, error)
 	}
 }

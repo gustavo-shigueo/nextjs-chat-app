@@ -1,20 +1,95 @@
 @layer components {
 	.avatar {
-		display: flex;
-		align-items: center;
-		gap: var(--em-size-100);
+		z-index: 1;
+		height: 100%;
+		user-select: none;
 
-		svg > path {
-			transform: translateY(15%);
+		& > span {
+			display: flex;
+			align-items: center;
+			gap: var(--em-size-100);
+
+			padding-inline: var(--size-200);
+			height: 100%;
+
+			cursor: pointer;
+			transition: background-color 150ms ease-in-out;
+
+			&:is(:hover, :focus-visible) {
+				background-color: var(--color-neutral-300);
+			}
+		}
+
+		button {
+			border: none;
+
+			color: var(--color-neutral-800);
+
+			transition: background-color 150ms ease-in-out;
+			cursor: pointer;
+
+			&:is(:hover, :focus-visible) {
+				background-color: var(--color-neutral-300);
+			}
+		}
+
+		&-btn {
+			display: block;
+			background-color: transparent;
+		}
+
+		&-submenu {
+			top: calc(100% - var(--em-size-100) + var(--em-size-300));
+			right: 0;
+			z-index: -1;
+
+			min-width: max-content;
+			width: calc(10 * var(--em-size-400));
+			border-radius: var(--em-size-100);
+			overflow: hidden;
+			animation: fade-in 150ms ease forwards;
+
+			&[data-closing='true'] {
+				animation: fade-out 150ms ease forwards;
+			}
+
+			:is(ul, li, button) {
+				width: 100%;
+			}
+
+			button {
+				padding-inline: var(--em-size-300);
+				padding-block: var(--em-size-200);
+
+				background-color: var(--color-neutral-200);
+			}
 		}
 	}
 
-	.avatar-btn {
-		display: block;
+	@keyframes fade-in {
+		0% {
+			opacity: 0;
+			transform: translateY(-100%);
+		}
 
-		border: none;
-		height: 100%;
+		50% {
+			opacity: 0.35;
+		}
 
-		background-color: transparent;
+		100% {
+			transform: translateY(0);
+		}
+	}
+
+	@keyframes fade-out {
+		0% {
+			opacity: 1;
+			transform: translateY(0%);
+		}
+
+		100% {
+			opacity: 0;
+			transform: translateY(-100%);
+		}
 	}
 }

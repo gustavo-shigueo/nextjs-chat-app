@@ -7,18 +7,27 @@ import classNames from 'utils/classNames'
 import styles from './Header.module.scss'
 
 const Header = () => {
-	const { user } = useAuth()
+	const { user, logout } = useAuth()
 	return (
-		<header className={classNames('font-size-500', 'fullbleed', styles.header)}>
-			<span role="logo">
-				<Link href="/">MiChat</Link>
-			</span>
+		<header
+			className={classNames(
+				'font-size-500',
+				'flex-space-between',
+				'flex-stretch',
+				'fullbleed',
+				'box-shadow-large',
+				styles.header
+			)}
+		>
+			<Link href="/" role={'logo'}>
+				MiChat
+			</Link>
 
 			<nav>
 				<ul>
 					{user ? (
 						<li>
-							<Avatar user={user} />
+							<Avatar user={user} logout={logout} />
 						</li>
 					) : (
 						<>

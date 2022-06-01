@@ -1,13 +1,7 @@
-@use './abstracts/' as *;
+@use '../abstracts/' as *;
 
 @layer base {
 	:root {
-		@each $color-name, $color in $colors {
-			@each $tone, $value in $color {
-				--color-#{$color-name}-#{$tone}: #{$value};
-			}
-		}
-
 		@each $size-name, $size in $sizes {
 			--size-#{$size-name}: #{$size}rem;
 		}
@@ -25,6 +19,10 @@
 		grid-template-columns: var(--page-inline-padding) 1fr var(
 				--page-inline-padding
 			);
+
+		height: 100%;
+
+		background-color: var(--color-neutral-100);
 
 		& > * {
 			grid-column: 2 / -2;

@@ -25,12 +25,12 @@
 
 		&[class*='outline'] {
 			--border-color: var(--text-color);
-			--bg-color: var(--color-neutral-100);
+			--bg-color: var(--btn-bg-color, var(--color-neutral-100));
 		}
 
 		&-primary {
 			--bg-color: var(--color-primary-400);
-			--text-color: var(--color-neutral-100);
+			--text-color: var(--btn-text-color, var(--color-neutral-100));
 		}
 
 		&-outline-primary {
@@ -39,7 +39,7 @@
 
 		&-accent {
 			--bg-color: var(--color-accent-400);
-			--text-color: var(--color-neutral-100);
+			--text-color: var(--btn-text-color, var(--color-neutral-100));
 		}
 
 		&-outline-accent {
@@ -48,7 +48,7 @@
 
 		&-neutral {
 			--bg-color: var(--color-neutral-400);
-			--text-color: var(--color-neutral-100);
+			--text-color: var(--btn-text-color, var(--color-neutral-100));
 		}
 
 		&-outline-neutral {
@@ -57,7 +57,7 @@
 
 		&-danger {
 			--bg-color: var(--color-danger-400);
-			--text-color: var(--color-neutral-100);
+			--text-color: var(--btn-text-color, var(--color-neutral-100));
 		}
 
 		&:is(:focus-visible, :hover):not([disabled]) {

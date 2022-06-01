@@ -1,16 +1,41 @@
 @layer components {
 	.header {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
+		--btn-bg-color: var(--color-neutral-200);
 
-		padding-block: var(--size-300);
+		background-color: var(--color-neutral-200);
+		color: var(--color-neutral-900);
 
-		ul {
+		min-block-size: calc(3 * var(--em-size-400));
+
+		& > a {
 			display: flex;
-			gap: var(--size-400);
+			align-items: center;
 
+			padding-inline: var(--em-size-200);
+
+			transition: background-color 150ms ease-in-out;
+
+			&:is(:hover, :focus-visible) {
+				background-color: var(--color-neutral-300);
+			}
+		}
+
+		& > nav > ul {
+			display: flex;
+			gap: var(--em-size-400);
+
+			height: 100%;
+
+			align-items: center;
 			list-style: none;
+
+			& > :only-child {
+				align-self: stretch;
+			}
+
+			& > :not(:only-child) {
+				padding-block: var(--em-size-200);
+			}
 		}
 	}
 }

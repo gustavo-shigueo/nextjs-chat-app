@@ -4,6 +4,7 @@ import giveCredentials from 'middlewares/authentication/giveCredentials'
 import errorSerializer from 'middlewares/serializers/errorSerializer'
 import allowMethods from 'middlewares/allowMethods'
 import userSerializer from 'middlewares/serializers/userSerializer'
+import revokeCredentials from 'middlewares/authentication/revokeCredentials'
 
 const signup = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
@@ -23,6 +24,7 @@ const signup = async (req: NextApiRequest, res: NextApiResponse) => {
 		res.statusCode = 201
 		res.json(userSerializer(user))
 	} catch (error: any) {
+		await revokeCredentials(req, res)
 		errorSerializer(res, error)
 	}
 }

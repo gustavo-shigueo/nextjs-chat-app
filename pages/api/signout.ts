@@ -6,9 +6,8 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 const signout = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
-		await verifyCredentials(req)
-		await UserController.setOnlineStatus(req.body.user.id, false)
 		await revokeCredentials(req, res)
+		await UserController.setOnlineStatus(req.body.user.id, false)
 
 		res.status(204).end()
 	} catch (error: any) {

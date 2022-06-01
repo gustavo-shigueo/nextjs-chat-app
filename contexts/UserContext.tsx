@@ -129,13 +129,12 @@ export const UserProvider: FC<IUserProviderProps> = ({
 			setError(null)
 
 			await api.post('/signout')
-
-			setAccessToken(null)
-			setUser(null)
 		} catch (e: any) {
 			setError((e as ApiError).response?.data)
 		} finally {
 			setLoading(false)
+			setAccessToken(null)
+			setUser(null)
 		}
 	}, [])
 

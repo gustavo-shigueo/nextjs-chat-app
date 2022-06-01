@@ -3,6 +3,7 @@ import refreshCredentials from 'middlewares/authentication/refreshCredentials'
 import errorSerializer from 'middlewares/serializers/errorSerializer'
 import { NextApiRequest, NextApiResponse } from 'next'
 import userSerializer from 'middlewares/serializers/userSerializer'
+import revokeCredentials from 'middlewares/authentication/revokeCredentials'
 
 const me = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
@@ -11,6 +12,7 @@ const me = async (req: NextApiRequest, res: NextApiResponse) => {
 
 		res.json(userSerializer(user))
 	} catch (error: any) {
+		await revokeCredentials(req, res)
 		errorSerializer(res, error)
 	}
 }
