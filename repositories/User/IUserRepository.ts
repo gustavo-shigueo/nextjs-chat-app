@@ -5,4 +5,6 @@ export default interface IUsersRepository extends IUserOperations {
 	save(user: User): Promise<User>
 
 	isEmailInUse(email: string): Promise<boolean>
+
+	updateOne(data: Partial<User>, where: Partial<User>): Promise<User>
 }

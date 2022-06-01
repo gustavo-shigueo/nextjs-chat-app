@@ -72,11 +72,17 @@ export default class UserService implements IUserService {
 	}
 
 	associateGoogleProfile(userId: string): Promise<User> {
-		return this.#userRepository.associateGoogleProfile(userId)
+		return this.#userRepository.updateOne(
+			{ googleAssociated: true },
+			{ id: userId }
+		)
 	}
 
 	setOnlineStatus(userId: string, status: boolean): Promise<User> {
-		return this.#userRepository.setOnlineStatus(userId, status)
+		return this.#userRepository.updateOne(
+			{ onlineStatus: status },
+			{ id: userId }
+		)
 	}
 
 	#validateEmail(email: string): void {

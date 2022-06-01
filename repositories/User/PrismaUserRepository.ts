@@ -13,111 +13,65 @@ class PrismaUserReopsitory implements IUsersRepository {
 	}
 
 	async save(user: User): Promise<User> {
-		try {
-			const { id, contacts, messagesReceived, messagesSent, ...data } = user
-			return userMapper(await this.#client.user.create({ data }))
-		} finally {
-			this.#client.$disconnect()
-		}
+		const { id, contacts, messagesReceived, messagesSent, ...data } = user
+		return userMapper(await this.#client.user.create({ data }))
 	}
 
 	async isEmailInUse(email: string): Promise<boolean> {
-		try {
-			const count = await this.#client.user.count({ where: { email } })
-			return count > 0
-		} finally {
-			this.#client.$disconnect()
-		}
+		const count = await this.#client.user.count({ where: { email } })
+		return count > 0
 	}
 
 	async findById(id: string): Promise<User> {
-		try {
-			const user = await this.#client.user.findUnique({ where: { id } })
-			if (!user) throw new NotFoundError('User')
+		const user = await this.#client.user.findUnique({ where: { id } })
+		if (!user) throw new NotFoundError('User')
 
-			return userMapper(user)
-		} finally {
-			this.#client.$disconnect()
-		}
+		return userMapper(user)
 	}
 
 	async findByName(name: string): Promise<User[]> {
-		try {
-			const users = await this.#client.user.findMany({
-				where: { name: { contains: name } },
-			})
+		const users = await this.#client.user.findMany({
+			where: { name: { contains: name } },
+		})
 
-			return users.map(userMapper)
-		} finally {
-			this.#client.$disconnect()
-		}
+		return users.map(userMapper)
 	}
 
 	async findByEmail(email: string): Promise<User | null> {
-		try {
-			const user = await this.#client.user.findUnique({ where: { email } })
+		const user = await this.#client.user.findUnique({ where: { email } })
 
-			if (!user) return null
+		if (!user) return null
 
-			return userMapper(user)
-		} finally {
-			this.#client.$disconnect()
-		}
+		return userMapper(user)
 	}
 
 	async findByGoogleAssociatedEmail(email: string): Promise<User | null> {
-		try {
-			const user = await this.#client.user.findFirst({
-				where: {
-					AND: [{ email }, { googleAssociated: true }],
-				},
-			})
+		const user = await this.#client.user.findFirst({
+			where: {
+				AND: [{ email }, { googleAssociated: true }],
+			},
+		})
 
-			if (!user) return null
+		if (!user) return null
 
-			return userMapper(user)
-		} finally {
-			this.#client.$disconnect()
-		}
+		return userMapper(user)
 	}
 
 	async listAll(): Promise<User[]> {
-		try {
-			const users = await this.#client.user.findMany()
-			return users.map(userMapper)
-		} finally {
-			this.#client.$disconnect()
-		}
+		const users = await this.#client.user.findMany()
+		return users.map(userMapper)
 	}
 
-	async associateGoogleProfile(userId: string): Promise<User> {
-		try {
-			const u = await this.#client.user.update({
-				where: { id: userId },
-				data: { googleAssociated: true },
-			})
+	async updateOne(data: Partial<User>, where: Partial<User>): Promise<User> {
+		const { contacts, messagesReceived, messagesSent, ...newData } = data
+		const user = await this.#client.user.update({
+			where,
+			data: newData,
+		})
 
-			if (!u) throw new NotFoundError('User')
+		if (!user) throw new NotFoundError('User')
 
-			return userMapper(u)
-		} finally {
-			this.#client.$disconnect()
-		}
-	}
-
-	async setOnlineStatus(userId: string, status: boolean): Promise<User> {
-		try {
-			const user = await this.#client.user.update({
-				where: { id: userId },
-				data: { onlineStatus: status },
-			})
-
-			if (!user) throw new NotFoundError('User')
-
-			return userMapper(user)
-		} finally {
-			this.#client.$disconnect()
-		}
+		return userMapper(user)
 	}
 }
 

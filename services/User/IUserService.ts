@@ -9,4 +9,13 @@ export default interface IUserService extends IUserOperations {
 	 * @returns {User} The user that was created
 	 */
 	create(userData: ICreateUserRequest): Promise<User>
+
+	/**
+	 * Links a user to their Google Account
+	 * @param {User} user
+	 * @param {IGoogleProfile} profile
+	 */
+	associateGoogleProfile(userId: string): Promise<User>
+
+	setOnlineStatus(userId: string, status: boolean): Promise<User>
 }

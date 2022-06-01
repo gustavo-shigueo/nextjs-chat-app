@@ -26,13 +26,4 @@ export default interface IUserOperations {
 	findByGoogleAssociatedEmail(email: string): Promise<User | null>
 
 	listAll(): Promise<User[]>
-
-	/**
-	 * Links a user to their Google Account
-	 * @param {User} user
-	 * @param {IGoogleProfile} profile
-	 */
-	associateGoogleProfile(userId: string): Promise<User>
-
-	setOnlineStatus(userId: string, status: boolean): Promise<User>
 }

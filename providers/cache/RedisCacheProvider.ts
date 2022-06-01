@@ -37,6 +37,7 @@ export default class RedisCacheProvider implements ICacheProvider {
 	public async containsKey(key: string): Promise<boolean> {
 		if (!this.#client.isOpen) await this.#client.connect()
 
-		return !!this.#client.exists(`${this.#prefix}${key}`)
+		const exists = await this.#client.exists(`${this.#prefix}${key}`)
+		return !!exists
 	}
 }
