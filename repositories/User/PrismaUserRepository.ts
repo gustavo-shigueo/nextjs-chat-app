@@ -3,7 +3,6 @@ import IUsersRepository from './IUserRepository'
 import { PrismaClient } from '@prisma/client'
 import NotFoundError from 'errors/NotFoundError'
 import userMapper from 'entityMappers/userMapper'
-import client from 'utils/db/prisma/client'
 
 class PrismaUserReopsitory implements IUsersRepository {
 	#client: PrismaClient
@@ -12,7 +11,7 @@ class PrismaUserReopsitory implements IUsersRepository {
 		this.#client = client
 	}
 
-	async save(user: User): Promise<User> {
+	async create(user: User): Promise<User> {
 		const { id, contacts, messagesReceived, messagesSent, ...data } = user
 		return userMapper(await this.#client.user.create({ data }))
 	}
@@ -64,10 +63,13 @@ class PrismaUserReopsitory implements IUsersRepository {
 
 	async updateOne(data: Partial<User>, where: Partial<User>): Promise<User> {
 		const { contacts, messagesReceived, messagesSent, ...newData } = data
-		const user = await this.#client.user.update({
-			where,
-			data: newData,
-		})
+
+		const user = await this.#client.user
+			.update({
+				where,
+				data: newData,
+			})
+			.catch(() => null)
 
 		if (!user) throw new NotFoundError('User')
 
@@ -75,4 +77,4 @@ class PrismaUserReopsitory implements IUsersRepository {
 	}
 }
 
-export default new PrismaUserReopsitory(client)
+export default PrismaUserReopsitory

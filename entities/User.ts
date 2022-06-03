@@ -10,8 +10,8 @@ export default class User {
 		public avatarUrl: string,
 		public googleAssociated: boolean = false,
 		public onlineStatus: boolean = true,
-		public contacts?: User[] | null,
-		public messagesSent?: Message[] | null,
-		public messagesReceived?: Message[] | null
+		public contacts?: User[] | null | undefined,
+		public messagesSent?: Message[] | null | undefined,
+		public messagesReceived?: Message[] | null | undefined
 	) {}
 }

@@ -48,7 +48,7 @@ export default class UserService implements IUserService {
 			!!googleProfile
 		)
 
-		return this.#userRepository.save(user)
+		return this.#userRepository.create(user)
 	}
 
 	findById(id: string): Promise<User> {
