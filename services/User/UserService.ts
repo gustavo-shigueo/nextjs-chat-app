@@ -78,6 +78,10 @@ export default class UserService implements IUserService {
 		)
 	}
 
+	async addToContacts(userId: string, newContactId: string): Promise<User> {
+		return this.#userRepository.addToContacts(userId, newContactId)
+	}
+
 	setOnlineStatus(userId: string, status: boolean): Promise<User> {
 		return this.#userRepository.updateOne(
 			{ onlineStatus: status },

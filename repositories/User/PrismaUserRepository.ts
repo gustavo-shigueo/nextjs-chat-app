@@ -4,7 +4,7 @@ import { PrismaClient } from '@prisma/client'
 import NotFoundError from 'errors/NotFoundError'
 import userMapper from 'entityMappers/userMapper'
 
-class PrismaUserReopsitory implements IUsersRepository {
+export default class PrismaUserReopsitory implements IUsersRepository {
 	#client: PrismaClient
 
 	constructor(client: PrismaClient) {
@@ -61,6 +61,34 @@ class PrismaUserReopsitory implements IUsersRepository {
 		return users.map(userMapper)
 	}
 
+	async listUserContacts(id: string): Promise<User[]> {
+		const result = await this.#client.user.findUnique({
+			where: { id },
+			include: { contacts: true },
+		})
+
+		if (!result) throw new NotFoundError('User')
+
+		return result.contacts
+	}
+
+	async addToContacts(userId: string, newContactId: string): Promise<User> {
+		const user = await this.#client.user
+			.update({
+				where: { id: userId },
+				data: {
+					contacts: {
+						connect: { id: newContactId },
+					},
+				},
+			})
+			.catch(() => null)
+
+		if (!user) throw new NotFoundError('User')
+
+		return userMapper(user)
+	}
+
 	async updateOne(data: Partial<User>, where: Partial<User>): Promise<User> {
 		const { contacts, messagesReceived, messagesSent, ...newData } = data
 
@@ -76,5 +104,3 @@ class PrismaUserReopsitory implements IUsersRepository {
 		return userMapper(user)
 	}
 }
-
-export default PrismaUserReopsitory

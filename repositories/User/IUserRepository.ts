@@ -6,5 +6,9 @@ export default interface IUsersRepository extends IUserOperations {
 
 	isEmailInUse(email: string): Promise<boolean>
 
+	listUserContacts(id: string): Promise<User[]>
+
 	updateOne(data: Partial<User>, where: Partial<User>): Promise<User>
+
+	addToContacts(userId: string, newContactId: string): Promise<User>
 }

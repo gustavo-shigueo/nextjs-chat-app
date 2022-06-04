@@ -5,9 +5,9 @@ export default class Message {
 
 	constructor(
 		public text: string,
-		public sentAt: Date = new Date(),
 		public senderId: string,
 		public receiverId: string,
+		public sentAt?: Date,
 		public sender?: User,
 		public receiver?: User
 	) {}

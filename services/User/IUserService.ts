@@ -18,4 +18,6 @@ export default interface IUserService extends IUserOperations {
 	associateGoogleProfile(userId: string): Promise<User>
 
 	setOnlineStatus(userId: string, status: boolean): Promise<User>
+
+	addToContacts(userId: string, newContactId: string): Promise<User>
 }
