@@ -30,7 +30,7 @@ export default class AuthService implements IAuthService {
 
 		const user = await this.#userService.findByEmail(email)
 
-		if (!user) throw new NotFoundError('User')
+		if (!user) throw new InvalidCredentialsError()
 		if (!user.password) throw new InvalidSignInMethodError()
 
 		const valid = await this.#passwordProvider.verify(password, user.password)

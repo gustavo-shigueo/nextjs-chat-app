@@ -20,10 +20,6 @@
 				--page-inline-padding
 			);
 
-		height: 100%;
-
-		background-color: var(--color-neutral-100);
-
 		& > * {
 			grid-column: 2 / -2;
 		}

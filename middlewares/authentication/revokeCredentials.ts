@@ -9,13 +9,16 @@ const revokeCredentials = async (req: NextApiRequest, res: NextApiResponse) => {
 	const { authorization } = req.headers
 	const { [cookieName]: refreshToken } = req.cookies
 
-	if (!authorization) throw new NotAuthenticatedError()
-	const [, accessToken] = authorization.split(' ')
+	const invalidatePromises: Promise<void>[] = []
 
-	const invalidatePromises = [
-		AccessTokenProvider.invalidate(accessToken),
-		RefreshTokenProvider.invalidate(refreshToken),
-	]
+	if (refreshToken) {
+		invalidatePromises.push(RefreshTokenProvider.invalidate(refreshToken))
+	}
+
+	if (authorization) {
+		const [, accessToken] = authorization.split(' ')
+		invalidatePromises.push(AccessTokenProvider.invalidate(accessToken))
+	}
 
 	await Promise.all(invalidatePromises)
 	destroyCookie({ res }, cookieName)

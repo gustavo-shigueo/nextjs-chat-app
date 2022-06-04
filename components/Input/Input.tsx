@@ -26,7 +26,10 @@ const Input: FC<InputProps> = ({
 	const [isClientValid, setIsClientValid] = useState(true)
 	const [isServerValid, setIsServerValid] = useState(true)
 	const [error, setError] = useState('')
-	const accentColor: any = { '--accent-color': 'red', '--text-color': 'red' }
+	const accentColor: any = {
+		'--accent-color': 'var(--color-danger-700)',
+		'--text-color': 'var(--color-danger-700)',
+	}
 
 	useEffect(() => {
 		if (!value.length) return setIsClientValid(true)
@@ -45,23 +48,25 @@ const Input: FC<InputProps> = ({
 
 	return (
 		<div
-			className={classNames(style.inputControl, className)}
+			className={classNames(style['input-group'], className)}
 			style={!isClientValid || !isServerValid ? accentColor : undefined}
 		>
-			<input
-				id={name}
-				type={type ?? 'text'}
-				name={name}
-				className={style.input}
-				placeholder=" "
-				autoComplete={autoComplete}
-				value={value}
-				onChange={e => setValue(e.target.value)}
-				{...props}
-			/>
-			<label className={style.label} htmlFor={name}>
-				{label}
-			</label>
+			<div className={style['input-control']}>
+				<input
+					id={name}
+					type={type ?? 'text'}
+					name={name}
+					className={style.input}
+					placeholder=" "
+					autoComplete={autoComplete}
+					value={value}
+					onChange={e => setValue(e.target.value)}
+					{...props}
+				/>
+				<label className={style.label} htmlFor={name}>
+					{label}
+				</label>
+			</div>
 			{!(isClientValid && isServerValid) && (
 				<span className={style.error}>{error}</span>
 			)}

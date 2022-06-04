@@ -43,7 +43,11 @@ export default class JWTTokenService implements ITokenService {
 	}
 
 	async invalidate(token: string): Promise<void> {
-		const { exp } = decode(token) as JwtPayload
+		const decoded = decode(token) as JwtPayload | null
+
+		if (!decoded) return
+
+		const { exp } = decoded
 		await this.#list.add(token, exp ?? timeUnits.d * 30)
 	}
 }

@@ -1,3 +1,4 @@
+import Button from 'components/Button'
 import { FC, RefObject } from 'react'
 import { IoLogOutOutline } from 'react-icons/io5'
 
@@ -17,8 +18,9 @@ const Submenu: FC<ISubmenuProps> = ({
 	<nav ref={submenuRef} data-closing={closing} className={className}>
 		<ul>
 			<li>
-				<button
+				<Button
 					onClick={() => logout()}
+					variant="flat"
 					onKeyDown={({ key }) =>
 						[' ', 'enter'].includes(key.toLowerCase()) && logout()
 					}
@@ -26,7 +28,7 @@ const Submenu: FC<ISubmenuProps> = ({
 				>
 					<span>Sair</span>
 					<IoLogOutOutline fill="white" />
-				</button>
+				</Button>
 			</li>
 		</ul>
 	</nav>

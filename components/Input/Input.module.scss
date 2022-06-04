@@ -1,80 +1,87 @@
-.inputControl {
-	position: relative;
+@layer components {
+	.input-group {
+		margin-block-end: 1rem;
 
-	font-size: 1.2rem;
+		&:not(:first-of-type) {
+			margin-block-start: 4rem;
+		}
 
-	width: 100%;
-	border-bottom: 2px solid var(--color-neutral-700);
-	margin-inline: auto;
-	margin-block-end: 1rem;
-}
+		&:last-of-type {
+			margin-block-end: 2.5rem;
+		}
+	}
 
-.inputControl:not(:first-of-type) {
-	margin-block-start: 4rem;
-}
+	.input-control {
+		--text-color: var(--color-neutral-700);
+		--accent-color: var(--color-accent-400);
 
-.inputControl:last-of-type {
-	margin-block-end: 2.5rem;
-}
+		position: relative;
 
-.input {
-	width: 100%;
-	margin: 1px;
-	padding: 0;
-	border: none;
-	background: none;
+		font-size: 1.2rem;
 
-	outline: none;
+		width: 100%;
+		border-bottom: 2px solid var(--text-color);
+		margin-inline: auto;
+	}
 
-	color: var(--color-neutral-700);
-	overflow: hidden;
+	.input {
+		width: 100%;
+		margin: 1px;
+		padding: 0;
+		border: none;
+		background: none;
 
-	transition: color 300ms;
-}
+		outline: none;
 
-.inputControl::after {
-	content: '';
-	position: relative;
-	top: 2px;
+		color: var(--text-color);
+		overflow: hidden;
 
-	display: block;
-	height: 4px;
-	width: 100%;
-	background: var(--color-accent-400);
+		transition: color 300ms;
+	}
 
-	transform: scaleX(0);
-	transform-origin: 0%;
-	transition: transform 500ms ease;
-}
+	.input-control::after {
+		content: '';
+		position: relative;
+		top: 2px;
 
-.inputControl:focus-within {
-	border-color: transparent;
-}
+		display: block;
+		height: 4px;
+		width: 100%;
+		background: var(--accent-color);
 
-.inputControl:focus-within::after {
-	transform: scaleX(1);
-}
+		transform: scaleX(0);
+		transform-origin: 0%;
+		transition: transform 500ms ease;
+	}
 
-.label {
-	position: absolute;
+	.input-control:focus-within {
+		border-color: transparent;
+	}
 
-	color: var(--color-neutral-800);
+	.input-control:focus-within::after {
+		transform: scaleX(1);
+	}
 
-	transform: translateY(-1.75rem);
-	transform-origin: 0%;
-	transition: transform 400ms, color 300ms;
+	.label {
+		position: absolute;
 
-	pointer-events: none;
-	user-select: none;
-}
+		color: var(--text-color);
 
-.inputControl:focus-within .label,
-.input:not(:placeholder-shown) + .label {
-	transform: scale(0.8) translateY(-4.5rem);
-}
+		transform: translateY(-1.75rem);
+		transform-origin: 0%;
+		transition: transform 400ms, color 300ms;
 
-.error {
-	position: absolute;
-	bottom: -1.5rem;
-	color: red;
+		pointer-events: none;
+		user-select: none;
+	}
+
+	.input-control:focus-within .label,
+	.input:not(:placeholder-shown) + .label {
+		transform: scale(0.8) translateY(-4.5rem);
+	}
+
+	.error {
+		color: var(--accent-color);
+		// font-size: var(--size-400);
+	}
 }

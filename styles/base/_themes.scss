@@ -6,6 +6,8 @@
 			--color-#{$color-name}-#{1000 - $tone}: #{$value};
 		}
 	}
+
+	color-scheme: dark;
 }
 
 @mixin ligththeme() {
@@ -14,6 +16,8 @@
 			--color-#{$color-name}-#{$tone}: #{$value};
 		}
 	}
+
+	color-scheme: light;
 }
 
 :root {

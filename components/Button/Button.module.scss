@@ -13,15 +13,15 @@
 		padding-inline: var(--em-size-300);
 
 		font-weight: bold;
-		font-size: var(--em-size-400);
 
 		cursor: pointer;
 		user-select: none;
 		transition: 300ms ease;
 
-		&:not([class*='outline']) {
-			--border-color: var(--bg-color);
-		}
+		--border-color: var(--bg-color);
+
+		--bg-color-hover: var(--btn-text-color-hover, var(--color-neutral-300));
+		--text-color-hover: var(--btn-bg-color-hover, var(--color-neutral-900));
 
 		&[class*='outline'] {
 			--border-color: var(--text-color);
@@ -31,38 +31,62 @@
 		&-primary {
 			--bg-color: var(--color-primary-400);
 			--text-color: var(--btn-text-color, var(--color-neutral-100));
+
+			--bg-color-hover: var(--color-primary-600);
 		}
 
 		&-outline-primary {
 			--text-color: var(--color-primary-400);
+			--text-color-hover: var(--color-primary-600);
 		}
 
 		&-accent {
 			--bg-color: var(--color-accent-400);
 			--text-color: var(--btn-text-color, var(--color-neutral-100));
+
+			--bg-color-hover: var(--color-accent-600);
 		}
 
 		&-outline-accent {
 			--text-color: var(--color-accent-400);
+			--text-color-hover: var(--color-accent-600);
 		}
 
 		&-neutral {
 			--bg-color: var(--color-neutral-400);
 			--text-color: var(--btn-text-color, var(--color-neutral-100));
+
+			--bg-color-hover: var(--color-neutral-600);
 		}
 
 		&-outline-neutral {
 			--text-color: var(--color-neutral-400);
+			--text-color-hover: var(--color-neutral-600);
 		}
 
 		&-danger {
 			--bg-color: var(--color-danger-400);
 			--text-color: var(--btn-text-color, var(--color-neutral-100));
+
+			--bg-color-hover: var(--color-danger-600);
+		}
+
+		&-outline-danger {
+			--text-color: var(--color-danger-400);
+			--text-color-hover: var(--color-danger-600);
+		}
+
+		&-flat {
+			--bg-color: var(--btn-bg-color, var(--color-neutral-200));
+			--text-color: var(--btn-text-color, var(--color-neutral-800));
+
+			--bg-color-hover: var(--btn-text-color-hover, var(--color-neutral-300));
+			--text-color-hover: var(--btn-bg-color-hover, var(--color-neutral-900));
 		}
 
 		&:is(:focus-visible, :hover):not([disabled]) {
-			background-color: var(--text-color);
-			color: var(--bg-color);
+			background-color: var(--bg-color-hover);
+			color: var(--text-color-hover);
 		}
 
 		&:focus-visible:not([disabled]) {

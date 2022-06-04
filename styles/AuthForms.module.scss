@@ -1,6 +1,6 @@
 @layer layouts {
 	.formWrapper {
-		--btn-text-color: var(--color-neutral-200);
+		--btn-text-color: var(--color-neutral-900);
 		--vertical-padding: 3rem;
 		--horizontal-padding: 4rem;
 		--separator-size: 3rem;
@@ -23,6 +23,7 @@
 	}
 
 	.formWrapper h2 {
+		color: var(--color-neutral-700);
 		grid-area: title;
 		line-height: 1;
 		font-size: 1.5rem;
@@ -41,8 +42,9 @@
 	.formWrapper .separator {
 		width: var(--separator-size);
 		height: var(--separator-size);
-		border: 2px solid var(--color-neutral-100);
+		border: 2px solid var(--color-neutral-700);
 		background-color: var(--color-neutral-200);
+		color: var(--color-neutral-700);
 
 		display: grid;
 		place-items: center;
@@ -68,7 +70,7 @@
 						var(--separator-size) - 1.5rem
 				) / 2
 		);
-		background: #000;
+		background-color: var(--color-neutral-700);
 	}
 
 	.formWrapper .separator::before {

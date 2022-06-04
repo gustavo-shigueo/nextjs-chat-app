@@ -1,4 +1,4 @@
-import { IUserProviderProps, useAuth } from 'contexts/UserContext'
+import { useAuth } from 'contexts/UserContext'
 import style from 'styles/AuthForms.module.scss'
 import { GetServerSideProps, NextPage } from 'next'
 import Form from 'components/Form'
@@ -13,6 +13,14 @@ const LogIn: NextPage = () => {
 	const { user, login, error, loading, isAuthenticated } = useAuth()
 	const emailValidator: InputValidator = useCallback(
 		value => [!!value.match(emailRegex), 'Invalid e-mail'],
+		[]
+	)
+
+	const passwordValidator: InputValidator = useCallback(
+		value => [
+			value.length >= 8 && value.length <= 32,
+			'Password must be between 8 and 32 characters long',
+		],
 		[]
 	)
 
@@ -40,6 +48,7 @@ const LogIn: NextPage = () => {
 				/>
 				<Input
 					required
+					validator={passwordValidator}
 					type="password"
 					name="password"
 					label="Password"
