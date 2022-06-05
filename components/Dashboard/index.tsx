@@ -1,1 +1,1 @@
-export { default as default } from './Dashboard'
+export { default } from './Dashboard'

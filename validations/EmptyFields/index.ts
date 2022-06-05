@@ -1,1 +1,1 @@
-export { default as default } from './EmptyFields'
+export { default } from './EmptyFields'
