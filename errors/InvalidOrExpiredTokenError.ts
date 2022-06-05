@@ -5,7 +5,7 @@ export default class InvalidOrExpiredTokenError
 	implements IError
 {
 	status = 401
-	name = 'InvalidOrExpiredToken'
+	override name = 'InvalidOrExpiredToken'
 
 	constructor(message: string = 'Invalid or expired token') {
 		super(message)

@@ -1,7 +1,7 @@
 import IError from './IError'
 
 export default class NotFoundError extends Error implements IError {
-	name = 'NotFound'
+	override name = 'NotFound'
 	status = 404
 
 	constructor(entity: string) {

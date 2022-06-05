@@ -7,7 +7,7 @@
 		& > span {
 			display: flex;
 			align-items: center;
-			gap: var(--em-size-100);
+			gap: var(--em-size-200);
 
 			padding-inline: var(--size-200);
 			height: 100%;
@@ -60,8 +60,6 @@
 			button {
 				padding-inline: var(--em-size-300);
 				padding-block: var(--em-size-200);
-
-				// background-color: var(--color-neutral-200);
 			}
 		}
 	}

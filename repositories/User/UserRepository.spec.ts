@@ -33,9 +33,6 @@ describe('User Repository', () => {
 			googleAssociated: false,
 			password: 'A great password',
 			onlineStatus: true,
-			contacts: undefined,
-			messagesSent: undefined,
-			messagesReceived: undefined,
 		})
 	})
 
@@ -60,9 +57,6 @@ describe('User Repository', () => {
 			googleAssociated: false,
 			password: 'A great password',
 			onlineStatus: true,
-			contacts: undefined,
-			messagesSent: undefined,
-			messagesReceived: undefined,
 		})
 	})
 

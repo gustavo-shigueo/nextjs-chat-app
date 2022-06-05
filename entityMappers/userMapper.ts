@@ -9,9 +9,6 @@ const userMapper = <T extends User>(user: T & { _id?: string }): User => {
 		avatarUrl: user.avatarUrl,
 		googleAssociated: user.googleAssociated,
 		onlineStatus: user.onlineStatus,
-		contacts: user.contacts,
-		messagesSent: user.messagesSent,
-		messagesReceived: user.messagesReceived,
 	}
 }
 

@@ -84,7 +84,7 @@ export default class PrismaMessageRepository implements IMessageRepository {
 	}
 
 	async sendMessage(message: Message): Promise<Message> {
-		const { sentAt, id, receiver, sender, ...data } = message
+		const { sentAt, id, ...data } = message
 		return this.#client.message.create({ data })
 	}
 }

@@ -1,11 +1,13 @@
-import { IoChevronDown } from 'react-icons/io5'
+import { IoChevronDown, IoLogOutOutline } from 'react-icons/io5'
 import Image from 'next/image'
-import { FC, useRef, useState } from 'react'
+import { FC, KeyboardEventHandler, useRef, useState } from 'react'
 import classNames from 'utils/classNames'
 import style from './Avatar.module.scss'
 import IUser from 'interfaces/IUser'
 import useEventListener from 'hooks/useEventListener'
 import Submenu from 'components/Submenu'
+import SubmenuItem from 'components/SubmenuItem'
+import Button from 'components/Button'
 
 interface AvatarProps {
 	user: IUser
@@ -40,20 +42,24 @@ const Avatar: FC<AvatarProps> = ({ user, logout }) => {
 		submenuRef
 	)
 
+	const handleKeyDown: KeyboardEventHandler<HTMLDivElement> = e => {
+		if (!['enter', ' '].includes(e.key.toLowerCase())) return
+
+		e.preventDefault()
+		setSubmenuOpen(o => !o)
+	}
+
+	const handleClick = () => {
+		const setState = submenuOpen ? setClosing : setSubmenuOpen
+		setState(true)
+	}
+
 	return (
 		<div
 			tabIndex={0}
 			ref={toggleRef}
-			onClick={() => {
-				if (!submenuOpen) return setSubmenuOpen(true)
-				setClosing(true)
-			}}
-			onKeyDown={e => {
-				if (['enter', ' '].includes(e.key.toLowerCase())) {
-					e.preventDefault()
-					setSubmenuOpen(o => !o)
-				}
-			}}
+			onClick={handleClick}
+			onKeyDown={handleKeyDown}
 			className={classNames(style.avatar, 'relative')}
 		>
 			<span>
@@ -86,12 +92,23 @@ const Avatar: FC<AvatarProps> = ({ user, logout }) => {
 					'absolute',
 					'text-bold',
 					style['avatar-submenu'],
-					{
-						hide: !submenuOpen,
-					}
+					{ hide: !submenuOpen }
 				)}
-				logout={logout}
-			/>
+			>
+				<SubmenuItem>
+					<Button
+						onClick={() => logout()}
+						variant="flat"
+						onKeyDown={({ key }) =>
+							[' ', 'enter'].includes(key.toLowerCase()) && logout()
+						}
+						className="flex-space-between"
+					>
+						<span>Sair</span>
+						<IoLogOutOutline fill="white" />
+					</Button>
+				</SubmenuItem>
+			</Submenu>
 		</div>
 	)
 }

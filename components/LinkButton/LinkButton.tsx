@@ -1,6 +1,4 @@
 import { FC } from 'react'
-import style from 'components/Button/Button.module.scss'
-import classNames from 'utils/classNames'
 import { useRouter } from 'next/router'
 import Button from 'components/Button'
 import { ButtonProps } from 'components/Button/Button'

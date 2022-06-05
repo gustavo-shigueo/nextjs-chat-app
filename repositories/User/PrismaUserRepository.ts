@@ -12,7 +12,7 @@ export default class PrismaUserReopsitory implements IUsersRepository {
 	}
 
 	async create(user: User): Promise<User> {
-		const { id, contacts, messagesReceived, messagesSent, ...data } = user
+		const { id, ...data } = user
 		return userMapper(await this.#client.user.create({ data }))
 	}
 
@@ -90,12 +90,10 @@ export default class PrismaUserReopsitory implements IUsersRepository {
 	}
 
 	async updateOne(data: Partial<User>, where: Partial<User>): Promise<User> {
-		const { contacts, messagesReceived, messagesSent, ...newData } = data
-
 		const user = await this.#client.user
 			.update({
 				where,
-				data: newData,
+				data,
 			})
 			.catch(() => null)
 

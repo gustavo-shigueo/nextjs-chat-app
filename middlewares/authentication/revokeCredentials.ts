@@ -1,4 +1,3 @@
-import NotAuthenticatedError from 'errors/NotAuthenticatedError'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { destroyCookie } from 'nookies'
 import AccessTokenProvider from 'providers/tokens/AccessTokenProvider'

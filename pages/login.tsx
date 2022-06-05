@@ -66,8 +66,9 @@ const LogIn: NextPage = () => {
 				<GoogleLogin
 					onSuccess={responseGoogle}
 					onError={console.error}
-					text="signin"
-					auto_select={false}
+					text="signin_with"
+					theme="filled_blue"
+					cancel_on_tap_outside
 				/>
 			</div>
 		</div>
