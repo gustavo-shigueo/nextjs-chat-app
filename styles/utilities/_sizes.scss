@@ -1,9 +1,13 @@
 @use '../abstracts' as *;
 
-@layer utilities {
+@mixin fontSizes {
 	@each $key, $value in $sizes {
 		.font-size-#{$key} {
 			font-size: var(--size-#{$key});
 		}
 	}
+}
+
+@layer utilities {
+	@include fontSizes;
 }

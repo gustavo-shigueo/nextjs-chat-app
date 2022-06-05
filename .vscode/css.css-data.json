@@ -1,0 +1,15 @@
+{
+	"version": 1.1,
+	"atDirectives": [
+		{
+			"name": "@layer",
+			"description": "The @layer CSS at-rule is used to declare a cascade layer and can also used to define the order of precedence in case of multiple cascade layers.",
+			"references": [
+				{
+					"name": "@layer",
+					"url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@layer"
+				}
+			]
+		}
+	]
+}

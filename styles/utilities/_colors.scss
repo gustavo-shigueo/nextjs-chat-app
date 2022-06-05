@@ -1,6 +1,6 @@
 @use '../abstracts/' as *;
 
-@layer utilities {
+@mixin colors {
 	@each $color-name, $color in $colors {
 		@each $tone, $value in $color {
 			.bg-color-#{$color-name}-#{$tone} {
@@ -12,4 +12,8 @@
 			}
 		}
 	}
+}
+
+@layer utilities {
+	@include colors;
 }

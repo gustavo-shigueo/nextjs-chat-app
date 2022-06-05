@@ -1,15 +1,18 @@
 @use '../abstracts/' as *;
 
+@mixin customProps {
+	@each $size-name, $size in $sizes {
+		--size-#{$size-name}: #{$size}rem;
+	}
+
+	@each $size-name, $size in $sizes {
+		--em-size-#{$size-name}: #{$size}em;
+	}
+}
+
 @layer base {
 	:root {
-		@each $size-name, $size in $sizes {
-			--size-#{$size-name}: #{$size}rem;
-		}
-
-		@each $size-name, $size in $sizes {
-			--em-size-#{$size-name}: #{$size}em;
-		}
-
+		@include customProps;
 		--page-inline-padding: max(var(--size-400), 5vw);
 		font-size: clamp(8px, 2vw, 16px);
 	}
