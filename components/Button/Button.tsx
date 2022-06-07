@@ -13,6 +13,9 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 		| 'outline-primary'
 		| 'outline-accent'
 		| 'outline-neutral'
+		| 'outline-danger'
+		| 'outline-warning'
+		| 'outline-success'
 		| 'danger'
 		| 'warning'
 		| 'success'
@@ -39,11 +42,12 @@ const Button: FC<ButtonProps> = ({
 	const btnRef = useRef<HTMLButtonElement>(null)
 
 	useEffect(() => {
-		if (!btnRef.current) return
+		if (!btnRef.current || loading) return
+
 		const { width, height } = btnRef.current.getBoundingClientRect()
 
 		setSize({ minWidth: width, minHeight: height })
-	}, [])
+	}, [loading, children])
 
 	return (
 		<button

@@ -16,40 +16,25 @@ describe('User Repository', () => {
 	})
 
 	it('should create new user ', async () => {
-		const user: any = new User(
-			'John Doe',
-			'arealemail@gmail.com',
-			'A great password',
-			'https://arealurl.com'
-		)
-
-		mockCtx.prisma.user.create.mockResolvedValue(user)
-
-		await expect(repository.create(user)).resolves.toEqual<User>({
-			id: undefined,
+		const user: Required<User> = {
+			id: 'real-id-001',
 			name: 'John Doe',
 			email: 'arealemail@gmail.com',
 			avatarUrl: 'https://arealurl.com',
 			googleAssociated: false,
 			password: 'A great password',
 			onlineStatus: true,
-		})
+		}
+
+		mockCtx.prisma.user.create.mockResolvedValue(user)
+
+		await expect(repository.create(user)).resolves.toEqual<User>(user)
 	})
 
 	it('should find a user by their id', async () => {
-		let user = new User(
-			'John Doe',
-			'arealemail@gmail.com',
-			'A great password',
-			'https://arealurl.com'
-		)
-
 		const id = 'user-id-00001'
-		user = { ...user, id }
 
-		mockCtx.prisma.user.findUnique.mockResolvedValue(user as any)
-
-		await expect(repository.findById(id)).resolves.toEqual<User>({
+		const user: Required<User> = {
 			id,
 			name: 'John Doe',
 			email: 'arealemail@gmail.com',
@@ -57,7 +42,11 @@ describe('User Repository', () => {
 			googleAssociated: false,
 			password: 'A great password',
 			onlineStatus: true,
-		})
+		}
+
+		mockCtx.prisma.user.findUnique.mockResolvedValue(user)
+
+		await expect(repository.findById(id)).resolves.toEqual<User>(user)
 	})
 
 	it('should fail to find a user with inexistent information', async () => {
@@ -97,18 +86,34 @@ describe('User Repository', () => {
 
 	it('should find a user by their email', async () => {
 		const email = 'anormalemail@gmail.com'
-		const user = { email }
+		const user: Required<User> = {
+			id: 'real-id-001',
+			name: 'John Doe',
+			email,
+			avatarUrl: 'https://arealurl.com',
+			googleAssociated: false,
+			password: 'A great password',
+			onlineStatus: true,
+		}
 
-		mockCtx.prisma.user.findUnique.mockResolvedValue(user as any)
+		mockCtx.prisma.user.findUnique.mockResolvedValue(user)
 
 		await expect(repository.findByEmail(email)).resolves.toEqual(user)
 	})
 
 	it('should find a user by their google email', async () => {
 		const email = 'anormalemail@gmail.com'
-		const user = { email }
+		const user: Required<User> = {
+			id: 'real-id-001',
+			name: 'John Doe',
+			email,
+			avatarUrl: 'https://arealurl.com',
+			googleAssociated: false,
+			password: 'A great password',
+			onlineStatus: true,
+		}
 
-		mockCtx.prisma.user.findFirst.mockResolvedValue(user as any)
+		mockCtx.prisma.user.findFirst.mockResolvedValue(user)
 
 		await expect(
 			repository.findByGoogleAssociatedEmail(email)
@@ -145,5 +150,69 @@ describe('User Repository', () => {
 		await expect(repository.updateOne({ email }, { id })).rejects.toThrowError(
 			new NotFoundError('User')
 		)
+	})
+
+	it("should list all of a user's contacts", async () => {
+		const id = 'a-real-id'
+		const contacts = [
+			{ name: 'John Doe' },
+			{ name: 'Jon Johnz' },
+			{ name: 'Joy' },
+		]
+
+		const user: Required<User> & { contacts: any[] } = {
+			id,
+			name: 'John Doe',
+			email: 'areal@email.com',
+			avatarUrl: 'https://arealurl.com',
+			googleAssociated: false,
+			password: 'A great password',
+			onlineStatus: true,
+			contacts,
+		}
+
+		mockCtx.prisma.user.findUnique.mockResolvedValue(user)
+
+		await expect(repository.listUserContacts(id)).resolves.toEqual(contacts)
+	})
+
+	it("should fail to list an inexistent user's contacts", async () => {
+		const id = 'a-fake-id'
+
+		mockCtx.prisma.user.findUnique.mockResolvedValue(null)
+
+		await expect(repository.listUserContacts(id)).rejects.toThrowError(
+			new NotFoundError('User')
+		)
+	})
+
+	it("should add to a user's contacts", async () => {
+		const id = 'a-real-id'
+
+		const user: Required<User> = {
+			id,
+			name: 'John Doe',
+			email: 'areal@email.com',
+			avatarUrl: 'https://arealurl.com',
+			googleAssociated: false,
+			password: 'A great password',
+			onlineStatus: true,
+		}
+
+		mockCtx.prisma.user.update.mockResolvedValue(user)
+
+		await expect(repository.addToContacts(id, 'anotherId')).resolves.toEqual(
+			user
+		)
+	})
+
+	it("should fail to add to an inexistent user's contacts", async () => {
+		const id = 'a-fake-id'
+
+		mockCtx.prisma.user.update.mockRejectedValue(null)
+
+		await expect(
+			repository.addToContacts(id, 'anotherId')
+		).rejects.toThrowError(new NotFoundError('User'))
 	})
 })

@@ -1,6 +1,28 @@
 {
 	"extends": "next/core-web-vitals",
 	"rules": {
-		"no-console": ["warn", { "allow": ["warn", "error"] }]
-	}
+		"no-console": ["warn", { "allow": ["warn", "error"] }],
+		"eqeqeq": "error"
+	},
+	"overrides": [
+		{
+			"files": [
+				"*.test.ts",
+				"*.test.js",
+				"*.test.tsx",
+				"*.test.jsx",
+				"*.spec.ts",
+				"*.spec.js",
+				"*.spec.tsx",
+				"*.spec.jsx",
+				"*.stories.ts",
+				"*.stories.ts",
+				"*.stories.ts",
+				"*.stories.tsx"
+			],
+			"rules": {
+				"no-console": "off"
+			}
+		}
+	]
 }

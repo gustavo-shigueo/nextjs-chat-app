@@ -1,3 +1,14 @@
+@use "sass:math";
+@use "../../styles/abstracts" as *;
+
+@mixin color($name, $shade) {
+	--text-color: var(--btn-text-color, #{getcolor($name, $shade)});
+	--text-color-hover: var(
+		--btn-text-color,
+		#{getcolor($name, math.max(100, $shade - 100))}
+	);
+}
+
 @layer components {
 	.btn {
 		color: var(--text-color, var(--color-neutral-900));
@@ -20,7 +31,7 @@
 
 		--border-color: var(--bg-color);
 
-		--bg-color-hover: var(--btn-text-color-hover, var(--color-neutral-300));
+		--bg-color-hover: var(--btn-text-color-hover, var(--color-neutral-200));
 		--text-color-hover: var(--btn-bg-color-hover, var(--color-neutral-900));
 
 		&[class*='outline'] {
@@ -28,10 +39,12 @@
 			--bg-color: var(--btn-bg-color, var(--color-neutral-100));
 		}
 
+		&:where(:not([class*='outline'])) {
+			@include color('neutral', 200);
+		}
+
 		&-primary {
 			--bg-color: var(--color-primary-400);
-			--text-color: var(--btn-text-color, var(--color-neutral-100));
-
 			--bg-color-hover: var(--color-primary-600);
 		}
 
@@ -42,38 +55,56 @@
 
 		&-accent {
 			--bg-color: var(--color-accent-400);
-			--text-color: var(--btn-text-color, var(--color-neutral-100));
 
 			--bg-color-hover: var(--color-accent-600);
 		}
 
 		&-outline-accent {
-			--text-color: var(--color-accent-400);
-			--text-color-hover: var(--color-accent-600);
+			--text-color: var(--color-accent-800);
+			--text-color-hover: var(--color-accent-900);
 		}
 
 		&-neutral {
-			--bg-color: var(--color-neutral-400);
-			--text-color: var(--btn-text-color, var(--color-neutral-100));
+			--bg-color: var(--color-neutral-800);
+			--text-color: var(--btn-text-color, var(--color-neutral-200));
 
-			--bg-color-hover: var(--color-neutral-600);
+			--bg-color-hover: var(--color-neutral-900);
+			--text-color-hover: var(--btn-text-color-hover, var(--color-neutral-100));
 		}
 
 		&-outline-neutral {
-			--text-color: var(--color-neutral-400);
-			--text-color-hover: var(--color-neutral-600);
+			--text-color: var(--color-neutral-800);
+			--text-color-hover: var(--color-neutral-900);
 		}
 
 		&-danger {
 			--bg-color: var(--color-danger-400);
-			--text-color: var(--btn-text-color, var(--color-neutral-100));
-
-			--bg-color-hover: var(--color-danger-600);
+			--bg-color-hover: var(--color-danger-500);
 		}
 
 		&-outline-danger {
-			--text-color: var(--color-danger-400);
-			--text-color-hover: var(--color-danger-600);
+			--text-color: var(--color-danger-600);
+			--text-color-hover: var(--color-danger-700);
+		}
+
+		&-warning {
+			--bg-color: var(--color-warning-300);
+			--bg-color-hover: var(--color-warning-400);
+		}
+
+		&-outline-warning {
+			--text-color: var(--color-warning-600);
+			--text-color-hover: var(--color-warning-700);
+		}
+
+		&-success {
+			--bg-color: var(--color-success-500);
+			--bg-color-hover: var(--color-success-600);
+		}
+
+		&-outline-success {
+			--text-color: var(--color-success-600);
+			--text-color-hover: var(--color-success-700);
 		}
 
 		&-flat {

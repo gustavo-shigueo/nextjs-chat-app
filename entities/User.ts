@@ -4,7 +4,7 @@ export default class User {
 	constructor(
 		public name: string,
 		public email: string,
-		public password: string | null | undefined,
+		public password: string | null,
 		public avatarUrl: string,
 		public googleAssociated: boolean = false,
 		public onlineStatus: boolean = true
