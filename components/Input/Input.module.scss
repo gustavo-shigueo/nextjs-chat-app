@@ -6,7 +6,7 @@
 			margin-block-start: 4rem;
 		}
 
-		&:last-of-type {
+		&:last-of-type:not(:only-of-type) {
 			margin-block-end: 2.5rem;
 		}
 	}

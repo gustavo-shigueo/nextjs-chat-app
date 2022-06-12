@@ -9,6 +9,7 @@ export const AvatarComponent: ComponentStory<typeof Avatar> = () => (
 	<Avatar
 		logout={async () => {}}
 		user={{
+			id: 'real-uuid',
 			name: 'John Doe',
 			email: 'testing@test.com',
 			avatarUrl:

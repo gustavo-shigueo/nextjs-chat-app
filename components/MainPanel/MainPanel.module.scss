@@ -1,10 +1,18 @@
 @layer components {
 	.main-panel {
 		display: grid;
-		grid-template-columns: minmax(0, 20em) 1fr;
-		min-height: calc(100vh - 4 * var(--em-size-500));
+		grid-template-columns: minmax(0, 22em) 1fr;
+
+		min-height: calc(100vh - 4.5 * var(--em-size-500));
 		margin-block-start: 1em;
+
 		overflow-y: auto;
+
+		.contacts-section {
+			background-color: var(--color-neutral-200);
+			padding-block-start: var(--em-size-900);
+			padding-inline: var(--em-size-200);
+		}
 
 		.contact-list {
 			display: flex;

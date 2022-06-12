@@ -35,7 +35,7 @@ const Button: FC<ButtonProps> = ({
 	return (
 		<button
 			className={classNames(
-				'box-shadow-small',
+				'box-shadow',
 				'border-radius-100',
 				className,
 				style.btn,

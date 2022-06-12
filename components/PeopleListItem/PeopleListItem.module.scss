@@ -1,9 +1,10 @@
 @layer components {
 	.contact-list-item {
-		--btn-bg-color: var(--color-neutral-200);
+		--btn-bg-color: var(--color-neutral-300);
 		--btn-text-color: var(--color-neutral-800);
 		--btn-text-color-hover: var(--color-neutral-900);
-		--btn-bg-color-hover: var(--color-neutral-300);
+		--btn-bg-color-hover: var(--color-neutral-400);
+		--shadow-opacity: 0.3;
 
 		display: grid;
 		align-items: center;
@@ -15,10 +16,26 @@
 		width: 100%;
 
 		.contact-avatar {
-			grid-row: 1 / span 2;
 			position: relative;
+
+			grid-row: 1 / span 2;
+
 			width: 3em;
 			aspect-ratio: 1;
+
+			&::after {
+				content: '';
+
+				position: absolute;
+				bottom: 0;
+				right: 0;
+
+				width: var(--size-300);
+				aspect-ratio: 1;
+				background-color: currentColor;
+
+				border-radius: 50%;
+			}
 		}
 
 		.contact-latest-message {

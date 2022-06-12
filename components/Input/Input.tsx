@@ -7,7 +7,7 @@ export type InputValidator = (value: string) => [boolean, string]
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	label: string
 	validator?: InputValidator
-	serverValid: boolean
+	serverValid?: boolean
 	serverErrorMessage?: string
 }
 
@@ -19,7 +19,7 @@ const Input: FC<InputProps> = ({
 	autoComplete = 'off',
 	validator = () => [true, ''],
 	serverErrorMessage = '',
-	serverValid,
+	serverValid = true,
 	...props
 }) => {
 	const [value, setValue] = useState('')

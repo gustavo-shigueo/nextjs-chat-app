@@ -1,23 +1,26 @@
 @use '../abstracts' as *;
 
 @layer utilities {
-	[class*='box-shadow-'] {
-		--box-shadow: var(--shadow-offset-x, 0) var(--shadow-offset-y, 0)
-			var(--shadow-blur, 1em) var(--shadow-spread, 0)
-			var(
-				--shadow-color,
-				hsl(var(--shadow-color, 0 0% 0%) / var(--shadow-opacity, 0.4))
-			);
+	[class*='box-shadow'] {
+		--offset-x: var(--shadow-offset-x, 0);
+		--offset-y: var(--shadow-offset-y, 0);
+		--blur: var(--shadow-blur, var(--size-400));
+		--spread: var(--shadow-spread, 0);
+		--color: var(--shadow-color, 0deg, 0%, 0%);
+		--opacity: var(--shadow-opacity, 0.2);
+
+		--box-shadow: var(--offset-x) var(--offset-y) var(--blur) var(--spread)
+			hsl(var(--color), var(--opacity));
 		box-shadow: var(--box-shadow);
 	}
 
 	.box-shadow-small {
-		--shadow-opacity: 0.3;
-		--shadow-blur: 0.75em;
+		--shadow-opacity: 0.15;
+		--shadow-blur: var(--size-300);
 	}
 
 	.box-shadow-large {
-		--shadow-opacity: 0.4;
-		--shadow-blur: 1.25em;
+		--shadow-opacity: 0.15;
+		--shadow-blur: var(--size-500);
 	}
 }
