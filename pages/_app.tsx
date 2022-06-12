@@ -3,17 +3,23 @@ import type { AppProps } from 'next/app'
 import { UserProvider } from 'contexts/UserContext'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import Header from 'components/Header'
+import Head from 'next/head'
 
 function MyApp({ Component, pageProps }: AppProps) {
 	return (
-		<GoogleOAuthProvider
-			clientId={process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID ?? ''}
-		>
-			<UserProvider {...pageProps.authenticatedUserData}>
-				<Header />
-				<Component {...pageProps} />
-			</UserProvider>
-		</GoogleOAuthProvider>
+		<>
+			<Head>
+				<title>MiChat</title>
+			</Head>
+			<GoogleOAuthProvider
+				clientId={process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID ?? ''}
+			>
+				<UserProvider {...pageProps.authenticatedUserData}>
+					<Header />
+					<Component {...pageProps} />
+				</UserProvider>
+			</GoogleOAuthProvider>
+		</>
 	)
 }
 

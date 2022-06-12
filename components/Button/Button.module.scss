@@ -111,8 +111,8 @@
 			--bg-color: var(--btn-bg-color, var(--color-neutral-200));
 			--text-color: var(--btn-text-color, var(--color-neutral-800));
 
-			--bg-color-hover: var(--btn-text-color-hover, var(--color-neutral-300));
-			--text-color-hover: var(--btn-bg-color-hover, var(--color-neutral-900));
+			--bg-color-hover: var(--btn-bg-color-hover, var(--color-neutral-300));
+			--text-color-hover: var(--btn-text-color-hover, var(--color-neutral-900));
 		}
 
 		&:is(:focus-visible, :hover):not([disabled]) {

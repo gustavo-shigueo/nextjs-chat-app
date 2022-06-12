@@ -41,4 +41,12 @@ export default class UserController implements IUserController {
 	async setOnlineStatus(userId: string, status: boolean): Promise<User> {
 		return this.#userService.setOnlineStatus(userId, status)
 	}
+
+	async listUserContacts(id: string): Promise<User[]> {
+		return this.#userService.listUserContacts(id)
+	}
+
+	async addToUserContacts(userId: string, contactId: string): Promise<User> {
+		return this.#userService.addToContacts(userId, contactId)
+	}
 }

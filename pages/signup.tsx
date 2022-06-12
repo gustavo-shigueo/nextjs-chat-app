@@ -10,7 +10,7 @@ import emailRegex from 'utils/emailRegex'
 import authGuard from 'guards/autth/authGuard'
 
 const SignUp: NextPage = () => {
-	const { signup, error, isAuthenticated, loading } = useAuth()
+	const { signup, error, loading } = useAuth()
 
 	const nameValidator: InputValidator = useCallback(
 		({ length }) => [length > 2, 'Name must be at least 3 characters long'],
@@ -96,6 +96,10 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
 		return {
 			props: {
 				authenticatedUserData,
+			},
+			redirect: {
+				destination: 'dashboard',
+				permanent: false,
 			},
 		}
 	} catch (error: any) {

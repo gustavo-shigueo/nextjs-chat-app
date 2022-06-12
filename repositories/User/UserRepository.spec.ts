@@ -155,9 +155,21 @@ describe('User Repository', () => {
 	it("should list all of a user's contacts", async () => {
 		const id = 'a-real-id'
 		const contacts = [
-			{ name: 'John Doe' },
-			{ name: 'Jon Johnz' },
-			{ name: 'Joy' },
+			{
+				name: 'John Doe',
+				messagesSent: [{ text: 'a', sentAt: new Date(2020, 1, 1) }],
+				messagesReceived: [{ text: 'a', sentAt: new Date(2021, 1, 1) }],
+			},
+			{
+				name: 'Jon Johnz',
+				messagesSent: [{ text: 'a', sentAt: new Date(2020, 1, 1) }],
+				messagesReceived: [{ text: 'a', sentAt: new Date(2021, 1, 1) }],
+			},
+			{
+				name: 'Joy',
+				messagesSent: [{ text: 'a', sentAt: new Date(2020, 1, 1) }],
+				messagesReceived: [{ text: 'a', sentAt: new Date(2021, 1, 1) }],
+			},
 		]
 
 		const user: Required<User> & { contacts: any[] } = {
@@ -173,7 +185,14 @@ describe('User Repository', () => {
 
 		mockCtx.prisma.user.findUnique.mockResolvedValue(user)
 
-		await expect(repository.listUserContacts(id)).resolves.toEqual(contacts)
+		await expect(repository.listUserContacts(id)).resolves.toEqual(
+			contacts.map(({ messagesReceived: [r], messagesSent: [s], ...c }) => ({
+				...c,
+				lastMessage: [r, s].flat()[
+					r.sentAt.getTime() > s.sentAt.getDate() ? 0 : 1
+				],
+			}))
+		)
 	})
 
 	it("should fail to list an inexistent user's contacts", async () => {

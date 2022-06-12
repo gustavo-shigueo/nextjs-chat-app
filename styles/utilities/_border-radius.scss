@@ -3,7 +3,7 @@
 @mixin borderRadius {
 	@each $key, $value in $sizes {
 		.border-radius-#{$key} {
-			border-radius: var(--em-size-#{$key});
+			border-radius: var(--size-#{$key});
 		}
 	}
 }

@@ -73,7 +73,11 @@ const Avatar: FC<AvatarProps> = ({ user, logout }) => {
 					alt="User avatar"
 				/>
 
-				<button className={classNames(style['avatar-btn'])} tabIndex={-1}>
+				<button
+					className={classNames(style['avatar-btn'])}
+					tabIndex={-1}
+					aria-label="Your avatar"
+				>
 					<IoChevronDown
 						style={{
 							transform: `translateY(15%) rotate(${

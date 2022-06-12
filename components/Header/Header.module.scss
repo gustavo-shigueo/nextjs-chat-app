@@ -7,10 +7,16 @@
 
 		min-block-size: calc(3 * var(--em-size-400));
 
-		& > a {
+		h1 {
+			font-size: 1em;
+
+			display: flex;
+			align-items: stretch;
+		}
+
+		& > h1 a {
 			display: flex;
 			align-items: center;
-
 			padding-inline: var(--em-size-200);
 
 			transition: background-color 150ms ease-in-out;

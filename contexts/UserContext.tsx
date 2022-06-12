@@ -9,6 +9,7 @@ import {
 import api, { ApiError } from 'services/axios'
 import IError from 'errors/IError'
 import IUser from 'interfaces/IUser'
+import { useRouter } from 'next/router'
 
 interface IUserContextData {
 	isAuthenticated: boolean
@@ -52,12 +53,14 @@ export const UserProvider: FC<IUserProviderProps> = ({
 	serverSideUser,
 	serverSideError,
 }) => {
+	const router = useRouter()
 	const [user, setUser] = useState<IUser | null>(serverSideUser)
 	const [loading, setLoading] = useState(false)
 	const [error, setError] = useState<IError | null | undefined>(serverSideError)
 	const [accessToken, setAccessToken] = useState<string | null>(
 		serverSideAccessToken
 	)
+
 	const isAuthenticated = !!user
 
 	const refresh = useCallback(async () => {
@@ -66,7 +69,7 @@ export const UserProvider: FC<IUserProviderProps> = ({
 			setLoading(true)
 			setAccessToken(null)
 
-			const response = await api.post('/refresh-token')
+			const response = await api.post('/auth/refresh-token')
 			setAccessToken(response.headers.authorization)
 		} catch (e: any) {
 			setUser(null)
@@ -83,7 +86,7 @@ export const UserProvider: FC<IUserProviderProps> = ({
 			setLoading(true)
 			setAccessToken(null)
 
-			const { data, headers } = await api.post<IUser>('/me')
+			const { data, headers } = await api.post<IUser>('/auth/me')
 
 			setUser(data)
 			setAccessToken(headers.authorization)
@@ -107,20 +110,21 @@ export const UserProvider: FC<IUserProviderProps> = ({
 				setLoading(true)
 				setAccessToken(null)
 
-				const url = `/signin${googleAccessToken ? '-with-google' : ''}`
+				const url = `/auth/signin${googleAccessToken ? '-with-google' : ''}`
 				const body = profile ?? { googleAccessToken }
 
 				const { data, headers } = await api.post<IUser>(url, body)
 
 				setAccessToken(headers.authorization)
 				setUser(data)
+				router.push('/dashboard')
 			} catch (e: any) {
 				setError((e as ApiError).response?.data)
 			} finally {
 				setLoading(false)
 			}
 		},
-		[]
+		[router]
 	)
 
 	const logout = useCallback(async () => {
@@ -128,7 +132,8 @@ export const UserProvider: FC<IUserProviderProps> = ({
 			setLoading(true)
 			setError(null)
 
-			await api.post('/signout')
+			await api.post('/auth/signout')
+			router.push('/')
 		} catch (e: any) {
 			setError((e as ApiError).response?.data)
 		} finally {
@@ -136,7 +141,7 @@ export const UserProvider: FC<IUserProviderProps> = ({
 			setAccessToken(null)
 			setUser(null)
 		}
-	}, [])
+	}, [router])
 
 	const signup = useCallback(
 		async ({ profile, googleAccessToken }: IUserData) => {
@@ -149,18 +154,19 @@ export const UserProvider: FC<IUserProviderProps> = ({
 				setLoading(true)
 
 				const body = profile ?? { googleAccessToken }
-				const path = `/sign${profile ? 'up' : 'in-with-google'}`
+				const path = `/auth/sign${profile ? 'up' : 'in-with-google'}`
 
 				const { data, headers } = await api.post<IUser>(path, body)
 				setUser(data)
 				setAccessToken(headers.authorization)
+				router.push('/dashboard')
 			} catch (e: any) {
 				setError((e as ApiError).response?.data)
 			} finally {
 				setLoading(false)
 			}
 		},
-		[]
+		[router]
 	)
 
 	return (

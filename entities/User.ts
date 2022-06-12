@@ -1,5 +1,5 @@
 export default class User {
-	public id?: string
+	public id: string = ''
 
 	constructor(
 		public name: string,

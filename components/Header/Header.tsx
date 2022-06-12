@@ -19,9 +19,11 @@ const Header = () => {
 				styles.header
 			)}
 		>
-			<Link href="/" role={'logo'}>
-				MiChat
-			</Link>
+			<h1>
+				<Link href="/" role={'logo'}>
+					MiChat
+				</Link>
+			</h1>
 
 			<nav>
 				<ul>

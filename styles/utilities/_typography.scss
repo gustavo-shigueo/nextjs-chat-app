@@ -1,5 +1,27 @@
+@mixin fontWeight($i) {
+	.font-weight-#{$i}00 {
+		font-weight: 100 * $i;
+	}
+}
+
 @layer utilities {
+	.text-light {
+		font-weight: light;
+	}
+
+	.text-regular {
+		font-weight: normal;
+	}
+
 	.text-bold {
 		font-weight: bold;
+	}
+
+	.text-bolder {
+		font-weight: bolder;
+	}
+
+	@for $i from 1 through 9 {
+		@include fontWeight($i);
 	}
 }

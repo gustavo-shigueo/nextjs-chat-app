@@ -3,7 +3,8 @@ import IUser from 'interfaces/IUser'
 
 const userSerializer = (user: User): IUser => {
 	const { password, ...userData } = user
-	return userData
+
+	return { ...userData }
 }
 
 export default userSerializer

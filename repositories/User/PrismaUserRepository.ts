@@ -11,7 +11,7 @@ export default class PrismaUserReopsitory implements IUsersRepository {
 		this.#client = client
 	}
 
-	async create(user: User): Promise<User> {
+	async create(user: User): Promise<Required<User>> {
 		const { id, ...data } = user
 		return userMapper(await this.#client.user.create({ data }))
 	}
@@ -64,12 +64,38 @@ export default class PrismaUserReopsitory implements IUsersRepository {
 	async listUserContacts(id: string): Promise<User[]> {
 		const result = await this.#client.user.findUnique({
 			where: { id },
-			include: { contacts: true },
+			include: {
+				contacts: {
+					include: {
+						messagesReceived: {
+							take: 1,
+							orderBy: {
+								sentAt: 'desc',
+							},
+						},
+						messagesSent: {
+							take: 1,
+							orderBy: {
+								sentAt: 'desc',
+							},
+						},
+					},
+				},
+			},
 		})
 
 		if (!result) throw new NotFoundError('User')
 
-		return result.contacts
+		const { contacts } = result
+
+		return contacts.map(contact => {
+			const { messagesReceived, messagesSent, ...data } = contact
+			const [lastMessage] = [messagesReceived, messagesReceived]
+				.flat()
+				.sort((a, b) => b.sentAt.getTime() - a.sentAt.getTime())
+
+			return { ...data, lastMessage }
+		})
 	}
 
 	async addToContacts(userId: string, newContactId: string): Promise<User> {

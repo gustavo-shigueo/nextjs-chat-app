@@ -1,11 +1,10 @@
-import { ButtonHTMLAttributes, FC, useEffect, useRef, useState } from 'react'
+import { ButtonHTMLAttributes, FC, ReactNode } from 'react'
 import style from './Button.module.scss'
 import classNames from 'utils/classNames'
 import Spinner from 'components/Spinner'
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	loading?: boolean
-	spinner?: () => JSX.Element
 	variant?:
 		| 'primary'
 		| 'accent'
@@ -22,11 +21,6 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 		| 'flat'
 }
 
-type Size = {
-	minWidth: number
-	minHeight: number
-}
-
 const Button: FC<ButtonProps> = ({
 	type = 'button',
 	variant = 'primary',
@@ -38,20 +32,8 @@ const Button: FC<ButtonProps> = ({
 	style: HTMLStyle,
 	...props
 }) => {
-	const [size, setSize] = useState<Size>()
-	const btnRef = useRef<HTMLButtonElement>(null)
-
-	useEffect(() => {
-		if (!btnRef.current || loading) return
-
-		const { width, height } = btnRef.current.getBoundingClientRect()
-
-		setSize({ minWidth: width, minHeight: height })
-	}, [loading, children])
-
 	return (
 		<button
-			ref={btnRef}
 			className={classNames(
 				'box-shadow-small',
 				'border-radius-100',
@@ -64,22 +46,26 @@ const Button: FC<ButtonProps> = ({
 			disabled={loading || disabled}
 			style={{
 				cursor: loading ? 'not-allowed' : 'pointer',
-				...size,
 				...HTMLStyle,
 			}}
 			{...props}
 		>
-			{loading ? (
-				<Spinner
-					style={{
-						position: 'absolute',
-						top: 'calc(50% - 0.5rem)',
-						left: 'calc(50% - 0.5rem)',
-					}}
-				/>
-			) : (
-				children
-			)}
+			<span
+				style={{
+					visibility: loading ? 'hidden' : 'visible',
+					display: 'contents',
+				}}
+			>
+				{children}
+			</span>
+			<Spinner
+				style={{
+					position: 'absolute',
+					top: 'calc(50% - 0.5rem)',
+					left: 'calc(50% - 0.5rem)',
+					visibility: loading ? 'visible' : 'hidden',
+				}}
+			/>
 		</button>
 	)
 }

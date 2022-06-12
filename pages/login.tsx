@@ -8,9 +8,10 @@ import emailRegex from 'utils/emailRegex'
 import { useCallback } from 'react'
 import { GoogleLogin } from '@react-oauth/google'
 import authGuard from 'guards/autth/authGuard'
+import Google from 'components/GoogleLogin'
 
 const LogIn: NextPage = () => {
-	const { user, login, error, loading, isAuthenticated } = useAuth()
+	const { login, error, loading } = useAuth()
 	const emailValidator: InputValidator = useCallback(
 		value => [!!value.match(emailRegex), 'Invalid e-mail'],
 		[]
@@ -25,7 +26,7 @@ const LogIn: NextPage = () => {
 	)
 
 	const responseGoogle = async (response: any) => {
-		const { credential: googleAccessToken } = response
+		const { access_token: googleAccessToken } = response
 
 		login({ googleAccessToken })
 	}
@@ -63,13 +64,7 @@ const LogIn: NextPage = () => {
 			<div className={style.separator}>or</div>
 
 			<div className={style.social}>
-				<GoogleLogin
-					onSuccess={responseGoogle}
-					onError={console.error}
-					text="signin_with"
-					theme="filled_blue"
-					cancel_on_tap_outside
-				/>
+				<Google onSuccess={responseGoogle} text="signin" />
 			</div>
 		</div>
 	)
@@ -84,6 +79,10 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
 		return {
 			props: {
 				authenticatedUserData,
+			},
+			redirect: {
+				destination: '/dashboard',
+				permanent: false,
 			},
 		}
 	} catch (error: any) {

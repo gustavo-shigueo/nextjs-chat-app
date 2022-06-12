@@ -10,12 +10,15 @@ type AuthGuard = (
 
 const authGuard: AuthGuard = async ({ req, res }) => {
 	try {
-		const { data, headers } = await api.post<IUser>('/me', {}, {
+		const { data, headers } = await api.post<IUser>('/auth/me', {}, {
 			withCredentials: true,
 			headers: { Cookie: req.headers.cookie },
 		} as any)
 
 		res.setHeader('set-cookie', Object.freeze(headers['set-cookie'] ?? []))
+		;(
+			api.defaults.headers as any
+		).Authorization = `Bearer ${headers.authorization}`
 
 		return {
 			serverSideUser: data,

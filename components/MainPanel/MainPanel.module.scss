@@ -1,0 +1,17 @@
+@layer components {
+	.main-panel {
+		display: grid;
+		grid-template-columns: minmax(0, 20em) 1fr;
+		min-height: calc(100vh - 4 * var(--em-size-500));
+		margin-block-start: 1em;
+		overflow-y: auto;
+
+		.contact-list {
+			display: flex;
+			flex-direction: column;
+			gap: 2px;
+
+			list-style: none;
+		}
+	}
+}

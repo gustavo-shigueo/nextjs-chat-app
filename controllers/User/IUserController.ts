@@ -19,4 +19,8 @@ export default interface IUserController extends IUserOperations {
 	associateGoogleProfile(userId: string): Promise<User>
 
 	setOnlineStatus(userId: string, status: boolean): Promise<User>
+
+	listUserContacts(id: string): Promise<User[]>
+
+	addToUserContacts(userId: string, contactId: string): Promise<User>
 }

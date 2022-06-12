@@ -22,7 +22,7 @@ export default class UserService implements IUserService {
 		this.#passwordProvider = passwordProvider
 	}
 
-	async create(userData: ICreateUserRequest): Promise<User> {
+	async create(userData: ICreateUserRequest): Promise<Required<User>> {
 		let { name, googleProfile = null, email = '', password = '' } = userData
 		FieldLength({ name }, 3, 50)
 
@@ -51,27 +51,27 @@ export default class UserService implements IUserService {
 		return this.#userRepository.create(user)
 	}
 
-	findById(id: string): Promise<User> {
+	async findById(id: string): Promise<User> {
 		return this.#userRepository.findById(id)
 	}
 
-	findByName(name: string): Promise<User[]> {
+	async findByName(name: string): Promise<User[]> {
 		return this.#userRepository.findByName(name)
 	}
 
-	findByEmail(email: string): Promise<User | null> {
+	async findByEmail(email: string): Promise<User | null> {
 		return this.#userRepository.findByEmail(email)
 	}
 
-	findByGoogleAssociatedEmail(email: string): Promise<User | null> {
+	async findByGoogleAssociatedEmail(email: string): Promise<User | null> {
 		return this.#userRepository.findByGoogleAssociatedEmail(email)
 	}
 
-	listAll(): Promise<User[]> {
+	async listAll(): Promise<User[]> {
 		return this.#userRepository.listAll()
 	}
 
-	associateGoogleProfile(userId: string): Promise<User> {
+	async associateGoogleProfile(userId: string): Promise<User> {
 		return this.#userRepository.updateOne(
 			{ googleAssociated: true },
 			{ id: userId }
@@ -82,11 +82,15 @@ export default class UserService implements IUserService {
 		return this.#userRepository.addToContacts(userId, newContactId)
 	}
 
-	setOnlineStatus(userId: string, status: boolean): Promise<User> {
+	async setOnlineStatus(userId: string, status: boolean): Promise<User> {
 		return this.#userRepository.updateOne(
 			{ onlineStatus: status },
 			{ id: userId }
 		)
+	}
+
+	async listUserContacts(id: string): Promise<User[]> {
+		return this.#userRepository.listUserContacts(id)
 	}
 
 	#validateEmail(email: string): void {

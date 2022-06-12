@@ -5,6 +5,6 @@ export default class Message {
 		public text: string,
 		public senderId: string,
 		public receiverId: string,
-		public sentAt?: Date
+		public sentAt: Date = new Date()
 	) {}
 }

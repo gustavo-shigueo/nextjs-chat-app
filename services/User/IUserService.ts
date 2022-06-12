@@ -20,4 +20,6 @@ export default interface IUserService extends IUserOperations {
 	setOnlineStatus(userId: string, status: boolean): Promise<User>
 
 	addToContacts(userId: string, newContactId: string): Promise<User>
+
+	listUserContacts(id: string): Promise<User[]>
 }

@@ -39,11 +39,13 @@ export default class AuthService implements IAuthService {
 	}
 
 	async signInWithGoogle(accessToken: string): Promise<User> {
-		const baseVerificationURL = 'https://oauth2.googleapis.com/tokeninfo'
-		const verificationURL = `${baseVerificationURL}?id_token=${accessToken}`
+		const url = 'https://www.googleapis.com/oauth2/v3/userinfo'
 
-		const verificationResponse = await fetch(verificationURL, {
-			method: 'POST',
+		const verificationResponse = await fetch(url, {
+			// method: 'POST',
+			headers: {
+				Authorization: `Bearer ${accessToken}`,
+			},
 		})
 
 		if (verificationResponse.status !== 200) throw new GoogleAuthError()
@@ -52,12 +54,6 @@ export default class AuthService implements IAuthService {
 
 		const { name, email, picture } = verificationData
 		EmptyFields({ name, email, picture })
-
-		if (
-			verificationData.aud !== process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID
-		) {
-			throw new GoogleAuthError()
-		}
 
 		let account = await this.#userService.findByGoogleAssociatedEmail(email)
 
