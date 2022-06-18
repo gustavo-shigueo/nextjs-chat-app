@@ -3,7 +3,7 @@ const isString = (x: string | ClassName): x is string => typeof x === 'string'
 const concat = (x: string, y: string) => `${x}${x && y && ' '}${y}`
 
 const reducer = (acc: string, cur?: string | ClassName | null): string => {
-	if (cur == null) return acc
+	if (cur === null || cur === undefined) return acc
 
 	if (isString(cur)) return concat(acc, cur)
 

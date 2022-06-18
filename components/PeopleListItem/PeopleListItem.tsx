@@ -2,19 +2,24 @@ import Button from 'components/Button'
 import IContact from 'interfaces/IContact'
 import IPublicUserData from 'interfaces/IPublicUserData'
 import Image from 'next/image'
-import { FC } from 'react'
+import { FC, MouseEventHandler } from 'react'
 import classNames from 'utils/classNames'
 import parseDateDifference from 'utils/parseDateDifference'
 import style from './PeopleListItem.module.scss'
 
 interface IPeopleListItemProps {
 	person: IContact | IPublicUserData
+	onClick?: MouseEventHandler
 }
 
-const PeopleListItem: FC<IPeopleListItemProps> = ({ person }) => {
+const PeopleListItem: FC<IPeopleListItemProps> = ({ person, onClick }) => {
 	const { name, avatarUrl, onlineStatus } = person
 	return (
-		<Button variant="flat" className={classNames(style['contact-list-item'])}>
+		<Button
+			variant="flat"
+			onClick={onClick}
+			className={classNames(style['contact-list-item'])}
+		>
 			<div
 				className={classNames('relative', style['contact-avatar'])}
 				style={{

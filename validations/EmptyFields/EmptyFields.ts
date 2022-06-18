@@ -16,7 +16,7 @@ const isString = (value: any): value is string => typeof value === 'string'
 const EmptyFields = (fields: IField<any>): void => {
 	Object.entries(fields).forEach(([fieldName, value]) => {
 		if (isString(value) && value.trim() !== '') return
-		if (!isString(value) && value != null) return
+		if (!isString(value) && value !== null && value !== undefined) return
 
 		throw new EmptyFieldError([fieldName])
 	})

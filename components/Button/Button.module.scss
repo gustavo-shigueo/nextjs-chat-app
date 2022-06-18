@@ -34,8 +34,8 @@
 		--bg-color-hover: var(--btn-text-color-hover, var(--color-neutral-200));
 		--text-color-hover: var(--btn-bg-color-hover, var(--color-neutral-900));
 
-		--shadow-opacity: 0.15;
-		--shadow-blur: var(--size-300);
+		--shadow-opacity: 0.05;
+		--shadow-blur: var(--size-200);
 
 		&[class*='outline'] {
 			--border-color: var(--text-color);

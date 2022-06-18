@@ -32,4 +32,19 @@
 			padding-inline: var(--page-inline-padding);
 		}
 	}
+
+	::-webkit-scrollbar {
+		width: 0.5rem;
+	}
+
+	::-webkit-scrollbar-track {
+		background-color: var(--color-neutral-300);
+		border-radius: 100vmax;
+	}
+
+	::-webkit-scrollbar-thumb {
+		background-color: var(--color-neutral-400);
+		border-radius: 100vmax;
+		// width: calc(0.5rem - 2px);
+	}
 }

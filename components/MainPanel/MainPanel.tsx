@@ -1,4 +1,4 @@
-import ContactListItem from 'components/PeopleListItem'
+import PeopleListItem from 'components/PeopleListItem'
 import Input from 'components/Input'
 import List from 'components/List'
 import useDebounce from 'hooks/useDebounce'
@@ -7,6 +7,7 @@ import IPublicUserData from 'interfaces/IPublicUserData'
 import { FC, useEffect, useState } from 'react'
 import api from 'services/axios'
 import style from './MainPanel.module.scss'
+import MessagePanel from 'components/MessagePanel'
 
 interface IMainPanelProps {
 	contacts: IContact[]
@@ -58,7 +59,7 @@ const placeholder = [
 ]
 
 const MainPanel: FC<IMainPanelProps> = ({ contacts }) => {
-	const [selectedUser, setSelectedUser] = useState()
+	const [selectedContact, setSelectedContact] = useState<IContact>()
 	const [people, setPeople] = useState([])
 	const [search, setSearch] = useState('')
 	const debouncedSearch = useDebounce(search)
@@ -93,7 +94,12 @@ const MainPanel: FC<IMainPanelProps> = ({ contacts }) => {
 					items={placeholder.filter(c =>
 						c.name.toLowerCase().includes(debouncedSearch.toLowerCase())
 					)}
-					render={item => <ContactListItem person={item} />}
+					render={item => (
+						<PeopleListItem
+							person={item}
+							onClick={() => setSelectedContact(item)}
+						/>
+					)}
 				/>
 				{!!people.length && (
 					<>
@@ -101,12 +107,14 @@ const MainPanel: FC<IMainPanelProps> = ({ contacts }) => {
 						<List<IPublicUserData>
 							className={style['contact-list']}
 							items={people}
-							render={person => <ContactListItem person={person} />}
+							render={person => <PeopleListItem person={person} />}
 						/>
 					</>
 				)}
 			</section>
-			<section className={style['messages-section']}></section>
+			<section className={style['messages-section']}>
+				<MessagePanel contact={selectedContact} />
+			</section>
 		</main>
 	)
 }

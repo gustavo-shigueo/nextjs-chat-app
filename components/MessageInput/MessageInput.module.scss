@@ -1,0 +1,26 @@
+@layer components {
+	.message-input-group > form {
+		display: flex;
+		align-items: center;
+		gap: var(--size-200);
+
+		padding: var(--size-200);
+
+		.message-input {
+			flex-grow: 1;
+			padding-inline: var(--size-200);
+			resize: none;
+			position: relative;
+
+			&::placeholder {
+				position: absolute;
+				top: 50%;
+				transform: translateY(calc(-50% - 0.25ex));
+			}
+		}
+
+		button {
+			aspect-ratio: 1;
+		}
+	}
+}
