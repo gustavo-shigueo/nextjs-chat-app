@@ -2,11 +2,8 @@
 	.spinner {
 		aspect-ratio: 1;
 
-		border: 3px solid var(--color-neutral-500);
+		border-top: 3px solid var(--color-neutral-500);
 		border-radius: 50%;
-		border-top: none;
-		border-left: none;
-		border-bottom: none;
 
 		animation: spinner 500ms linear infinite forwards;
 	}

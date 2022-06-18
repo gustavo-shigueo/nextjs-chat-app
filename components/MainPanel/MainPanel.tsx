@@ -86,6 +86,7 @@ const MainPanel: FC<IMainPanelProps> = ({ contacts }) => {
 					type="search"
 					value={search}
 					onChange={e => setSearch(e.target.value)}
+					name="search"
 				/>
 
 				<h2>Contatos:</h2>

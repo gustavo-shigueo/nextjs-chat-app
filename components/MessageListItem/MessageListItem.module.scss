@@ -13,7 +13,7 @@
 
 		&-sent {
 			color: getcolor('neutral', 100);
-			background-color: var(--color-primary-400);
+			background-color: getcolor('primary', 700);
 			align-self: end;
 			border-bottom-right-radius: 0;
 		}

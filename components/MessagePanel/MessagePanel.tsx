@@ -5,7 +5,7 @@ import Message from 'entities/Message'
 import IContact from 'interfaces/IContact'
 import IMessage from 'interfaces/IMessage'
 import style from './MessagePanel.module.scss'
-import { FC, useState } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 import { useAuth } from 'contexts/UserContext'
 import MessageInput from 'components/MessageInput'
 
@@ -82,6 +82,13 @@ const placeholder: IMessage[] = [
 const MessagePanel: FC<IMessagePanelProps> = ({ contact }) => {
 	const { user } = useAuth()
 	const [messages, setMessages] = useState<Message[]>([])
+	const listRef = useRef<HTMLUListElement>(null)
+
+	useEffect(() => {
+		if (!listRef.current) return
+
+		listRef.current.scrollTo({ top: Number.MAX_SAFE_INTEGER })
+	}, [])
 
 	if (!contact || !user) return null
 
@@ -89,6 +96,7 @@ const MessagePanel: FC<IMessagePanelProps> = ({ contact }) => {
 		<>
 			<ContactHeader contact={contact} />
 			<List<IMessage>
+				ref={listRef}
 				className={style['message-list']}
 				items={placeholder}
 				render={({ senderId, sentAt, text }) => (

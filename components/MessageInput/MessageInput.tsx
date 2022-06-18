@@ -6,10 +6,9 @@ const MessageInput = () => {
 	return (
 		<div className={style['message-input-group']}>
 			<form onSubmit={e => e.preventDefault()}>
-				<textarea
-					placeholder="Mensagem..."
-					className={style['message-input']}
-				/>
+				<label className={style['message-input']}>
+					<textarea placeholder="Mensagem..." />
+				</label>
 				<Button className="border-radius-full" aria-label="Send">
 					<IoSend />
 				</Button>
