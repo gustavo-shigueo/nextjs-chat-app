@@ -32,7 +32,7 @@
 			overflow: hidden;
 
 			display: grid;
-			grid-template-rows: repeat(3, auto-fit);
+			grid-template-rows: auto 1fr auto;
 		}
 	}
 }
