@@ -25,7 +25,7 @@ const GoogleLogin: FC<GoogleLoginProps> = ({ onSuccess, text }) => {
 		switch (text) {
 			case 'signin':
 				return 'Fazer login com o Google'
-			case 'signin':
+			case 'signup':
 				return 'Increver-se com o Google'
 			case 'continue_with':
 				return 'Continuar com o Google'

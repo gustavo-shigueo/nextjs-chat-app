@@ -4,7 +4,7 @@ import Input, { InputValidator } from 'components/Input'
 import { useAuth } from 'contexts/UserContext'
 import { GetServerSideProps, NextPage } from 'next'
 import { useCallback } from 'react'
-import { GoogleLogin } from '@react-oauth/google'
+import GoogleLogin from 'components/GoogleLogin'
 import style from 'styles/AuthForms.module.scss'
 import emailRegex from 'utils/emailRegex'
 import authGuard from 'guards/autth/authGuard'
@@ -37,7 +37,7 @@ const SignUp: NextPage = () => {
 
 	return (
 		<div className={style.formWrapper}>
-			<h2>Signup</h2>
+			<h2>Cadastre-se</h2>
 			<Form
 				handleFormData={data => signup({ profile: data })}
 				className={style.form}
@@ -77,13 +77,7 @@ const SignUp: NextPage = () => {
 			<div className={style.separator}>or</div>
 
 			<div className={style.social}>
-				<GoogleLogin
-					onSuccess={responseGoogle}
-					onError={console.error}
-					text="signup_with"
-					auto_select={false}
-					theme="filled_blue"
-				/>
+				<GoogleLogin onSuccess={responseGoogle} text="signup" />
 			</div>
 		</div>
 	)

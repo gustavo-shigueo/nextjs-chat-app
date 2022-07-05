@@ -6,9 +6,8 @@ import Button from 'components/Button'
 import Input, { InputValidator } from 'components/Input'
 import emailRegex from 'utils/emailRegex'
 import { useCallback } from 'react'
-import { GoogleLogin } from '@react-oauth/google'
 import authGuard from 'guards/autth/authGuard'
-import Google from 'components/GoogleLogin'
+import GoogleLogin from 'components/GoogleLogin'
 
 const LogIn: NextPage = () => {
 	const { login, error, loading } = useAuth()
@@ -64,7 +63,7 @@ const LogIn: NextPage = () => {
 			<div className={style.separator}>or</div>
 
 			<div className={style.social}>
-				<Google onSuccess={responseGoogle} text="signin" />
+				<GoogleLogin onSuccess={responseGoogle} text="signin" />
 			</div>
 		</div>
 	)
