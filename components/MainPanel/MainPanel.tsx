@@ -16,9 +16,9 @@ interface IMainPanelProps {
 const placeholder = [
 	{
 		id: '103c33d4-4af1-410c-889a-609f7d2390a9',
-		name: 'Gustavo Shigueo',
+		name: 'Teste',
 		avatarUrl:
-			'https://lh3.googleusercontent.com/a-/AOh14Gj6zOKw_JuB01EOqUpEUPilCNeZ42ouHCvc2Z76cw=s96-c',
+			'https://avatars.dicebear.com/api/bottts/TESTE-172c2347-2c6f-4a4e-9cd2-f3a080c750f2.svg',
 		onlineStatus: true,
 		lastMessage: {
 			id: 'aaaaaaa',
