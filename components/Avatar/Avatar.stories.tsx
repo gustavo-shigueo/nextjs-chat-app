@@ -15,7 +15,8 @@ export const AvatarComponent: ComponentStory<typeof Avatar> = () => (
 			avatarUrl:
 				'https://avatars.dicebear.com/api/bottts/TESTE-172c9347-2c6f-4a4e-9cd3-f3a080c750f2.svg',
 			onlineStatus: true,
-			googleAssociated: false,
+			googleId: 'shoreig',
+			emailVerified: true,
 		}}
 	/>
 )

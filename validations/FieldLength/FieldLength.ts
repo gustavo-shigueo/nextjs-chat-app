@@ -9,16 +9,16 @@ import IField from 'validations/IField'
  * @throws {InvalidFieldError} If the field doesn't have the correct length, an error is throwns
  */
 const FieldLength = (
-	field: IField<string>,
+	field: IField<string | null | undefined>,
 	minLength: number,
 	maxLength: number
 ) => {
-	const [fieldName, { length }] = Object.entries(field).flat()
+	const [fieldName, value] = Object.entries(field).flat()
 
-	if (length < minLength || length > maxLength) {
+	if (!value || value.length < minLength || value.length > maxLength) {
 		throw new InvalidFieldError(
 			`${fieldName} must be between ${minLength} and ${maxLength} characters long`,
-			[fieldName]
+			[fieldName ?? '']
 		)
 	}
 }

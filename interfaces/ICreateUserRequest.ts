@@ -1,8 +1,15 @@
 import IGoogleProfile from './IGoogleProfile'
 
-export default interface ICreateUserRequest {
-	name: string
-	email?: string
-	password?: string
-	googleProfile?: IGoogleProfile
-}
+type ICreateUserRequest =
+	| {
+			method: 'emailAndPassword'
+			name: string
+			email: string
+			password: string
+	  }
+	| {
+			method: 'google'
+			googleProfile: IGoogleProfile
+	  }
+
+export default ICreateUserRequest

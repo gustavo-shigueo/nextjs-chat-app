@@ -1,7 +1,5 @@
 import IUser from './IUser'
 
-type IPublicUserData = Required<
-	Omit<IUser, 'email' | 'googleAssociated' | 'contacts'>
->
+type IPublicUserData = Omit<IUser, 'email' | 'googleId' | 'contacts'>
 
 export default IPublicUserData

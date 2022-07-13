@@ -8,6 +8,9 @@ const refreshCredentials = async (
 	res: NextApiResponse
 ) => {
 	const { [process.env.NEXT_PUBLIC_COOKIE_NAME!]: refreshToken } = req.cookies
+
+	if (!refreshToken) throw new InvalidOrExpiredTokenError()
+
 	const id = await RefreshTokenProvider.verify(refreshToken)
 
 	if (!id) throw new InvalidOrExpiredTokenError()

@@ -6,7 +6,7 @@ import classNames from 'utils/classNames'
 
 interface CredentialResponse {
 	access_token: string
-	expires_in: string
+	expires_in: number
 	hd?: string
 	prompt: string
 	token_type: string
@@ -29,6 +29,9 @@ const GoogleLogin: FC<GoogleLoginProps> = ({ onSuccess, text }) => {
 				return 'Increver-se com o Google'
 			case 'continue_with':
 				return 'Continuar com o Google'
+			default:
+				const _: never = text
+				if (_) throw new Error()
 		}
 	}
 

@@ -10,7 +10,7 @@ import style from './MainPanel.module.scss'
 import MessagePanel from 'components/MessagePanel'
 
 interface IMainPanelProps {
-	contacts: IContact[]
+	contacts: any[]
 }
 
 const placeholder = [
@@ -59,24 +59,8 @@ const placeholder = [
 ]
 
 const MainPanel: FC<IMainPanelProps> = ({ contacts }) => {
-	const [selectedContact, setSelectedContact] = useState<IContact>()
-	const [people, setPeople] = useState([])
 	const [search, setSearch] = useState('')
 	const debouncedSearch = useDebounce(search)
-
-	useEffect(() => {
-		const fetchUsers = async () => {
-			try {
-				if (!debouncedSearch) return setPeople([])
-				const { data } = await api.get(`/users/search/${debouncedSearch}`)
-				setPeople(data)
-			} catch (e) {
-				console.error(e)
-			}
-		}
-
-		fetchUsers()
-	}, [debouncedSearch])
 
 	return (
 		<main className={style['main-panel']}>
@@ -89,32 +73,17 @@ const MainPanel: FC<IMainPanelProps> = ({ contacts }) => {
 					name="search"
 				/>
 
-				<h2>Contatos:</h2>
-				<List<IContact>
+				<h2>Conversas:</h2>
+				<List
 					className={style['contact-list']}
 					items={placeholder.filter(c =>
 						c.name.toLowerCase().includes(debouncedSearch.toLowerCase())
 					)}
-					render={item => (
-						<PeopleListItem
-							person={item}
-							onClick={() => setSelectedContact(item)}
-						/>
-					)}
+					render={item => <PeopleListItem person={item as any} />}
 				/>
-				{!!people.length && (
-					<>
-						<h2>Pessoas:</h2>
-						<List<IPublicUserData>
-							className={style['contact-list']}
-							items={people}
-							render={person => <PeopleListItem person={person} />}
-						/>
-					</>
-				)}
 			</section>
 			<section className={style['messages-section']}>
-				<MessagePanel contact={selectedContact} />
+				<MessagePanel contact={undefined} />
 			</section>
 		</main>
 	)

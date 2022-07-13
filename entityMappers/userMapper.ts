@@ -1,14 +1,15 @@
 import User from 'entities/User'
 
-const userMapper = <T extends User>(user: T & { _id?: string }): User => {
+const userMapper = <T extends User>(user: T): User => {
 	return {
-		id: user.id ?? user._id,
+		id: user.id,
 		name: user.name,
 		email: user.email,
 		password: user.password,
 		avatarUrl: user.avatarUrl,
-		googleAssociated: user.googleAssociated,
+		googleId: user.googleId,
 		onlineStatus: user.onlineStatus,
+		emailVerified: user.emailVerified,
 	}
 }
 

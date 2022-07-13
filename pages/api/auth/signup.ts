@@ -13,7 +13,8 @@ const signup = async (req: NextApiRequest, res: NextApiResponse) => {
 		const { body } = req
 		const { name, email, password } = body
 
-		const user = await AuthController.signUp({
+		const user = await AuthController.signUpWithEmailAndPassword({
+			method: 'emailAndPassword',
 			name,
 			email,
 			password,
