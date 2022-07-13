@@ -9,6 +9,7 @@ import EmptyFields from 'validations/EmptyFields'
 import FieldLength from 'validations/FieldLength'
 import { randomUUID } from 'crypto'
 import IPasswordProvider from 'providers/password/IPasswordProvider'
+import GoogleAuthError from 'errors/GoogleAuthError'
 
 export default class UserService implements IUserService {
 	#userRepository: IUserRepository
@@ -22,31 +23,25 @@ export default class UserService implements IUserService {
 		this.#passwordProvider = passwordProvider
 	}
 
-	async create(userData: ICreateUserRequest): Promise<Required<User>> {
-		let { name, googleProfile = null, email = '', password = '' } = userData
-		FieldLength({ name }, 3, 50)
-
-		EmptyFields(googleProfile ?? { email, password })
-
-		if (!googleProfile) {
-			this.#validateEmail(email)
-			FieldLength({ password }, 8, 32)
-
-			if (await this.#userRepository.isEmailInUse(email)) {
-				throw new EmailAlreadyInUseError()
-			}
+	public async save(user: User): Promise<User> {
+		if (user.password) {
+			FieldLength({ password: user.password }, 8, 32)
+			user.password = await this.#passwordProvider.hash(user.password)
 		}
 
-		if (password) password = await this.#passwordProvider.hash(password)
+		this.#validateEmail(user.email)
 
-		const dicebearUrl = 'https://avatars.dicebear.com/api/bottts'
-		const user = new User(
-			name,
-			email,
-			password,
-			googleProfile?.picture ?? `${dicebearUrl}/${name}-${randomUUID()}.svg`,
-			!!googleProfile
-		)
+		if (await this.#userRepository.isEmailInUse(user.email)) {
+			throw new EmailAlreadyInUseError()
+		}
+
+		if (await this.#userRepository.findByGoogleId(user.googleId ?? '')) {
+			throw new GoogleAuthError(
+				'A user with this Google account already exists'
+			)
+		}
+
+		FieldLength({ name: user.name }, 3, 50)
 
 		return this.#userRepository.create(user)
 	}
@@ -63,23 +58,19 @@ export default class UserService implements IUserService {
 		return this.#userRepository.findByEmail(email)
 	}
 
-	async findByGoogleAssociatedEmail(email: string): Promise<User | null> {
-		return this.#userRepository.findByGoogleAssociatedEmail(email)
+	async findByGoogleId(googleId: string): Promise<User | null> {
+		return this.#userRepository.findByGoogleId(googleId)
 	}
 
 	async listAll(): Promise<User[]> {
 		return this.#userRepository.listAll()
 	}
 
-	async associateGoogleProfile(userId: string): Promise<User> {
-		return this.#userRepository.updateOne(
-			{ googleAssociated: true },
-			{ id: userId }
-		)
-	}
-
-	async addToContacts(userId: string, newContactId: string): Promise<User> {
-		return this.#userRepository.addToContacts(userId, newContactId)
+	async associateGoogleProfile(
+		userId: string,
+		googleId: string
+	): Promise<User> {
+		return this.#userRepository.updateOne({ googleId }, { id: userId })
 	}
 
 	async setOnlineStatus(userId: string, status: boolean): Promise<User> {
@@ -87,10 +78,6 @@ export default class UserService implements IUserService {
 			{ onlineStatus: status },
 			{ id: userId }
 		)
-	}
-
-	async listUserContacts(id: string): Promise<User[]> {
-		return this.#userRepository.listUserContacts(id)
 	}
 
 	#validateEmail(email: string): void {

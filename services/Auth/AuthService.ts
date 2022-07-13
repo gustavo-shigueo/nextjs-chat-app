@@ -8,6 +8,16 @@ import IUserService from 'services/User/IUserService'
 import EmptyFields from 'validations/EmptyFields'
 import IAuthService from './IAuthService'
 
+interface GoogleAuthResponse {
+	email: string
+	email_verified: boolean
+	given_name: string
+	locale: string
+	name: string
+	picture: string
+	sub: string
+}
+
 export default class AuthService implements IAuthService {
 	#userService: IUserService
 	#passwordProvider: IPasswordProvider
@@ -17,11 +27,29 @@ export default class AuthService implements IAuthService {
 		this.#passwordProvider = passwordProvider
 	}
 
-	async signUp(user: ICreateUserRequest): Promise<User> {
-		return this.#userService.create(user)
+	public async signUpWithEmailAndPassword(
+		userData: ICreateUserRequest
+	): Promise<User> {
+		if (userData.method !== 'emailAndPassword') {
+			throw new InvalidCredentialsError()
+		}
+
+		const { password, email, name } = userData
+		if (!password) throw new InvalidCredentialsError('Password is required')
+		return this.#userService.save(new User(name, email, password))
 	}
 
-	async signInWithEmailAndPassword(
+	public async signUpWithGoogle(accessToken: string): Promise<User> {
+		const { sub, name, email, picture } = await this.#validateGoogleAccessToken(
+			accessToken
+		)
+
+		const user = new User(name, email, null, picture || undefined, sub)
+
+		return this.#userService.save(user)
+	}
+
+	public async signInWithEmailAndPassword(
 		email: string,
 		password: string
 	): Promise<User> {
@@ -35,46 +63,45 @@ export default class AuthService implements IAuthService {
 		const valid = await this.#passwordProvider.verify(password, user.password)
 		if (!valid) throw new InvalidCredentialsError()
 
-		return this.#userService.setOnlineStatus(user.id!, true)
+		return this.#userService.setOnlineStatus(user.id, true)
 	}
 
-	async signInWithGoogle(accessToken: string): Promise<User> {
+	public async signInWithGoogle(accessToken: string): Promise<User> {
+		const { sub } = await this.#validateGoogleAccessToken(accessToken)
+
+		const user = await this.#userService.findByGoogleId(sub)
+
+		if (!user) {
+			throw new GoogleAuthError(
+				'No user is associated with this Google account'
+			)
+		}
+
+		return this.#userService.setOnlineStatus(user.id, true)
+	}
+
+	public async signOut(id: string): Promise<void> {
+		await this.#userService.setOnlineStatus(id, false)
+	}
+
+	async #validateGoogleAccessToken(
+		accessToken: string
+	): Promise<Pick<GoogleAuthResponse, 'sub' | 'name' | 'email' | 'picture'>> {
 		const url = 'https://www.googleapis.com/oauth2/v3/userinfo'
 
-		const verificationResponse = await fetch(url, {
-			// method: 'POST',
+		const response = await fetch(url, {
 			headers: {
 				Authorization: `Bearer ${accessToken}`,
 			},
 		})
 
-		if (verificationResponse.status !== 200) throw new GoogleAuthError()
+		if (response.status !== 200) throw new GoogleAuthError()
 
-		const verificationData = await verificationResponse.json()
+		const verificationData: GoogleAuthResponse = await response.json()
 
-		const { name, email, picture } = verificationData
-		EmptyFields({ name, email, picture })
+		const { sub, name, email, picture } = verificationData
+		EmptyFields({ sub, name, email, picture })
 
-		let account = await this.#userService.findByGoogleAssociatedEmail(email)
-
-		if (account) {
-			account = await this.#userService.setOnlineStatus(account.id!, true)
-
-			return account.googleAssociated
-				? account
-				: this.#userService.associateGoogleProfile(account.id!)
-		}
-
-		const userData: ICreateUserRequest = {
-			name,
-			email,
-			googleProfile: { name, email, picture },
-		}
-
-		return this.#userService.create(userData)
-	}
-
-	async signOut(id: string): Promise<void> {
-		await this.#userService.setOnlineStatus(id, false)
+		return { sub, name, email, picture }
 	}
 }
