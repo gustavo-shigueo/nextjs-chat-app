@@ -1,237 +1,242 @@
 import IUserRepository from './IUserRepository'
-import { MockContext, Context, createMockContext } from 'prisma/testing.context'
 import PrismaUserRepository from './PrismaUserRepository'
 import User from 'entities/User'
 import NotFoundError from 'errors/NotFoundError'
+import client from 'prisma/client'
+import { randomInt, randomUUID } from 'crypto'
 
 describe('User Repository', () => {
-	let mockCtx: MockContext
-	let ctx: Context
-	let repository: IUserRepository
+	let repository: InstanceType<typeof PrismaUserRepository>
 
-	beforeEach(() => {
-		mockCtx = createMockContext()
-		ctx = mockCtx as unknown as Context
-		repository = new PrismaUserRepository(ctx.prisma)
+	beforeEach(async () => {
+		await client.user.deleteMany()
+		await client.user.createMany({ data: initialUsers })
+		repository = new PrismaUserRepository(client)
 	})
 
 	it('should create new user ', async () => {
-		const user: Required<User> = {
-			id: 'real-id-001',
-			name: 'John Doe',
-			email: 'arealemail@gmail.com',
-			avatarUrl: 'https://arealurl.com',
-			googleAssociated: false,
-			password: 'A great password',
-			onlineStatus: true,
-		}
+		const newUser = new User(
+			"Ra's al Ghul",
+			'league-of-assassins@gmail.com',
+			null,
+			'https:/realulr.com',
+			'realgoogleid'
+		)
 
-		mockCtx.prisma.user.create.mockResolvedValue(user)
+		const result = await repository.create(newUser)
 
-		await expect(repository.create(user)).resolves.toEqual<User>(user)
+		expect(result).toEqual(newUser)
 	})
 
 	it('should find a user by their id', async () => {
-		const id = 'user-id-00001'
+		const index = randomInt(0, initialUsers.length)
+		const user = initialUsers[index]
 
-		const user: Required<User> = {
-			id,
-			name: 'John Doe',
-			email: 'arealemail@gmail.com',
-			avatarUrl: 'https://arealurl.com',
-			googleAssociated: false,
-			password: 'A great password',
-			onlineStatus: true,
-		}
+		const result = await repository.findById(user.id)
 
-		mockCtx.prisma.user.findUnique.mockResolvedValue(user)
-
-		await expect(repository.findById(id)).resolves.toEqual<User>(user)
-	})
-
-	it('should fail to find a user with inexistent information', async () => {
-		const id = 'fake-id-101'
-		const email = 'fake-email@gmail.com'
-
-		mockCtx.prisma.user.findUnique.mockResolvedValue(null)
-		mockCtx.prisma.user.findFirst.mockResolvedValue(null)
-
-		await expect(repository.findById(id)).rejects.toThrowError(
-			new NotFoundError('User')
-		)
-
-		await expect(repository.findByEmail(email)).resolves.toBeNull()
-		await expect(
-			repository.findByGoogleAssociatedEmail(email)
-		).resolves.toBeNull()
-	})
-
-	it('should detect whether an email is being used', async () => {
-		for (let i = 0; i < 10; i++) {
-			mockCtx.prisma.user.count.mockResolvedValue(i)
-
-			await expect(
-				repository.isEmailInUse('arealemail@gmail.com')
-			).resolves.toBe(i > 0)
-		}
-	})
-
-	it('should find users with a given substring in their name', async () => {
-		const users = [{ name: 'John Doe' }, { name: 'Jon Johnz' }, { name: 'Joy' }]
-
-		mockCtx.prisma.user.findMany.mockResolvedValue(users as any[])
-
-		await expect(repository.findByName('Jo')).resolves.toEqual(users)
+		expect(result).toEqual(user)
 	})
 
 	it('should find a user by their email', async () => {
-		const email = 'anormalemail@gmail.com'
-		const user: Required<User> = {
-			id: 'real-id-001',
-			name: 'John Doe',
-			email,
-			avatarUrl: 'https://arealurl.com',
-			googleAssociated: false,
-			password: 'A great password',
-			onlineStatus: true,
-		}
+		const index = randomInt(0, initialUsers.length)
+		const user = initialUsers[index]
 
-		mockCtx.prisma.user.findUnique.mockResolvedValue(user)
+		const result = await repository.findByEmail(user.email)
 
-		await expect(repository.findByEmail(email)).resolves.toEqual(user)
+		expect(result).toEqual(user)
 	})
 
-	it('should find a user by their google email', async () => {
-		const email = 'anormalemail@gmail.com'
-		const user: Required<User> = {
-			id: 'real-id-001',
-			name: 'John Doe',
-			email,
-			avatarUrl: 'https://arealurl.com',
-			googleAssociated: false,
-			password: 'A great password',
-			onlineStatus: true,
-		}
+	it('should fail to find a user with inexistent id', async () => {
+		const fakeId = "this id shouldn't exist"
 
-		mockCtx.prisma.user.findFirst.mockResolvedValue(user)
+		const promise = repository.findById(fakeId)
 
-		await expect(
-			repository.findByGoogleAssociatedEmail(email)
-		).resolves.toEqual(user)
+		expect(promise).rejects.toThrowError(new NotFoundError('User'))
+	})
+
+	it('should fail to find a user with inexistent email', async () => {
+		const fakeGoogleId = 'not-an-email'
+
+		const result = await repository.findByEmail(fakeGoogleId)
+
+		expect(result).toBeNull()
+	})
+
+	it('should fail to find a user with inexistent googleId', async () => {
+		const fakeGoogleId = 'this google id is not real'
+
+		const result = await repository.findByGoogleId(fakeGoogleId)
+
+		expect(result).toBeNull()
+	})
+
+	it('should find users with a given substring in their name', async () => {
+		const nameSubstring = 'Har'
+
+		const results = await repository.findByName(nameSubstring)
+
+		initialUsers
+			.filter(({ name }) => name.includes(nameSubstring))
+			.forEach(user => expect(results).toContainEqual(user))
+	})
+
+	it('should find a user by their google id', async () => {
+		const usersWithGoogleId = initialUsers.filter(({ googleId }) => !!googleId)
+		const index = randomInt(0, usersWithGoogleId.length)
+		const user = usersWithGoogleId[index]
+
+		const result = await repository.findByGoogleId(user.googleId!)
+
+		expect(result).toEqual(user)
 	})
 
 	it('should list all users', async () => {
-		const users = [{ name: 'John Doe' }, { name: 'Jon Johnz' }, { name: 'Joy' }]
+		const users = await repository.listAll()
 
-		mockCtx.prisma.user.findMany.mockResolvedValue(users as any[])
+		const listedAll = initialUsers.every(
+			u => !!users.find(user => user.id === u.id)
+		)
 
-		await expect(repository.listAll()).resolves.toEqual(users)
+		expect(listedAll).toBeTruthy()
 	})
 
-	it('should update a user based on their id', async () => {
-		const user = {
-			id: 'user-id-1',
-			name: 'newName',
-		}
+	it('should be able to update a user', async () => {
+		const index = randomInt(0, initialUsers.length)
+		const { id, ...user } = initialUsers[index]
+		const name = 'New name'
 
-		mockCtx.prisma.user.update.mockResolvedValue(user as any)
+		const result = await repository.updateOne({ name }, { id })
 
-		await expect(
-			repository.updateOne({ name: 'newName' }, { id: 'user-id-1' })
-		).resolves.toEqual(user)
+		expect(result).toEqual({ id, ...user, name })
 	})
 
 	it('should fail to update a user with inexistent information', async () => {
-		const id = 'fake-id-101'
-		const email = 'fake-email@gmail.com'
+		const fakeId = randomUUID()
 
-		mockCtx.prisma.user.update.mockRejectedValue(null)
-
-		await expect(repository.updateOne({ email }, { id })).rejects.toThrowError(
-			new NotFoundError('User')
+		const promise = repository.updateOne(
+			{ name: 'Edward Nigma' },
+			{ id: fakeId }
 		)
+
+		expect(promise).rejects.toThrowError(new NotFoundError('User'))
 	})
 
-	it("should list all of a user's contacts", async () => {
-		const id = 'a-real-id'
-		const contacts = [
-			{
-				name: 'John Doe',
-				messagesSent: [{ text: 'a', sentAt: new Date(2020, 1, 1) }],
-				messagesReceived: [{ text: 'a', sentAt: new Date(2021, 1, 1) }],
-			},
-			{
-				name: 'Jon Johnz',
-				messagesSent: [{ text: 'a', sentAt: new Date(2020, 1, 1) }],
-				messagesReceived: [{ text: 'a', sentAt: new Date(2021, 1, 1) }],
-			},
-			{
-				name: 'Joy',
-				messagesSent: [{ text: 'a', sentAt: new Date(2020, 1, 1) }],
-				messagesReceived: [{ text: 'a', sentAt: new Date(2021, 1, 1) }],
-			},
-		]
+	it('should be able to choose a new id for a new user in case of a clash', async () => {
+		const [{ id }] = initialUsers
 
-		const user: Required<User> & { contacts: any[] } = {
+		const newUser: User = {
 			id,
-			name: 'John Doe',
-			email: 'areal@email.com',
-			avatarUrl: 'https://arealurl.com',
-			googleAssociated: false,
-			password: 'A great password',
+			name: 'Slade Wilson',
+			avatarUrl: 'https://someurl.com',
+			email: 'mercenary@mail.com',
+			emailVerified: false,
+			googleId: 'real google id',
 			onlineStatus: true,
-			contacts,
+			password: null,
 		}
 
-		mockCtx.prisma.user.findUnique.mockResolvedValue(user)
+		const { id: newId } = await repository.create(newUser)
 
-		await expect(repository.listUserContacts(id)).resolves.toEqual(
-			contacts.map(({ messagesReceived: [r], messagesSent: [s], ...c }) => ({
-				...c,
-				lastMessage: [r, s].flat()[
-					r.sentAt.getTime() > s.sentAt.getDate() ? 0 : 1
-				],
-			}))
-		)
+		expect(newId).not.toBe(id)
 	})
 
-	it("should fail to list an inexistent user's contacts", async () => {
-		const id = 'a-fake-id'
+	it('should be able to tell whether an email is in use', async () => {
+		const index = randomInt(0, initialUsers.length)
+		const { email } = initialUsers[index]
 
-		mockCtx.prisma.user.findUnique.mockResolvedValue(null)
+		const truthyResult = await repository.isEmailInUse(email)
+		const falsyResult = await repository.isEmailInUse('not-an-email@mail.com')
 
-		await expect(repository.listUserContacts(id)).rejects.toThrowError(
-			new NotFoundError('User')
-		)
-	})
-
-	it("should add to a user's contacts", async () => {
-		const id = 'a-real-id'
-
-		const user: Required<User> = {
-			id,
-			name: 'John Doe',
-			email: 'areal@email.com',
-			avatarUrl: 'https://arealurl.com',
-			googleAssociated: false,
-			password: 'A great password',
-			onlineStatus: true,
-		}
-
-		mockCtx.prisma.user.update.mockResolvedValue(user)
-
-		await expect(repository.addToContacts(id, 'anotherId')).resolves.toEqual(
-			user
-		)
-	})
-
-	it("should fail to add to an inexistent user's contacts", async () => {
-		const id = 'a-fake-id'
-
-		mockCtx.prisma.user.update.mockRejectedValue(null)
-
-		await expect(
-			repository.addToContacts(id, 'anotherId')
-		).rejects.toThrowError(new NotFoundError('User'))
+		expect(truthyResult).toBe(true)
+		expect(falsyResult).toBe(false)
 	})
 })
+
+const initialUsers: User[] = [
+	new User(
+		'John Doe',
+		'johndoe@email.com',
+		'secure-and-hashed-password',
+		'https://avatar.url'
+	),
+	new User(
+		'Bob Williams',
+		'bob@email.com',
+		'secure-and-hashed-password',
+		'https://avatar.url'
+	),
+	new User(
+		'Alice Adams',
+		'aliceadams@email.com',
+		'secure-and-hashed-password',
+		'https://avatar.url'
+	),
+	// I cant come up with more fake data, so here are some random Batman characters
+	new User(
+		'Joe Chill',
+		'joechill@email.com',
+		null,
+		'https://avatar.url',
+		'a real google id'
+	),
+	new User(
+		'Pamela Isley',
+		'poisonivy@email.com',
+		'secure-and-hashed-password',
+		'https://avatar.url',
+		'another real google id'
+	),
+	new User(
+		'Oswald Cobblepot',
+		'penguin@gotham.com',
+		'secure-and-hashed-password',
+		'https://avatar.url'
+	),
+	new User(
+		'Bruce Wayne',
+		'notbatman@email.com',
+		'secure-and-hashed-password',
+		'https://avatar.url',
+		'Wanna know my secret identity?'
+	),
+	new User(
+		'Alfred Pennyworth',
+		'worth-more-than-a-penny@email.com',
+		'secure-and-hashed-password',
+		'https://avatar.url'
+	),
+	new User(
+		'Richard Grayson',
+		'iamnotadick@email.com',
+		null,
+		'https://avatar.url',
+		'I am totally not nightwing'
+	),
+	new User(
+		'Damian Wayne',
+		'boyblunder@email.com',
+		null,
+		'https://avatar.url',
+		"It's easier my way"
+	),
+	new User(
+		'Bane',
+		'back-breaker@email.com',
+		null,
+		'https://avatar.url',
+		'I will break your back, Batman!'
+	),
+	new User(
+		'Harleen Quinzel',
+		'not-insane-psychiatrist@email.com',
+		'secure-and-hashed-password',
+		'https://avatar.url'
+	),
+	new User(
+		'Harvey Dent',
+		'two-face@email.com',
+		'secure-and-hashed-password',
+		'https://avatar.url',
+		'Heads or Tails?'
+	),
+]

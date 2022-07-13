@@ -3,32 +3,37 @@ import IUsersRepository from './IUserRepository'
 import { PrismaClient } from '@prisma/client'
 import NotFoundError from 'errors/NotFoundError'
 import userMapper from 'entityMappers/userMapper'
+import { randomUUID } from 'crypto'
 
 export default class PrismaUserReopsitory implements IUsersRepository {
 	#client: PrismaClient
 
-	constructor(client: PrismaClient) {
+	public constructor(client: PrismaClient) {
 		this.#client = client
 	}
 
-	async create(user: User): Promise<Required<User>> {
-		const { id, ...data } = user
-		return userMapper(await this.#client.user.create({ data }))
+	public async create(user: User): Promise<User> {
+		// Ensures the id is unique
+		while (await this.findById(user.id).catch(() => null)) {
+			user.id = randomUUID()
+		}
+
+		return userMapper(await this.#client.user.create({ data: user }))
 	}
 
-	async isEmailInUse(email: string): Promise<boolean> {
+	public async isEmailInUse(email: string): Promise<boolean> {
 		const count = await this.#client.user.count({ where: { email } })
 		return count > 0
 	}
 
-	async findById(id: string): Promise<User> {
+	public async findById(id: string): Promise<User> {
 		const user = await this.#client.user.findUnique({ where: { id } })
 		if (!user) throw new NotFoundError('User')
 
 		return userMapper(user)
 	}
 
-	async findByName(name: string): Promise<User[]> {
+	public async findByName(name: string): Promise<User[]> {
 		const users = await this.#client.user.findMany({
 			where: { name: { contains: name } },
 		})
@@ -36,7 +41,7 @@ export default class PrismaUserReopsitory implements IUsersRepository {
 		return users.map(userMapper)
 	}
 
-	async findByEmail(email: string): Promise<User | null> {
+	public async findByEmail(email: string): Promise<User | null> {
 		const user = await this.#client.user.findUnique({ where: { email } })
 
 		if (!user) return null
@@ -44,11 +49,9 @@ export default class PrismaUserReopsitory implements IUsersRepository {
 		return userMapper(user)
 	}
 
-	async findByGoogleAssociatedEmail(email: string): Promise<User | null> {
+	public async findByGoogleId(googleId: string): Promise<User | null> {
 		const user = await this.#client.user.findFirst({
-			where: {
-				AND: [{ email }, { googleAssociated: true }],
-			},
+			where: { googleId },
 		})
 
 		if (!user) return null
@@ -56,70 +59,24 @@ export default class PrismaUserReopsitory implements IUsersRepository {
 		return userMapper(user)
 	}
 
-	async listAll(): Promise<User[]> {
+	public async listAll(): Promise<User[]> {
 		const users = await this.#client.user.findMany()
 		return users.map(userMapper)
 	}
 
-	async listUserContacts(id: string): Promise<User[]> {
-		const result = await this.#client.user.findUnique({
-			where: { id },
-			include: {
-				contacts: {
-					include: {
-						messagesReceived: {
-							take: 1,
-							orderBy: {
-								sentAt: 'desc',
-							},
-						},
-						messagesSent: {
-							take: 1,
-							orderBy: {
-								sentAt: 'desc',
-							},
-						},
-					},
-				},
-			},
-		})
+	public async updateOne(
+		data: Partial<Omit<User, 'id'>>,
+		where: Partial<Pick<User, 'id' | 'email' | 'googleId'>>
+	): Promise<User> {
+		const { googleId, ...whereData } = where
 
-		if (!result) throw new NotFoundError('User')
-
-		const { contacts } = result
-
-		return contacts.map(contact => {
-			const { messagesReceived, messagesSent, ...data } = contact
-			const [lastMessage] = [messagesReceived, messagesReceived]
-				.flat()
-				.sort((a, b) => b.sentAt.getTime() - a.sentAt.getTime())
-
-			return { ...data, lastMessage }
-		})
-	}
-
-	async addToContacts(userId: string, newContactId: string): Promise<User> {
 		const user = await this.#client.user
 			.update({
-				where: { id: userId },
-				data: {
-					contacts: {
-						connect: { id: newContactId },
-					},
-				},
-			})
-			.catch(() => null)
-
-		if (!user) throw new NotFoundError('User')
-
-		return userMapper(user)
-	}
-
-	async updateOne(data: Partial<User>, where: Partial<User>): Promise<User> {
-		const user = await this.#client.user
-			.update({
-				where,
 				data,
+				where: {
+					...whereData,
+					googleId: googleId ?? undefined,
+				},
 			})
 			.catch(() => null)
 

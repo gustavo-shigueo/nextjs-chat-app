@@ -1,19 +1,54 @@
 import User from 'entities/User'
-import IUserOperations from 'interfaces/IUserOperations'
 
-export default interface IUsersRepository extends IUserOperations {
-	create(user: User): Promise<Required<User>>
+export default interface IUsersRepository {
+	/**
+	 * Adds a user to the database
+	 * @param user
+	 */
+	create(user: User): Promise<User>
 
+	/**
+	 * Checls whether or not an email is already in use
+	 * @param email
+	 */
 	isEmailInUse(email: string): Promise<boolean>
 
 	/**
-	 * Returns all of a user's contacts and including the last message they've
-	 * sent
-	 * @param id The id of the user you want to retrieve the contacts from
+	 * Updates an user from tha database
+	 * @param data The new data to update the user with
+	 * @param where Filter to find the user to be updated
 	 */
-	listUserContacts(id: string): Promise<User[]>
+	updateOne(
+		data: Partial<Omit<User, 'id'>>,
+		where: Partial<Pick<User, 'id' | 'email' | 'googleId'>>
+	): Promise<User>
 
-	updateOne(data: Partial<User>, where: Partial<User>): Promise<User>
+	/**
+	 * Finds a user by their id
+	 * @param {string} id
+	 */
+	findById(id: string): Promise<User>
 
-	addToContacts(userId: string, newContactId: string): Promise<User>
+	/**
+	 * Finds all the users with the given name
+	 * @param {string} name
+	 */
+	findByName(name: string): Promise<User[]>
+
+	/**
+	 * Finds a user by their email
+	 * @param {string} email
+	 */
+	findByEmail(email: string): Promise<User | null>
+
+	/**
+	 * Finds a user through their Google Account
+	 * @param {IGoogleProfile} profile
+	 */
+	findByGoogleId(googleId: string): Promise<User | null>
+
+	/**
+	 * Returns all the users in the database
+	 */
+	listAll(): Promise<User[]>
 }
