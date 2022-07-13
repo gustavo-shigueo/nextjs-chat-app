@@ -10,15 +10,24 @@ export default class AuthController implements IAuthController {
 		this.#authService = authService
 	}
 
-	signUp(userData: ICreateUserRequest): Promise<User> {
-		return this.#authService.signUp(userData)
+	public async signUpWithGoogle(accessToken: string): Promise<User> {
+		return this.#authService.signUpWithGoogle(accessToken)
 	}
 
-	signInWithEmailAndPassword(email: string, password: string): Promise<User> {
+	public async signUpWithEmailAndPassword(
+		userData: ICreateUserRequest
+	): Promise<User> {
+		return this.#authService.signUpWithEmailAndPassword(userData)
+	}
+
+	public async signInWithEmailAndPassword(
+		email: string,
+		password: string
+	): Promise<User> {
 		return this.#authService.signInWithEmailAndPassword(email, password)
 	}
 
-	signInWithGoogle(accessToken: string): Promise<User> {
+	public async signInWithGoogle(accessToken: string): Promise<User> {
 		return this.#authService.signInWithGoogle(accessToken)
 	}
 }

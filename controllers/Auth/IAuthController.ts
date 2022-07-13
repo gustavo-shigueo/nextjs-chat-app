@@ -7,7 +7,14 @@ export default interface IAuthController {
 	 * @param {ICreateUserRequest} userData
 	 * @returns {Promise<User>} The created user
 	 */
-	signUp(userData: ICreateUserRequest): Promise<User>
+	signUpWithEmailAndPassword(userData: ICreateUserRequest): Promise<User>
+
+	/**
+	 * Creates a new user through the UserController using their Google account
+	 * @param {ICreateUserRequest} userData
+	 * @returns {Promise<User>} The created user
+	 */
+	signUpWithGoogle(accessToken: string): Promise<User>
 
 	/**
 	 * Attempts to sign a user in through email and password

@@ -1,4 +1,3 @@
-import ICreateUserRequest from 'interfaces/ICreateUserRequest'
 import IUserService from 'services/User/IUserService'
 import User from 'entities/User'
 import IUserController from './IUserController'
@@ -8,10 +7,6 @@ export default class UserController implements IUserController {
 
 	constructor(userService: IUserService) {
 		this.#userService = userService
-	}
-
-	async create(userData: ICreateUserRequest): Promise<User> {
-		return this.#userService.create(userData)
 	}
 
 	async findById(id: string): Promise<User> {
@@ -26,27 +21,22 @@ export default class UserController implements IUserController {
 		return this.#userService.findByEmail(email)
 	}
 
-	async findByGoogleAssociatedEmail(email: string): Promise<User | null> {
-		return this.#userService.findByGoogleAssociatedEmail(email)
+	async findByGoogleId(googleId: string): Promise<User | null> {
+		return this.#userService.findByGoogleId(googleId)
 	}
 
 	async listAll(): Promise<User[]> {
 		return this.#userService.listAll()
 	}
 
-	async associateGoogleProfile(userId: string): Promise<User> {
-		return this.#userService.associateGoogleProfile(userId)
+	async associateGoogleProfile(
+		userId: string,
+		googleId: string
+	): Promise<User> {
+		return this.#userService.associateGoogleProfile(userId, googleId)
 	}
 
 	async setOnlineStatus(userId: string, status: boolean): Promise<User> {
 		return this.#userService.setOnlineStatus(userId, status)
-	}
-
-	async listUserContacts(id: string): Promise<User[]> {
-		return this.#userService.listUserContacts(id)
-	}
-
-	async addToUserContacts(userId: string, contactId: string): Promise<User> {
-		return this.#userService.addToContacts(userId, contactId)
 	}
 }
