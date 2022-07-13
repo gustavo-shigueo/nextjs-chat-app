@@ -3,7 +3,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  previewFeatures = ["extendedIndexes"]
 }
 
 datasource db {
@@ -12,29 +11,43 @@ datasource db {
 }
 
 model User {
-  id               String    @db.VarChar(256) @default(uuid()) @id(length: 256) @map(name: "_id")
-  name             String    @db.VarChar(256)
-  email            String    @db.VarChar(256) @unique(length: 256)
-  password         String?   @db.VarChar(256)
-  avatarUrl        String    @db.VarChar(256)
-  googleAssociated Boolean   @default(false)
-  onlineStatus     Boolean   @default(true)
+  // Fields
+  id            String  @id @default(uuid())
+  name          String
+  avatarUrl     String
+  email         String  @unique
+  password      String?
+  googleId      String? @unique
+  onlineStatus  Boolean
+  emailVerified Boolean
 
-  contacts         User[]    @relation("contacts", references: [id])
-  contactsRelation User[]    @relation("contacts", references: [id])
-  messagesSent     Message[] @relation("sender")
-  messagesReceived Message[] @relation("receiver")
+  // Relations
+  messagesSent Message[]
+  chats        Chat[]
 
-  @@index([name(length: 256, sort: Asc)])
+  @@index([name])
 }
 
 model Message {
-  id         String   @db.VarChar(256) @default(uuid()) @id(length: 256) @map(name: "_id")
-  text       String   @db.VarChar(256)
-  sentAt     DateTime @default(now())  @map(name: "sent_at")
+  // Fields
+  id     String   @id @default(uuid())
+  text   String
+  sentAt DateTime @default(now())
 
-  senderId   String
-  receiverId String
-  sender     User     @relation("sender", fields: [senderId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  receiver   User     @relation("receiver", fields: [receiverId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  // Relations
+  sender   User   @relation(references: [id], fields: [senderId], onDelete: Cascade)
+  senderId String
+  chat     Chat   @relation(references: [id], fields: [chatId], onDelete: Cascade)
+  chatId   String
+}
+
+model Chat {
+  // Fields
+  id        String   @id @default(uuid())
+  name      String?
+  createdAt DateTime @default(now())
+
+  // Relations
+  messages Message[]
+  users    User[]
 }
