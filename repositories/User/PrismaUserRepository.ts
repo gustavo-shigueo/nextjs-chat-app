@@ -12,11 +12,14 @@ export default class PrismaUserReopsitory implements IUsersRepository {
 		this.#client = client
 	}
 
-	public async create(user: User): Promise<User> {
-		// Ensures the id is unique
+	async #ensureUniqueId(user: User) {
 		while (await this.findById(user.id).catch(() => null)) {
 			user.id = randomUUID()
 		}
+	}
+
+	public async create(user: User): Promise<User> {
+		await this.#ensureUniqueId(user)
 
 		return userMapper(await this.#client.user.create({ data: user }))
 	}
