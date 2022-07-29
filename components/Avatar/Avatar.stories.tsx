@@ -1,9 +1,9 @@
 import Button from 'components/Button'
-import Submenu from 'components/Submenu'
-import SubmenuItem from 'components/SubmenuItem'
 import Image from 'next/image'
 import Avatar from './Avatar'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
+import List from 'components/List'
+import CollapsableMenu from 'components/CollapsableMenu'
 
 export const AvatarComponent: ComponentStory<typeof Avatar> = () => (
 	<Avatar
@@ -26,8 +26,8 @@ export default {
 	component: Avatar,
 	subcomponents: {
 		Button,
-		Submenu,
-		SubmenuItem,
+		CollapsableMenu,
+		List,
 		Image,
 	},
 } as ComponentMeta<typeof Avatar>

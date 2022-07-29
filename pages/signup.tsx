@@ -30,7 +30,7 @@ const SignUp: NextPage = () => {
 	)
 
 	const responseGoogle = async (response: any) => {
-		const { credential: accessToken } = response
+		const { access_token: accessToken } = response
 
 		signup({ googleAccessToken: accessToken })
 	}

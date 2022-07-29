@@ -1,7 +1,7 @@
-import { ButtonHTMLAttributes, FC, ReactNode } from 'react'
-import style from './Button.module.scss'
-import classNames from 'utils/classNames'
 import Spinner from 'components/Spinner'
+import { ButtonHTMLAttributes, FC } from 'react'
+import classNames from 'utils/classNames'
+import style from './Button.module.scss'
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	loading?: boolean

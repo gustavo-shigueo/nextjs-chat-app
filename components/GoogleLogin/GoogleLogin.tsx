@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { FcGoogle } from 'react-icons/fc'
-import { useGoogleLogin, GoogleLogin as B } from '@react-oauth/google'
+import { useGoogleLogin } from '@react-oauth/google'
 import style from './GoogleLogin.module.scss'
 import classNames from 'utils/classNames'
 
@@ -21,7 +21,8 @@ interface GoogleLoginProps {
 
 const GoogleLogin: FC<GoogleLoginProps> = ({ onSuccess, text }) => {
 	const login = useGoogleLogin({ onSuccess })
-	const getText = () => {
+
+	const getText = (): string => {
 		switch (text) {
 			case 'signin':
 				return 'Fazer login com o Google'
@@ -31,7 +32,7 @@ const GoogleLogin: FC<GoogleLoginProps> = ({ onSuccess, text }) => {
 				return 'Continuar com o Google'
 			default:
 				const _: never = text
-				if (_) throw new Error()
+				throw new Error(`Value ${_} not captured by switch statement`)
 		}
 	}
 

@@ -5,10 +5,12 @@ import {
 	FC,
 	useCallback,
 	useEffect,
+	ReactNode,
 } from 'react'
 import api, { ApiError } from 'services/axios'
 import IError from 'errors/IError'
 import IUser from 'interfaces/IUser'
+// @ts-ignore
 import { useRouter } from 'next/router'
 
 interface IUserContextData {
@@ -42,6 +44,7 @@ const UserContext = createContext({} as IUserContextData)
 export const useAuth = () => useContext(UserContext)
 
 export interface IUserProviderProps {
+	children?: ReactNode
 	serverSideUser: IUser | null
 	serverSideAccessToken: string | null
 	serverSideError?: IError | null
@@ -154,7 +157,7 @@ export const UserProvider: FC<IUserProviderProps> = ({
 				setLoading(true)
 
 				const body = profile ?? { googleAccessToken }
-				const path = `/auth/sign${profile ? 'up' : 'in-with-google'}`
+				const path = `/auth/signup${profile ? '' : '-with-google'}`
 
 				const { data, headers } = await api.post<IUser>(path, body)
 				setUser(data)
