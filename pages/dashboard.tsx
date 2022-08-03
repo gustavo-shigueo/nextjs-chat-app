@@ -17,12 +17,10 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
 	try {
 		const authenticatedUserData = await authGuard(ctx)
 
-		const { data } = await api.get('/contacts')
-
 		return {
 			props: {
 				authenticatedUserData,
-				contacts: data,
+				contacts: [],
 			},
 		}
 	} catch (error: any) {

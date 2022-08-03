@@ -46,8 +46,14 @@ model Chat {
   id        String   @id @default(uuid())
   name      String?
   createdAt DateTime @default(now())
+  chatType  ChatType
 
   // Relations
   messages Message[]
   users    User[]
+}
+
+enum ChatType {
+  PrivateChat
+  GroupChat
 }
