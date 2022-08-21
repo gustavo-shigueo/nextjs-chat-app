@@ -1,0 +1,132 @@
+[
+	{
+		"id": "90f37857-d151-4efe-9fa9-e503b21a4167",
+		"name": "John Doe",
+		"email": "johndoe@email.com",
+		"password": "secure-and-hashed-password",
+		"avatarUrl": "https://avatar.url",
+		"googleId": null,
+		"emailVerified": false,
+		"onlineStatus": true
+	},
+	{
+		"id": "1c9afae0-f0c3-4bf1-bd08-8fe857f8ec58",
+		"name": "Bob Williams",
+		"email": "bob@email.com",
+		"password": "secure-and-hashed-password",
+		"avatarUrl": "https://avatar.url",
+		"googleId": null,
+		"emailVerified": false,
+		"onlineStatus": true
+	},
+	{
+		"id": "ba3c342b-cb8a-40c4-809a-dc021a31ff01",
+		"name": "Alice Adams",
+		"email": "aliceadams@email.com",
+		"password": "secure-and-hashed-password",
+		"avatarUrl": "https://avatar.url",
+		"googleId": null,
+		"emailVerified": false,
+		"onlineStatus": true
+	},
+	{
+		"id": "8f8cb114-e75b-47e7-8814-67e3703b9222",
+		"name": "Joe Chill",
+		"email": "joechill@email.com",
+		"password": null,
+		"avatarUrl": "https://avatar.url",
+		"googleId": "a real google id",
+		"emailVerified": false,
+		"onlineStatus": true
+	},
+	{
+		"id": "8637f2ab-5dbf-4a53-8e12-002e5dc7d374",
+		"name": "Pamela Isley",
+		"email": "poisonivy@email.com",
+		"password": "secure-and-hashed-password",
+		"avatarUrl": "https://avatar.url",
+		"googleId": "another real google id",
+		"emailVerified": false,
+		"onlineStatus": true
+	},
+	{
+		"id": "1ba11019-90c2-4160-8427-abd4f321bccc",
+		"name": "Oswald Cobblepot",
+		"email": "penguin@gotham.com",
+		"password": "secure-and-hashed-password",
+		"avatarUrl": "https://avatar.url",
+		"googleId": null,
+		"emailVerified": false,
+		"onlineStatus": true
+	},
+	{
+		"id": "5b7d6cde-6722-443d-9826-981dd7122966",
+		"name": "Bruce Wayne",
+		"email": "notbatman@email.com",
+		"password": "secure-and-hashed-password",
+		"avatarUrl": "https://avatar.url",
+		"googleId": "Wanna know my secret identity?",
+		"emailVerified": false,
+		"onlineStatus": true
+	},
+	{
+		"id": "6e066058-a689-4106-a70a-d4f91299999e",
+		"name": "Alfred Pennyworth",
+		"email": "worth-more-than-a-penny@email.com",
+		"password": "secure-and-hashed-password",
+		"avatarUrl": "https://avatar.url",
+		"googleId": null,
+		"emailVerified": false,
+		"onlineStatus": true
+	},
+	{
+		"id": "b99f6a81-2a18-4c59-a8d3-41a11779d7ad",
+		"name": "Richard Grayson",
+		"email": "iamnotadick@email.com",
+		"password": null,
+		"avatarUrl": "https://avatar.url",
+		"googleId": "I am totally not nightwing",
+		"emailVerified": false,
+		"onlineStatus": true
+	},
+	{
+		"id": "c03df1f1-61a5-4bc5-bd71-4e07ba17796e",
+		"name": "Damian Wayne",
+		"email": "boyblunder@email.com",
+		"password": null,
+		"avatarUrl": "https://avatar.url",
+		"googleId": "It's easier my way",
+		"emailVerified": false,
+		"onlineStatus": true
+	},
+	{
+		"id": "66bf8276-c592-4eec-a6d7-7f0ec6587160",
+		"name": "Bane",
+		"email": "back-breaker@email.com",
+		"password": null,
+		"avatarUrl": "https://avatar.url",
+		"googleId": "I will break your back, Batman!",
+		"emailVerified": false,
+		"onlineStatus": true
+	},
+	{
+		"id": "18f1fcbd-6d83-4138-9114-bc2f7c15dce4",
+		"name": "Harleen Quinzel",
+		"email": "not-insane-psychiatrist@email.com",
+		"password": "secure-and-hashed-password",
+		"avatarUrl": "https://avatar.url",
+		"googleId": null,
+		"emailVerified": false,
+		"onlineStatus": true
+	},
+	{
+		"id": "9e4a95c5-7e76-4a48-80d8-162b0421a191",
+		"name": "Harvey Dent",
+		"email": "two-face@email.com",
+		"password": "secure-and-hashed-password",
+		"avatarUrl": "https://avatar.url",
+		"googleId": "Heads or Tails?",
+		"emailVerified": false,
+		"onlineStatus": true
+	}
+]

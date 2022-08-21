@@ -1,0 +1,104 @@
+[
+	{
+		"id": "21c8ea8a-f2a0-442b-9fdd-f8d9f4dfb72f",
+		"chatType": "PrivateChat",
+		"name": null,
+		"thumbnailUrl": null,
+		"userIds": [
+			"8637f2ab-5dbf-4a53-8e12-002e5dc7d374",
+			"ba3c342b-cb8a-40c4-809a-dc021a31ff01"
+		],
+		"messageIds": [],
+		"createdAt": "2022-08-15T11:52:32.324Z"
+	},
+	{
+		"id": "5909fde8-7a95-4c23-842d-78bf73fc547f",
+		"chatType": "GroupChat",
+		"name": "My Group of Friends",
+		"thumbnailUrl": "http://thumbnailUrl.com",
+		"userIds": [
+			"8637f2ab-5dbf-4a53-8e12-002e5dc7d374",
+			"ba3c342b-cb8a-40c4-809a-dc021a31ff01",
+			"1c9afae0-f0c3-4bf1-bd08-8fe857f8ec58",
+			"5b7d6cde-6722-443d-9826-981dd7122966"
+		],
+		"messageIds": [],
+		"createdAt": "2022-08-15T11:52:32.324Z"
+	},
+	{
+		"id": "b449be3b-08f0-4240-bc1c-f1e81299f0fd",
+		"chatType": "PrivateChat",
+		"name": null,
+		"thumbnailUrl": null,
+		"userIds": [
+			"1ba11019-90c2-4160-8427-abd4f321bccc",
+			"8f8cb114-e75b-47e7-8814-67e3703b9222"
+		],
+		"messageIds": [],
+		"createdAt": "2022-08-15T11:52:32.324Z"
+	},
+	{
+		"id": "2bbd3c3d-a391-41a4-af87-7e613f0c6068",
+		"chatType": "GroupChat",
+		"name": "Another group",
+		"thumbnailUrl": "http://thumbnailUrl.com",
+		"userIds": [
+			"1ba11019-90c2-4160-8427-abd4f321bccc",
+			"8637f2ab-5dbf-4a53-8e12-002e5dc7d374",
+			"8f8cb114-e75b-47e7-8814-67e3703b9222",
+			"1c9afae0-f0c3-4bf1-bd08-8fe857f8ec58"
+		],
+		"messageIds": [],
+		"createdAt": "2022-08-15T11:52:32.324Z"
+	},
+	{
+		"id": "83dc3e2e-059f-4a23-bec5-b23856ca9579",
+		"chatType": "PrivateChat",
+		"name": null,
+		"thumbnailUrl": null,
+		"userIds": [
+			"ba3c342b-cb8a-40c4-809a-dc021a31ff01",
+			"90f37857-d151-4efe-9fa9-e503b21a4167"
+		],
+		"messageIds": [],
+		"createdAt": "2022-08-15T11:52:32.324Z"
+	},
+	{
+		"id": "8d688dcf-19a0-4804-9051-c41eac25f00d",
+		"chatType": "GroupChat",
+		"name": "Group",
+		"thumbnailUrl": "http://thumbnailUrl.com",
+		"userIds": [
+			"66bf8276-c592-4eec-a6d7-7f0ec6587160",
+			"b99f6a81-2a18-4c59-a8d3-41a11779d7ad",
+			"ba3c342b-cb8a-40c4-809a-dc021a31ff01",
+			"1c9afae0-f0c3-4bf1-bd08-8fe857f8ec58"
+		],
+		"messageIds": [],
+		"createdAt": "2022-08-15T11:52:32.324Z"
+	},
+	{
+		"id": "6ab79bd9-9fb5-4402-9606-e1368c7761d7",
+		"chatType": "PrivateChat",
+		"name": null,
+		"thumbnailUrl": null,
+		"userIds": [
+			"6e066058-a689-4106-a70a-d4f91299999e",
+			"1c9afae0-f0c3-4bf1-bd08-8fe857f8ec58"
+		],
+		"messageIds": [],
+		"createdAt": "2022-08-15T11:52:32.324Z"
+	},
+	{
+		"id": "d72b8e8b-ce35-4b67-9a63-ed30d6a38b17",
+		"chatType": "PrivateChat",
+		"name": null,
+		"thumbnailUrl": null,
+		"userIds": [
+			"8f8cb114-e75b-47e7-8814-67e3703b9222",
+			"ba3c342b-cb8a-40c4-809a-dc021a31ff01"
+		],
+		"messageIds": [],
+		"createdAt": "2022-08-15T11:52:32.324Z"
+	}
+]

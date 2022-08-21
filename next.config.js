@@ -9,4 +9,7 @@ module.exports = {
 		locales: ['pt-br'],
 		defaultLocale: 'pt-br',
 	},
+	compiler: {
+		removeConsole: true,
+	},
 }

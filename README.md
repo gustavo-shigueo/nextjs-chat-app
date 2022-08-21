@@ -4,13 +4,9 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 This project is a reimaging of my original [WebRTC-videochat](https://github.com/gustavo-shigueo/WebRTC-videochat) webapp implemented with NextJS
 
-My goal is to create a great user experience by creating a much nicer UI with Tailwind and a much more robust backend with NextJS API routes, a MongoDB database to store the users and their contacts, a messaging system, group calls (the previous app is limited to 2 people per call) and authentication with JWT combined with Google OAuth (may implement more social auth methods when I actually learn how to do this)
+My goal is to create a great user experience by creating a much nicer UI and a much more robust backend with NextJS API routes, a MySQL database to store the users and their chats, a messaging system, group calls (the previous app is limited to 2 people per call) and authentication with JWT combined with Google OAuth (may implement more social auth methods when I actually learn how to do this)
 
-I could use some help. As of writing this README I am still trying to figure out how I'm going to do the authentication flow. The decisions I've made thus far are:
-
-- I want to use JWT cookies to keep the users logged in (might change that for sessions if I can't figure this out)
-- I want to allow social media authentication (for now just Google OAuth, but more in the future such as GitHub, Twitter, Facebook and Apple, not sure yet)
-- I want to allow email/password authentication as well
+I could use some help, feel free to contribute to this project as it will massively help me get it done.
 
 ## Getting Started
 
