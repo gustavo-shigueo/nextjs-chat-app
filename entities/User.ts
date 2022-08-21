@@ -6,7 +6,21 @@ export default class User {
 	public emailVerified: boolean = false
 	public onlineStatus: boolean = true
 
-	constructor(
+	public constructor(
+		name: string,
+		email: string,
+		password: string,
+		avatarUrl?: string,
+		googleId?: null
+	)
+	public constructor(
+		name: string,
+		email: string,
+		password: null,
+		avatarUrl: string,
+		googleId: string
+	)
+	public constructor(
 		public name: string,
 		public email: string,
 		public password: string | null,

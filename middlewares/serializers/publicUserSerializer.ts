@@ -3,7 +3,7 @@ import IPublicUserData from 'interfaces/IPublicUserData'
 import userSerializer from './userSerializer'
 
 const publicUserSerializer = <T extends User>(user: T): IPublicUserData => {
-	const { email, googleId, ...publicData } = userSerializer(user)
+	const { email, googleId, emailVerified, ...publicData } = userSerializer(user)
 	return publicData
 }
 

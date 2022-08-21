@@ -3,23 +3,21 @@ import IUsersRepository from './IUserRepository'
 import { PrismaClient } from '@prisma/client'
 import NotFoundError from 'errors/NotFoundError'
 import userMapper from 'entityMappers/userMapper'
-import { randomUUID } from 'crypto'
+import { PrismaRepository } from 'prisma/client'
 
-export default class PrismaUserReopsitory implements IUsersRepository {
+export default class PrismaUserReopsitory
+	extends PrismaRepository
+	implements IUsersRepository
+{
 	#client: PrismaClient
 
 	public constructor(client: PrismaClient) {
+		super()
 		this.#client = client
 	}
 
-	async #ensureUniqueId(user: User) {
-		while (await this.findById(user.id).catch(() => null)) {
-			user.id = randomUUID()
-		}
-	}
-
 	public async create(user: User): Promise<User> {
-		await this.#ensureUniqueId(user)
+		await this.ensureUniqueId(user)
 
 		return userMapper(await this.#client.user.create({ data: user }))
 	}

@@ -1,17 +1,22 @@
-import IUserRepository from './IUserRepository'
 import PrismaUserRepository from './PrismaUserRepository'
-import User from 'entities/User'
-import NotFoundError from 'errors/NotFoundError'
-import client from 'prisma/client'
+import User from '../../entities/User'
+import NotFoundError from '../../errors/NotFoundError'
+import client from '../../prisma/client'
 import { randomInt, randomUUID } from 'crypto'
+import initialUsers from '../__mock__/users.json'
 
 describe('User Repository', () => {
-	let repository: InstanceType<typeof PrismaUserRepository>
+	let repository: PrismaUserRepository
 
 	beforeEach(async () => {
+		await client.$connect()
 		await client.user.deleteMany()
 		await client.user.createMany({ data: initialUsers })
 		repository = new PrismaUserRepository(client)
+	})
+
+	afterEach(async () => {
+		await client.$disconnect()
 	})
 
 	it('should create new user ', async () => {
@@ -151,92 +156,3 @@ describe('User Repository', () => {
 		expect(falsyResult).toBe(false)
 	})
 })
-
-const initialUsers: User[] = [
-	new User(
-		'John Doe',
-		'johndoe@email.com',
-		'secure-and-hashed-password',
-		'https://avatar.url'
-	),
-	new User(
-		'Bob Williams',
-		'bob@email.com',
-		'secure-and-hashed-password',
-		'https://avatar.url'
-	),
-	new User(
-		'Alice Adams',
-		'aliceadams@email.com',
-		'secure-and-hashed-password',
-		'https://avatar.url'
-	),
-	// I cant come up with more fake data, so here are some random Batman characters
-	new User(
-		'Joe Chill',
-		'joechill@email.com',
-		null,
-		'https://avatar.url',
-		'a real google id'
-	),
-	new User(
-		'Pamela Isley',
-		'poisonivy@email.com',
-		'secure-and-hashed-password',
-		'https://avatar.url',
-		'another real google id'
-	),
-	new User(
-		'Oswald Cobblepot',
-		'penguin@gotham.com',
-		'secure-and-hashed-password',
-		'https://avatar.url'
-	),
-	new User(
-		'Bruce Wayne',
-		'notbatman@email.com',
-		'secure-and-hashed-password',
-		'https://avatar.url',
-		'Wanna know my secret identity?'
-	),
-	new User(
-		'Alfred Pennyworth',
-		'worth-more-than-a-penny@email.com',
-		'secure-and-hashed-password',
-		'https://avatar.url'
-	),
-	new User(
-		'Richard Grayson',
-		'iamnotadick@email.com',
-		null,
-		'https://avatar.url',
-		'I am totally not nightwing'
-	),
-	new User(
-		'Damian Wayne',
-		'boyblunder@email.com',
-		null,
-		'https://avatar.url',
-		"It's easier my way"
-	),
-	new User(
-		'Bane',
-		'back-breaker@email.com',
-		null,
-		'https://avatar.url',
-		'I will break your back, Batman!'
-	),
-	new User(
-		'Harleen Quinzel',
-		'not-insane-psychiatrist@email.com',
-		'secure-and-hashed-password',
-		'https://avatar.url'
-	),
-	new User(
-		'Harvey Dent',
-		'two-face@email.com',
-		'secure-and-hashed-password',
-		'https://avatar.url',
-		'Heads or Tails?'
-	),
-]
