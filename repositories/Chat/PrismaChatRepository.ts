@@ -50,9 +50,7 @@ export default class PrismaChatRepository
 
 	public async findByParticipantId(userId: string): Promise<Chat[]> {
 		const chats = await this.#client.chat.findMany({
-			where: {
-				users: { some: { id: userId } },
-			},
+			where: { users: { some: { id: userId } } },
 			include: { users: true, messages: true },
 		})
 
