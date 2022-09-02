@@ -11,13 +11,13 @@ export default class OpaqueTokenService implements ITokenService {
 	#list: IAllowlistRepository
 	#expiration: TExpirationDate
 
-	constructor(list: IAllowlistRepository, expiration: TExpirationDate) {
+	public constructor(list: IAllowlistRepository, expiration: TExpirationDate) {
 		this.#list = list
 		this.#expiration = expiration
 		this.maxAge = getMaxAge(this.#expiration)
 	}
 
-	async create(_id: string): Promise<string> {
+	public async create(_id: string): Promise<string> {
 		const token = randomBytes(32).toString('hex')
 		const expirationTime = getExpirationTimestamp(this.#expiration)
 
@@ -25,7 +25,7 @@ export default class OpaqueTokenService implements ITokenService {
 		return token
 	}
 
-	async verify(token: string): Promise<string> {
+	public async verify(token: string): Promise<string> {
 		if (!token) throw new InvalidOrExpiredTokenError()
 
 		const id = await this.#list.get(token)
@@ -34,7 +34,7 @@ export default class OpaqueTokenService implements ITokenService {
 		throw new InvalidOrExpiredTokenError()
 	}
 
-	async invalidate(token: string): Promise<void> {
+	public async invalidate(token: string): Promise<void> {
 		await this.#list.destroy(token)
 	}
 }

@@ -1,4 +1,3 @@
-import ICreateUserRequest from 'interfaces/ICreateUserRequest'
 import User from 'entities/User'
 export default interface IUserService {
 	/**

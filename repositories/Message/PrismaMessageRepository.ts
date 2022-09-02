@@ -5,12 +5,11 @@ import IMessageRepository from './IMessageRepository'
 export default class PrismaMessageRepository implements IMessageRepository {
 	#client: PrismaClient
 
-	constructor(client: PrismaClient) {
+	public constructor(client: PrismaClient) {
 		this.#client = client
 	}
 
-	async sendMessage(message: Message): Promise<Message> {
-		const { sentAt, id, ...data } = message
-		return this.#client.message.create({ data })
+	public async sendMessage(message: Message): Promise<Message> {
+		return this.#client.message.create({ data: message })
 	}
 }

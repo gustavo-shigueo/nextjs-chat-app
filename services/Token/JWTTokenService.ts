@@ -10,7 +10,7 @@ export default class JWTTokenService implements ITokenService {
 	#expiration: TExpirationDate
 	#secret: string
 
-	constructor(
+	public constructor(
 		list: IBlocklistRepository,
 		expiration: TExpirationDate,
 		secret: string
@@ -20,7 +20,7 @@ export default class JWTTokenService implements ITokenService {
 		this.#secret = secret
 	}
 
-	create(_id: string) {
+	public create(_id: string) {
 		const payload = { _id }
 		const token = sign(payload, this.#secret, {
 			expiresIn: this.#expiration.join(''),
@@ -29,7 +29,7 @@ export default class JWTTokenService implements ITokenService {
 		return token
 	}
 
-	async verify(token: string): Promise<string> {
+	public async verify(token: string): Promise<string> {
 		if (await this.#list?.containsKey(token)) {
 			throw new InvalidOrExpiredTokenError('Token is invalid due to logout')
 		}
@@ -42,7 +42,7 @@ export default class JWTTokenService implements ITokenService {
 		}
 	}
 
-	async invalidate(token: string): Promise<void> {
+	public async invalidate(token: string): Promise<void> {
 		const decoded = decode(token) as JwtPayload | null
 
 		if (!decoded) return
