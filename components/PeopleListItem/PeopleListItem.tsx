@@ -1,6 +1,6 @@
 import Button from 'components/Button'
-import IContact from 'interfaces/IContact'
-import IPublicUserData from 'interfaces/IPublicUserData'
+import { useAuth } from 'contexts/UserContext'
+import IChat from 'interfaces/IChat'
 import Image from 'next/image'
 import { FC, MouseEventHandler } from 'react'
 import classNames from 'utils/classNames'
@@ -8,12 +8,21 @@ import parseDateDifference from 'utils/parseDateDifference'
 import style from './PeopleListItem.module.scss'
 
 interface IPeopleListItemProps {
-	person: IContact | IPublicUserData
+	chat: IChat
 	onClick?: MouseEventHandler
 }
 
-const PeopleListItem: FC<IPeopleListItemProps> = ({ person, onClick }) => {
-	const { name, avatarUrl, onlineStatus } = person
+const PeopleListItem: FC<IPeopleListItemProps> = ({ chat, onClick }) => {
+	const {
+		chatType,
+		name,
+		thumbnailUrl,
+		createdAt,
+		users,
+		messages: [lastMessage],
+	} = chat
+	const { user } = useAuth()
+
 	return (
 		<Button
 			variant="flat"
@@ -23,23 +32,34 @@ const PeopleListItem: FC<IPeopleListItemProps> = ({ person, onClick }) => {
 			<div
 				className={classNames('relative', style['contact-avatar'])}
 				style={{
-					color: `var(--color-${onlineStatus ? 'success' : 'danger'}-400)`,
+					color:
+						chatType === 'PrivateChat'
+							? `var(--color-${
+									users?.find(u => u.id !== user?.id)?.onlineStatus
+										? 'success'
+										: 'danger'
+							  }-400)`
+							: 'transparent',
 				}}
 			>
 				<Image
 					layout="fill"
-					src={avatarUrl}
+					src={
+						chatType === 'PrivateChat'
+							? users?.find(u => u.id !== user?.id)?.avatarUrl ?? ''
+							: thumbnailUrl ?? ''
+					}
 					alt={`${name}'s profile picture`}
 				/>
 			</div>
 			<p className={classNames(style['contact-name'])}>{name}</p>
-			{'lastMessage' in person && (
+			{'lastMessage' in chat && (
 				<div className={classNames(style['contact-latest-message'])}>
 					<p className={classNames(style['message-text'])}>
-						{person.lastMessage.text}
+						{lastMessage.text}
 					</p>
 					<p className={classNames(style['message-date'])}>
-						{parseDateDifference(person.lastMessage.sentAt)}
+						{parseDateDifference(lastMessage.sentAt)}
 					</p>
 				</div>
 			)}

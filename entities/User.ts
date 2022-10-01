@@ -17,7 +17,7 @@ export default class User {
 		name: string,
 		email: string,
 		password: null,
-		avatarUrl: string,
+		avatarUrl: string | undefined,
 		googleId: string
 	)
 	public constructor(

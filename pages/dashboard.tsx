@@ -1,26 +1,35 @@
 import MainPanel from 'components/MainPanel'
 import authGuard from 'guards/autth/authGuard'
-import IContact from 'interfaces/IContact'
+import IChat from 'interfaces/IChat'
 import { GetServerSideProps } from 'next'
 import { FC } from 'react'
 import api from 'services/axios'
 
 interface IDashboardPageProps {
-	contacts: IContact[]
+	chats: IChat[]
 }
 
-const Dashboard: FC<IDashboardPageProps> = ({ contacts }) => {
-	return <MainPanel contacts={contacts} />
+const Dashboard: FC<IDashboardPageProps> = ({ chats }) => {
+	return <MainPanel chats={chats} />
 }
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
 	try {
 		const authenticatedUserData = await authGuard(ctx)
 
+		const { data: chats } = await api.post<IChat[]>(
+			'/chats',
+			{},
+			{
+				withCredentials: true,
+				headers: { Cookie: ctx.req.headers.cookie ?? '' },
+			}
+		)
+
 		return {
 			props: {
 				authenticatedUserData,
-				contacts: [],
+				chats,
 			},
 		}
 	} catch (error: any) {

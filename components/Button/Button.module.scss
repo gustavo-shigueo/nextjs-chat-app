@@ -40,7 +40,7 @@
 
 		&[class*='outline'] {
 			--border-color: var(--text-color);
-			--bg-color: var(--btn-bg-color, var(--color-neutral-100));
+			--bg-color: var(--btn-bg-color, transparent);
 		}
 
 		&:where(:not([class*='outline'])) {
