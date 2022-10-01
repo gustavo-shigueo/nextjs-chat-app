@@ -16,4 +16,12 @@ export default class MessageController implements IMessageController {
 	): Promise<Message> {
 		return this.#messageService.send(senderId, chatId, text)
 	}
+
+	public async findByChatId(
+		userId: string,
+		chatId: string,
+		cursor?: Date
+	): Promise<Message[]> {
+		return this.#messageService.findByChatId(userId, chatId, cursor)
+	}
 }
