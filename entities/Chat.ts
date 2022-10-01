@@ -6,11 +6,8 @@ import Message from './Message'
 export default class Chat {
 	public id = randomUUID()
 	public createdAt = new Date()
-	public users?:
-		| ({ id: string } & Partial<IPublicUserData>)[]
-		| null
-		| undefined
-	public messages?: ({ id: string } & Partial<Message>)[] | null | undefined
+	public users?: IPublicUserData[]
+	public messages: Message[] = []
 	public userIds?: string[]
 	public messageIds?: string[]
 	public thumbnailUrl: string | null

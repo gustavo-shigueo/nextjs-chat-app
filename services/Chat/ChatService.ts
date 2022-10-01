@@ -54,4 +54,9 @@ export default class ChatService implements IChatService {
 	public async findByParticipantId(participantId: string): Promise<Chat[]> {
 		return this.#chatRepository.findByParticipantId(participantId)
 	}
+
+	public async isUserMember(userId: string, chatId: string): Promise<boolean> {
+		const chat = await this.#chatRepository.findById(chatId)
+		return chat.users?.some(u => u.id === userId) ?? false
+	}
 }

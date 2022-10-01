@@ -1,21 +1,20 @@
 import { ChatType } from '@prisma/client'
 import Chat from 'entities/Chat'
 
-export default interface IChatService {
+export default interface IChatController {
 	create(
+		creatorId: string,
 		chatType: typeof ChatType.PrivateChat,
-		users: [string, string],
-		name: null
+		memberIds: [string]
 	): Promise<Chat>
 	create(
+		creatorId: string,
 		chatType: typeof ChatType.GroupChat,
-		users: string[],
+		memberIds: string[],
 		name: string
 	): Promise<Chat>
 
 	findById(id: string): Promise<Chat>
 
-	findByParticipantId(participantId: string): Promise<Chat[]>
-
-	isUserMember(userId: string, chatId: string): Promise<boolean>
+	findByUser(participantId: string): Promise<Chat[]>
 }

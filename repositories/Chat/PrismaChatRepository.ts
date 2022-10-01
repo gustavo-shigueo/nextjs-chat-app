@@ -40,7 +40,13 @@ export default class PrismaChatRepository
 	public async findById(id: string): Promise<Chat> {
 		const found = await this.#client.chat.findUnique({
 			where: { id },
-			include: { users: true, messages: true },
+			include: {
+				users: true,
+				messages: {
+					orderBy: { sentAt: 'desc' },
+					take: 1,
+				},
+			},
 		})
 
 		if (!found) throw new NotFoundError('Chat')
@@ -51,7 +57,13 @@ export default class PrismaChatRepository
 	public async findByParticipantId(userId: string): Promise<Chat[]> {
 		const chats = await this.#client.chat.findMany({
 			where: { users: { some: { id: userId } } },
-			include: { users: true, messages: true },
+			include: {
+				users: true,
+				messages: {
+					orderBy: { sentAt: 'desc' },
+					take: 1,
+				},
+			},
 		})
 
 		return chats.map(chatSerializer)
