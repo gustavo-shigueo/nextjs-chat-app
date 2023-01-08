@@ -1,0 +1,7 @@
+@layer base {
+	:root {
+		@for $i from 1 to 10 {
+			--size-#{$i}00: #{0.25 * $i}rem;
+		}
+	}
+}

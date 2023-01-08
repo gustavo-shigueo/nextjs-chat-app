@@ -39,3 +39,7 @@ yarn-error.log*
 
 # Example stories
 /stories
+
+# Old components
+_components
+_styles

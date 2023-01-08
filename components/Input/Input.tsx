@@ -1,75 +1,85 @@
-import { FC, InputHTMLAttributes, useEffect, useState } from 'react'
+import { InputHTMLAttributes, useId, useState } from 'react'
+import { DeepMap, FieldError, Path, UseFormRegister } from 'react-hook-form'
+import { IoEye, IoEyeOff } from 'react-icons/io5'
 import classNames from 'utils/classNames'
-import style from './Input.module.scss'
 
-export type InputValidator = (value: string) => [boolean, string]
-
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps<T extends Record<string, unknown>>
+	extends InputHTMLAttributes<HTMLInputElement> {
+	name: Path<T>
 	label: string
-	validator?: InputValidator
-	serverValid?: boolean
-	serverErrorMessage?: string
+	controlSize?: 'small' | 'medium' | 'large' | 'full'
+	register: UseFormRegister<T>
+	errors?: Partial<DeepMap<T, FieldError>>
+	type:
+		| 'date'
+		| 'datetime-local'
+		| 'email'
+		| 'month'
+		| 'number'
+		| 'password'
+		| 'search'
+		| 'text'
+		| 'time'
+		| 'url'
+		| 'week'
 }
 
-const Input: FC<InputProps> = ({
-	type,
+const Input = <T extends Record<string, unknown>>({
 	name,
 	label,
+	type,
+	errors,
+	controlSize,
 	className,
-	autoComplete = 'off',
-	validator = () => [true, ''],
-	serverErrorMessage = '',
-	serverValid = true,
+	register,
+	onBlur,
+	required,
 	...props
-}) => {
-	const [value, setValue] = useState('')
-	const [isClientValid, setIsClientValid] = useState(true)
-	const [isServerValid, setIsServerValid] = useState(true)
-	const [error, setError] = useState('')
-	const accentColor: any = {
-		'--accent-color': 'var(--color-danger-700)',
-		'--text-color': 'var(--color-danger-700)',
-	}
+}: InputProps<T>) => {
+	const id = useId()
+	const [inputType, setInputType] = useState(type)
+	const [dirty, setDirty] = useState(false)
 
-	useEffect(() => {
-		if (!value.length) return setIsClientValid(true)
-		setIsServerValid(true)
-
-		const [valid, errorMessage] = validator(value)
-		setIsClientValid(valid)
-
-		setError(errorMessage)
-	}, [value, validator])
-
-	useEffect(() => {
-		setIsServerValid(serverValid)
-		setError(serverErrorMessage)
-	}, [serverErrorMessage, serverValid])
+	const errorMessage = errors?.[name]
+	const invalid = !!errorMessage
+	const control = register(name, {
+		onBlur: e => {
+			onBlur?.(e)
+			setDirty(true)
+		},
+	})
 
 	return (
 		<div
-			className={classNames(style['input-group'], className)}
-			style={!isClientValid || !isServerValid ? accentColor : undefined}
+			className={classNames('control')}
+			data-control-type="text"
+			data-control-size={controlSize}
 		>
-			<div className={style['input-control']}>
-				<input
-					id={name}
-					type={type ?? 'text'}
-					name={name}
-					className={style.input}
-					placeholder=" "
-					autoComplete={autoComplete}
-					value={value}
-					onChange={e => setValue(e.target.value)}
-					{...props}
-				/>
-				<label className={style.label} htmlFor={name}>
-					{label}
-				</label>
-			</div>
-			{!(isClientValid && isServerValid) && (
-				<span className={style.error}>{error}</span>
+			<label htmlFor={`${id}-${name}`}>{label}:</label>
+			<input
+				{...props}
+				id={`${id}-${name}`}
+				type={inputType}
+				data-dirty={dirty}
+				aria-invalid={invalid ? 'true' : 'false'}
+				className={classNames(className, { invalid: invalid })}
+				required={required}
+				{...control}
+			/>
+			{type === 'password' && (
+				<button
+					type="button"
+					className="icon"
+					onClick={() => {
+						setInputType(t => (t === 'password' ? 'text' : 'password'))
+					}}
+				>
+					{inputType === 'password' ? <IoEye /> : <IoEyeOff />}
+				</button>
 			)}
+			<span className="error-message" role="alert">
+				{errorMessage?.message}
+			</span>
 		</div>
 	)
 }

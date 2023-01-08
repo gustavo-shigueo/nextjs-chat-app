@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"target": "es2015",
+		"target": "ESNext",
 		"lib": ["dom", "dom.iterable", "esnext"],
 		"allowJs": true,
 		"skipLibCheck": true,
@@ -16,8 +16,15 @@
 		"incremental": true,
 		"baseUrl": "./",
 		"noImplicitOverride": true,
-		"strictFunctionTypes": true
+		"strictFunctionTypes": true,
+		"alwaysStrict": true
 	},
 	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-	"exclude": ["node_modules", "**/*.spec.ts", "**/*.test.ts", "**/__mock__/**"]
+	"exclude": [
+		"node_modules",
+		"**/*.spec.ts",
+		"**/*.test.ts",
+		"**/__mock__/**",
+		"templates/**"
+	]
 }

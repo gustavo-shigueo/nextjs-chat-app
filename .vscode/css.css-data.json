@@ -2,12 +2,50 @@
 	"version": 1.1,
 	"atDirectives": [
 		{
-			"name": "@layer",
-			"description": "The @layer CSS at-rule is used to declare a cascade layer and can also used to define the order of precedence in case of multiple cascade layers.",
+			"name": "@container",
+			"description": "A container query is created using @container. This will query the nearest containment context.",
 			"references": [
 				{
-					"name": "@layer",
-					"url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@layer"
+					"name": "@container",
+					"url": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Container_Queries"
+				}
+			]
+		}
+	],
+	"properties": [
+		{
+			"name": "container-type",
+			"description": "Defines an element as a query container. Descendants can query aspects of its sizing, layout, style and state.",
+			"status": "standard",
+			"relevance": 75,
+			"references": [
+				{
+					"name": "MDN reference",
+					"url": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Container_Queries#container-type"
+				}
+			]
+		},
+		{
+			"name": "container-name",
+			"description": "Specifies a list of query container names for @container rules to use to filter which query containers are targeted.",
+			"status": "standard",
+			"relevance": 75,
+			"references": [
+				{
+					"name": "MDN reference",
+					"url": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Container_Queries#container-name"
+				}
+			]
+		},
+		{
+			"name": "container",
+			"description": "A shorthand property to set both container-type and container-name",
+			"status": "standard",
+			"relevance": 75,
+			"references": [
+				{
+					"name": "MDN reference",
+					"url": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Container_Queries#container"
 				}
 			]
 		}

@@ -1,132 +1,120 @@
-@use "sass:math";
-@use "../../styles/abstracts" as *;
-
-@mixin color($name, $shade) {
-	--text-color: var(--btn-text-color, #{getcolor($name, $shade)});
-	--text-color-hover: var(
-		--btn-text-color,
-		#{getcolor($name, math.max(100, $shade - 100))}
-	);
-}
+@use 'styles/abstracts';
+$colors: 'neutral', 'primary', 'accent', 'success', 'warning', 'danger';
 
 @layer components {
-	.btn {
-		color: var(--text-color, var(--color-neutral-900));
-		background-color: var(--bg-color, var(--color-neutral-100));
-		border-color: var(--border-color, var(--color-neutral-900));
+	.button {
+		--border-width: 1px;
 
-		display: inline-block;
+		display: grid;
+		place-items: center;
+		gap: var(--size-400);
+
 		position: relative;
+		padding: 0.3em 0.5em;
+		border: var(--border-width) solid var(--bg-color);
 
-		border-width: 1px;
-		border-style: solid;
-		padding-block: var(--em-size-200);
-		padding-inline: var(--em-size-300);
+		border-radius: var(--size-100);
+		isolation: isolate;
 
+		color: var(--text-color);
+		background-color: var(--bg-color);
 		font-weight: bold;
+		box-shadow: var(--box-shadow-small);
+		will-change: contents;
+
+		scale: var(--scale, 1);
 
 		cursor: pointer;
-		user-select: none;
-		transition: 300ms ease;
-		overflow: hidden;
+		outline-offset: 0;
+		transition: 100ms outline-offset ease-in-out, scale 150ms ease-in-out,
+			box-shadow 150ms ease-in-out, filter 150ms ease-in-out;
 
-		--border-color: var(--bg-color);
+		&::before,
+		&::after {
+			content: '';
+			position: absolute;
+			inset: calc(-1 * var(--border-width));
 
-		--bg-color-hover: var(--btn-text-color-hover, var(--color-neutral-200));
-		--text-color-hover: var(--btn-bg-color-hover, var(--color-neutral-900));
+			z-index: -1;
+			pointer-events: none;
 
-		--shadow-opacity: 0.05;
-		--shadow-blur: var(--size-200);
-
-		&[class*='outline'] {
-			--border-color: var(--text-color);
-			--bg-color: var(--btn-bg-color, transparent);
+			opacity: 0;
+			border-radius: inherit;
+			transition: opacity 150ms ease-in-out;
 		}
 
-		&:where(:not([class*='outline'])) {
-			@include color('neutral', 200);
+		&:has(> :nth-child(3)) {
+			grid-template-columns: repeat(3, auto);
 		}
 
-		&-primary {
-			--bg-color: var(--color-primary-400);
-			--bg-color-hover: var(--color-primary-600);
+		&:has(> :nth-child(2):last-child) {
+			grid-template-columns: repeat(2, auto);
 		}
 
-		&-outline-primary {
-			--text-color: var(--color-primary-400);
-			--text-color-hover: var(--color-primary-600);
+		&:has(> :nth-child(2)) > :last-child {
+			margin-inline-start: auto;
 		}
 
-		&-accent {
-			--bg-color: var(--color-accent-400);
-
-			--bg-color-hover: var(--color-accent-600);
+		&::before {
+			box-shadow: inset var(--box-shadow-small);
 		}
 
-		&-outline-accent {
-			--text-color: var(--color-accent-800);
-			--text-color-hover: var(--color-accent-900);
+		&::after {
+			opacity: 0;
+			background-color: abstracts.$colorLight;
 		}
 
-		&-neutral {
-			--bg-color: var(--color-neutral-800);
-			--text-color: var(--btn-text-color, var(--color-neutral-200));
-
-			--bg-color-hover: var(--color-neutral-900);
-			--text-color-hover: var(--btn-text-color-hover, var(--color-neutral-100));
+		&:not(:disabled):is(:hover, :focus-visible)::after {
+			opacity: 0.25;
 		}
 
-		&-outline-neutral {
-			--text-color: var(--color-neutral-800);
-			--text-color-hover: var(--color-neutral-900);
+		&:not([data-type]) {
+			--bg-color: hsl(var(--color-neutral-600));
+			--text-color: hsl(var(--color-neutral-100));
 		}
 
-		&-danger {
-			--bg-color: var(--color-danger-400);
-			--bg-color-hover: var(--color-danger-500);
+		&:disabled {
+			box-shadow: none;
+			filter: grayscale(0.5);
+			cursor: not-allowed;
 		}
 
-		&-outline-danger {
-			--text-color: var(--color-danger-600);
-			--text-color-hover: var(--color-danger-700);
+		&[data-outline='true'] {
+			background-color: transparent;
+			--text-color: var(--bg-color);
 		}
 
-		&-warning {
-			--bg-color: var(--color-warning-300);
-			--bg-color-hover: var(--color-warning-400);
+		&:not([data-outline='true']) {
+			--text-color: #{abstracts.$colorLight};
 		}
 
-		&-outline-warning {
-			--text-color: var(--color-warning-600);
-			--text-color-hover: var(--color-warning-700);
+		&:focus {
+			outline: none;
 		}
 
-		&-success {
-			--bg-color: var(--color-success-500);
-			--bg-color-hover: var(--color-success-600);
+		&:focus-visible {
+			outline: 2px solid var(--bg-color);
+			outline-offset: 2px;
 		}
 
-		&-outline-success {
-			--text-color: var(--color-success-600);
-			--text-color-hover: var(--color-success-700);
+		&:active {
+			--scale: 0.975;
+			box-shadow: none;
+
+			&::before {
+				opacity: 1;
+			}
 		}
 
-		&-flat {
-			--bg-color: var(--btn-bg-color, var(--color-neutral-200));
-			--text-color: var(--btn-text-color, var(--color-neutral-800));
-
-			--bg-color-hover: var(--btn-bg-color-hover, var(--color-neutral-300));
-			--text-color-hover: var(--btn-text-color-hover, var(--color-neutral-900));
+		@each $color in $colors {
+			&:where([data-type='#{$color}']) {
+				--bg-color: hsl(var(--color-#{$color}-500));
+			}
 		}
 
-		&:is(:focus-visible, :hover):not([disabled]) {
-			background-color: var(--bg-color-hover);
-			color: var(--text-color-hover);
-		}
-
-		&:focus-visible:not([disabled]) {
-			outline-color: var(--border-color);
-			outline-offset: 5px;
+		&:where([data-type='flat']) {
+			--bg-color: hsl(var(--color-neutral-500) / 0);
+			box-shadow: none;
 		}
 	}
 }

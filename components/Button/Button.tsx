@@ -1,20 +1,15 @@
-import Spinner from 'components/Spinner'
 import { ButtonHTMLAttributes, FC } from 'react'
 import classNames from 'utils/classNames'
-import style from './Button.module.scss'
+import Spinner from 'components/Spinner'
+import styles from './Button.module.scss'
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	loading?: boolean
+	outline?: boolean
 	variant?:
 		| 'primary'
 		| 'accent'
 		| 'neutral'
-		| 'outline-primary'
-		| 'outline-accent'
-		| 'outline-neutral'
-		| 'outline-danger'
-		| 'outline-warning'
-		| 'outline-success'
 		| 'danger'
 		| 'warning'
 		| 'success'
@@ -30,44 +25,33 @@ const Button: FC<ButtonProps> = ({
 	disabled,
 	className,
 	style: HTMLStyle,
+	outline,
 	...props
-}) => {
-	return (
-		<button
-			className={classNames(
-				'box-shadow',
-				'border-radius-100',
-				className,
-				style.btn,
-				style[`btn-${variant}`]
-			)}
-			type={type}
-			onClick={onClick}
-			disabled={loading || disabled}
-			style={{
-				cursor: loading ? 'not-allowed' : 'pointer',
-				...HTMLStyle,
-			}}
-			{...props}
-		>
-			<span
-				style={{
-					visibility: loading ? 'hidden' : 'visible',
-					display: 'contents',
-				}}
-			>
-				{children}
-			</span>
+}) => (
+	<button
+		className={classNames(className, styles.button)}
+		data-type={variant}
+		data-outline={outline}
+		onClick={onClick}
+		type={type}
+		disabled={loading || disabled}
+		style={{
+			color: loading ? 'transparent' : undefined,
+			...HTMLStyle,
+		}}
+		{...props}
+	>
+		{children}
+		{loading && (
 			<Spinner
 				style={{
 					position: 'absolute',
 					top: 'calc(50% - 0.5rem)',
 					left: 'calc(50% - 0.5rem)',
-					visibility: loading ? 'visible' : 'hidden',
 				}}
 			/>
-		</button>
-	)
-}
+		)}
+	</button>
+)
 
 export default Button

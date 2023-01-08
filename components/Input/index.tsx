@@ -1,2 +1,1 @@
-export { default } from './Input'
-export type { InputValidator } from './Input'
+export { default, type InputProps } from './Input'

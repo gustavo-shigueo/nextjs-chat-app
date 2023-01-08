@@ -1,50 +1,47 @@
-@use '../abstracts/' as *;
-
-@mixin customProps {
-	@each $size-name, $size in $sizes {
-		--size-#{$size-name}: #{$size}rem;
-	}
-
-	@each $size-name, $size in $sizes {
-		--em-size-#{$size-name}: #{$size}em;
-	}
-}
-
 @layer base {
 	:root {
-		@include customProps;
-		--page-inline-padding: max(var(--size-400), 5vw);
-		font-size: clamp(8px, 2vw, 16px);
+		font-family: Arial;
+		font-size: clamp(8px, 10vw, 18px);
+
+		color-scheme: light dark;
+
+		&:has(> body.dark) {
+			color-scheme: dark;
+		}
+
+		&:has(> body.light) {
+			color-scheme: light;
+		}
 	}
 
-	body > #__next {
-		display: grid;
-		grid-template-columns: var(--page-inline-padding) 1fr var(
-				--page-inline-padding
-			);
+	* {
+		scrollbar-color: hsl(var(--color-neutral-100)) hsl(var(--color-neutral-200));
+		scrollbar-width: 5px;
+	}
 
-		& > * {
-			grid-column: 2 / -2;
-		}
+	body {
+		color: hsl(var(--color-neutral-900));
+		background-color: hsl(var(--color-neutral-100));
+	}
 
-		& > .fullbleed {
-			grid-column: 1 / -1;
-			padding-inline: var(--page-inline-padding);
-		}
+	ion-icon {
+		line-height: 0;
 	}
 
 	::-webkit-scrollbar {
-		width: 0.5rem;
-	}
+		width: 0.75rem;
 
-	::-webkit-scrollbar-track {
-		background-color: var(--color-neutral-300);
-		border-radius: 100vmax;
-	}
+		&-track,
+		&-thumb {
+			border-radius: 100vmax;
+		}
 
-	::-webkit-scrollbar-thumb {
-		background-color: var(--color-neutral-400);
-		border-radius: 100vmax;
-		// width: calc(0.5rem - 2px);
+		&-track {
+			background-color: hsl(var(--color-neutral-200));
+		}
+
+		&-thumb {
+			background-color: hsl(var(--color-neutral-300));
+		}
 	}
 }

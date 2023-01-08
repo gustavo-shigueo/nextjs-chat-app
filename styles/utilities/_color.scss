@@ -1,0 +1,17 @@
+$props: 'text', 'background';
+$colors: 'primary', 'secondary', 'accent', 'success', 'warning', 'danger',
+	'neutral';
+
+@layer utilities {
+	@each $prop in $props {
+		@each $color in $colors {
+			@for $i from 1 to 10 {
+				.#{$prop}-#{$color}-#{$i}00 {
+					#{if($prop != 'text', 'background-', '')}color: hsl(
+						var(--color-#{$color}-#{$i}00)
+					);
+				}
+			}
+		}
+	}
+}

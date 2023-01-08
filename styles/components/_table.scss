@@ -1,0 +1,39 @@
+@layer components {
+	:where(.table, tr, th, td) {
+		border-width: 1px;
+		border-style: solid;
+	}
+
+	.table {
+		width: 100%;
+
+		border-width: 2px;
+		border-collapse: collapse;
+		border-color: hsl(var(--color-neutral-500));
+		vertical-align: center;
+
+		tr {
+			border-color: hsl(var(--color-neutral-500));
+		}
+
+		th,
+		td {
+			background-color: hsl(var(--color-neutral-300));
+			border-color: hsl(var(--color-neutral-400));
+			padding: var(--size-200);
+		}
+
+		th {
+			color: hsl(var(--color-neutral-900));
+		}
+
+		td {
+			background-color: hsl(var(--color-neutral-200));
+			transition: background-color 300ms ease;
+		}
+
+		tr:hover > td {
+			background-color: hsl(var(--color-neutral-400));
+		}
+	}
+}

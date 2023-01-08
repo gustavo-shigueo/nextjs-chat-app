@@ -1,17 +1,11 @@
-@use '../abstracts' as *;
-
-@mixin borderRadius {
-	@each $key, $value in $sizes {
-		.border-radius-#{$key} {
-			border-radius: var(--size-#{$key});
+@layer utilities {
+	@for $i from 1 to 10 {
+		.border-radius-#{$i}00 {
+			border-radius: var(--size-#{$i}00);
 		}
 	}
-}
-
-@layer utilities {
-	@include borderRadius;
 
 	.border-radius-full {
-		border-radius: 50%;
+		border-radius: 100vmax;
 	}
 }

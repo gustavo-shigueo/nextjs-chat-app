@@ -6,10 +6,10 @@
 
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
+		// gap: var(--size-200);
 
 		border: 0;
-		padding: 3px;
+		margin-inline: auto;
 
 		background-color: var(--bg-color);
 		color: var(--text-color);
@@ -26,10 +26,10 @@
 			display: grid;
 			place-items: center;
 
-			width: 1.65em;
+			width: 1.75em;
 			aspect-ratio: 1.05;
 
-			border-radius: 2px;
+			border-radius: inherit;
 			border-top-right-radius: 0;
 			border-bottom-right-radius: 0;
 			background-color: white;
@@ -42,7 +42,8 @@
 		}
 
 		.google-text {
-			padding-inline: var(--size-300);
+			margin-inline: auto;
+			padding-inline: var(--size-200);
 		}
 	}
 }

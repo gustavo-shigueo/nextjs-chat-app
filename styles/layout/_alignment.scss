@@ -1,0 +1,64 @@
+@layer layout {
+	.align-items {
+		&-baseline {
+			align-items: baseline;
+		}
+		&-center {
+			align-items: center;
+		}
+		&-end {
+			align-items: flex-end;
+		}
+		&-start {
+			align-items: flex-start;
+		}
+		&-stretch {
+			align-items: stretch;
+		}
+	}
+
+	.justify-content {
+		&-baseline {
+			justify-content: baseline;
+		}
+		&-center {
+			justify-content: center;
+		}
+		&-end {
+			justify-content: end;
+		}
+		&-first-baseline {
+			justify-content: first baseline;
+		}
+		&-last-baseline {
+			justify-content: last baseline;
+		}
+		&-left {
+			justify-content: left;
+		}
+		&-right {
+			justify-content: right;
+		}
+		&-safe {
+			justify-content: safe;
+		}
+		&-space-around {
+			justify-content: space-around;
+		}
+		&-space-between {
+			justify-content: space-between;
+		}
+		&-space-evenly {
+			justify-content: space-evenly;
+		}
+		&-start {
+			justify-content: start;
+		}
+		&-stretch {
+			justify-content: stretch;
+		}
+		&-unsafe {
+			justify-content: unsafe;
+		}
+	}
+}

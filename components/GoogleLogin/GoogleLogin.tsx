@@ -3,6 +3,13 @@ import { FcGoogle } from 'react-icons/fc'
 import { useGoogleLogin } from '@react-oauth/google'
 import style from './GoogleLogin.module.scss'
 import classNames from 'utils/classNames'
+import Button from 'components/Button'
+
+const GOOGLE_BUTTON_TEXT = {
+	signin: 'Fazer login com o Google',
+	signup: 'Increver-se com o Google',
+	continue_with: 'Continuar com o Google',
+}
 
 interface CredentialResponse {
 	access_token: string
@@ -15,36 +22,26 @@ interface CredentialResponse {
 }
 
 interface GoogleLoginProps {
-	text: 'signin' | 'signup' | 'continue_with'
+	text: keyof typeof GOOGLE_BUTTON_TEXT
 	onSuccess: (credentialResponse: CredentialResponse) => void
 }
 
 const GoogleLogin: FC<GoogleLoginProps> = ({ onSuccess, text }) => {
 	const login = useGoogleLogin({ onSuccess })
 
-	const getText = (): string => {
-		switch (text) {
-			case 'signin':
-				return 'Fazer login com o Google'
-			case 'signup':
-				return 'Increver-se com o Google'
-			case 'continue_with':
-				return 'Continuar com o Google'
-			default:
-				const _: never = text
-				throw new Error(`Value ${_} not captured by switch statement`)
-		}
-	}
-
 	return (
-		<button className={classNames(style['google-btn'])} onClick={() => login()}>
+		<Button
+			className={classNames(style['google-btn'], 'padding-0')}
+			type="button"
+			onClick={() => login()}
+		>
 			<div className={style['google-icon']}>
 				<FcGoogle />
 			</div>
-			<p className={classNames(style['google-text'], 'text-bolder')}>
-				{getText()}
+			<p className={classNames(style['google-text'], 'font-weight-bolder')}>
+				{GOOGLE_BUTTON_TEXT[text]}
 			</p>
-		</button>
+		</Button>
 	)
 }
 

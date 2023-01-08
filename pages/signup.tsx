@@ -1,11 +1,10 @@
-import Button from 'components/Button'
-import Form from 'components/Form'
-import Input, { InputValidator } from 'components/Input'
+import Button from '_components/Button'
+import Form from '_components/Form'
+import Input, { InputValidator } from '_components/Input'
 import { useAuth } from 'contexts/UserContext'
 import { GetServerSideProps, NextPage } from 'next'
 import { useCallback } from 'react'
-import GoogleLogin from 'components/GoogleLogin'
-import style from 'styles/AuthForms.module.scss'
+import GoogleLogin from '_components/GoogleLogin'
 import emailRegex from 'utils/emailRegex'
 import authGuard from 'guards/autth/authGuard'
 
@@ -35,6 +34,7 @@ const SignUp: NextPage = () => {
 		signup({ googleAccessToken: accessToken })
 	}
 
+	const style: any = {}
 	return (
 		<div className={style.formWrapper}>
 			<h2>Cadastre-se</h2>

@@ -72,12 +72,10 @@ const Home: NextPage = () => {
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
 	try {
-		const authenticatedUserData = await authGuard(ctx)
+		await authGuard(ctx)
 
 		return {
-			props: {
-				authenticatedUserData,
-			},
+			redirect: { destination: `/${ctx.locale}/dashboard`, permanent: false },
 		}
 	} catch (error: any) {
 		return {
@@ -85,7 +83,7 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
 				authenticatedUserData: {
 					serverSideAccessToken: null,
 					serverSideUser: null,
-					serverSideError: error,
+					serverSideError: null,
 				},
 			},
 		}

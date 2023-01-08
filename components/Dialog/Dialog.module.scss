@@ -1,0 +1,69 @@
+.dialog {
+	position: fixed;
+	inset-inline-start: 50%;
+	inset-block-start: 0;
+
+	inline-size: min(90vi, 50em);
+	max-block-size: 90vb;
+	border: none;
+	overflow: hidden;
+
+	background-color: hsl(var(--color-neutral-200));
+	color: hsl(var(--color-neutral-900));
+	border-radius: var(--size-200);
+
+	translate: -50% -100%;
+
+	animation: enter 500ms cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+
+	&[data-closing='true'] {
+		animation: close 500ms ease-in-out forwards;
+	}
+
+	&::backdrop {
+		opacity: 0;
+		background-color: hsl(250 5% 5% / 0.5);
+
+		transition: opacity 500ms ease-in-out;
+	}
+
+	&[open]::backdrop {
+		opacity: 1;
+	}
+
+	& > header {
+		display: flex;
+		justify-content: space-between;
+		font-size: var(--size-500);
+
+		background-color: hsl(var(--color-neutral-300));
+	}
+
+	& > .content {
+		inline-size: 100%;
+
+		padding-inline: var(--size-500);
+		padding-block-end: var(--size-400);
+
+		overflow-y: auto;
+	}
+
+	@keyframes enter {
+		to {
+			inset-block-start: 50%;
+			translate: -50% -50%;
+		}
+	}
+
+	@keyframes close {
+		from {
+			inset-block-start: 50%;
+			translate: -50% -50%;
+		}
+
+		to {
+			inset-block-start: 0%;
+			translate: -50% -100%;
+		}
+	}
+}

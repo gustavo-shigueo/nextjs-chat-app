@@ -1,6 +1,7 @@
+/* eslint-disable */
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import Button, { ButtonProps } from './Button'
-import Spinner from 'components/Spinner'
+import Spinner from '_components/Spinner'
 
 type TemplateProps = ButtonProps & { darkTheme: boolean }
 
@@ -19,6 +20,8 @@ ButtonComponent.args = {
 	variant: 'primary',
 	onClick: console.log,
 	darkTheme: true,
+	outline: false,
+	disabled: false,
 }
 
 export default {

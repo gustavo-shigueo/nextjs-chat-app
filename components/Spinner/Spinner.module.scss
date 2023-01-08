@@ -1,8 +1,10 @@
+@use 'styles/abstracts';
 @layer components {
 	.spinner {
 		aspect-ratio: 1;
 
-		border-top: 3px solid var(--color-neutral-500);
+		display: inline-block;
+		border-block-start: 3px solid abstracts.$colorLight;
 		border-radius: 50%;
 
 		animation: spinner 500ms linear infinite forwards;
@@ -10,11 +12,11 @@
 
 	@keyframes spinner {
 		from {
-			transform: rotate(0deg);
+			rotate: 0turn;
 		}
 
 		to {
-			transform: rotate(360deg);
+			rotate: 1turn;
 		}
 	}
 }

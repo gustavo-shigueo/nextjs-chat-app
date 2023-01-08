@@ -1,28 +1,51 @@
-import { useAuth } from 'contexts/UserContext'
-import style from 'styles/AuthForms.module.scss'
-import { GetServerSideProps, NextPage } from 'next'
-import Form from 'components/Form'
 import Button from 'components/Button'
-import Input, { InputValidator } from 'components/Input'
-import emailRegex from 'utils/emailRegex'
-import { useCallback } from 'react'
-import authGuard from 'guards/autth/authGuard'
+import Form from 'components/Form'
+import Input from 'components/Input'
+import { useAuth } from 'contexts/UserContext'
+import { NextPage } from 'next'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { string, z } from 'zod'
 import GoogleLogin from 'components/GoogleLogin'
+import emailRegex from 'utils/emailRegex'
+import passwordRegex from 'utils/passwordRegex'
 
-const LogIn: NextPage = () => {
+const schema = z.object({
+	email: string()
+		.min(1, 'Este campo é obrigatório')
+		.email('E-mail inválido')
+		.regex(
+			/([a-z0-9]{2,})(?:\.[a-z0-9]{2,})*@([a-z0-9]{2,})(?:\.[a-z0-9]{2,})+/,
+			'E-mail inválido'
+		),
+	password: string()
+		.min(1, 'Este campo é obrigatório')
+		.min(8, 'Senha deve ter entre 8 e 32 caracteres')
+		.max(32, 'Senha deve ter entre 8 e 32 caracteres')
+		.regex(
+			passwordRegex,
+			'Senha deve conter letras minúsculas, letras maiúsculas, números e caracteres especiais'
+		),
+})
+
+type FormData = z.infer<typeof schema>
+
+const Login: NextPage = () => {
 	const { login, error, loading } = useAuth()
-	const emailValidator: InputValidator = useCallback(
-		value => [!!value.match(emailRegex), 'Invalid e-mail'],
-		[]
-	)
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm({
+		defaultValues: { email: '', password: '' },
+		resolver: zodResolver(schema),
+		mode: 'all',
+	})
 
-	const passwordValidator: InputValidator = useCallback(
-		value => [
-			value.length >= 8 && value.length <= 32,
-			'Password must be between 8 and 32 characters long',
-		],
-		[]
-	)
+	const onSubmit: SubmitHandler<FormData> = async data => {
+		console.log(data)
+		login({ profile: data })
+	}
 
 	const responseGoogle = async (response: any) => {
 		const { access_token: googleAccessToken } = response
@@ -31,68 +54,44 @@ const LogIn: NextPage = () => {
 	}
 
 	return (
-		<div className={style.formWrapper}>
-			<h2>Login</h2>
-			<Form
-				handleFormData={data => login({ profile: data })}
-				className={style.form}
-			>
-				<Input
-					validator={emailValidator}
-					required
-					type="email"
-					name="email"
-					label="Email"
-					serverErrorMessage={error?.message}
-					serverValid={!error?.fields?.includes('email')}
-				/>
-				<Input
-					required
-					validator={passwordValidator}
-					type="password"
-					name="password"
-					label="Password"
-					serverErrorMessage={error?.message}
-					serverValid={!error?.fields?.includes('password')}
-				/>
-				<Button type="submit" loading={loading}>
-					Submit
-				</Button>
-			</Form>
+		<>
+			<div className="container">
+				<h1 className="font-size-600 margin-block-300 font-weight-bold text-align-center">
+					Login
+				</h1>
+				<Form onSubmit={handleSubmit(data => onSubmit(data), console.error)}>
+					<Input<FormData>
+						name="email"
+						label="E-mail"
+						type="email"
+						register={register}
+						errors={errors}
+						autoComplete="username"
+						pattern={emailRegex.source}
+						required
+					/>
 
-			<div className={style.separator}>or</div>
+					<Input<FormData>
+						name="password"
+						label="Senha"
+						type="password"
+						register={register}
+						errors={errors}
+						autoComplete="current-password"
+						pattern={passwordRegex.source}
+						required
+					/>
 
-			<div className={style.social}>
-				<GoogleLogin onSuccess={responseGoogle} text="signin" />
+					<div className="control" data-control-type="buttons">
+						<GoogleLogin onSuccess={responseGoogle} text="signin" />
+						<Button variant="success" type="submit" loading={loading}>
+							Enviar
+						</Button>
+					</div>
+				</Form>
 			</div>
-		</div>
+		</>
 	)
 }
 
-export default LogIn
-
-export const getServerSideProps: GetServerSideProps = async ctx => {
-	try {
-		const authenticatedUserData = await authGuard(ctx)
-
-		return {
-			props: {
-				authenticatedUserData,
-			},
-			redirect: {
-				destination: '/dashboard',
-				permanent: false,
-			},
-		}
-	} catch (error: any) {
-		return {
-			props: {
-				authenticatedUserData: {
-					serverSideAccessToken: null,
-					serverSideUser: null,
-					serverSideError: error,
-				},
-			},
-		}
-	}
-}
+export default Login

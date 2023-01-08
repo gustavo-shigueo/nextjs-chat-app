@@ -1,4 +1,4 @@
-import MainPanel from 'components/MainPanel'
+import MainPanel from '_components/MainPanel'
 import authGuard from 'guards/autth/authGuard'
 import IChat from 'interfaces/IChat'
 import { GetServerSideProps } from 'next'
@@ -42,7 +42,7 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
 				},
 			},
 			redirect: {
-				destination: '/login',
+				destination: `/${ctx.locale}`,
 				permanent: false,
 			},
 		}

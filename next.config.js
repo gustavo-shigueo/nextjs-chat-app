@@ -6,10 +6,13 @@ module.exports = {
 	},
 	i18n: {
 		localeDetection: true,
-		locales: ['pt-br'],
+		locales: ['pt-br', 'en'],
 		defaultLocale: 'pt-br',
 	},
 	compiler: {
-		removeConsole: true,
+		removeConsole:
+			process.env.NODE_ENV === 'production'
+				? { exclude: ['error', 'warn'] }
+				: false,
 	},
 }

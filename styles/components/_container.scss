@@ -1,0 +1,19 @@
+@layer components {
+	.grid-container {
+		@supports (grid-template-columns: subgrid) {
+			grid-template-columns:
+				[fullbleed-start] auto [main-start] var(--width, min(90%, 60rem))
+				[main-end] auto [fullbleed-end];
+
+			& > * {
+				grid-column: fullbleed;
+				display: grid;
+				grid-template-columns: subgrid;
+			}
+
+			& > * > * {
+				grid-column: main;
+			}
+		}
+	}
+}

@@ -1,94 +1,73 @@
-import List from 'components/List'
-import useEventListener from 'hooks/useEventListener'
-import {
-	DetailedHTMLProps,
-	HTMLAttributes,
-	KeyboardEventHandler,
-	ReactNode,
-	useRef,
-	useState,
-} from 'react'
+import Button from 'components/Button'
+import useCollapsable from 'hooks/useCollapsable'
+import { FC, HTMLAttributes, ReactNode, useId, useRef } from 'react'
+import { IoChevronDown } from 'react-icons/io5'
 import classNames from 'utils/classNames'
 import styles from './CollapsableMenu.module.scss'
 
-interface CollapsableMenuProps<MenuOption>
-	extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
-	isNav: boolean
-	trigger: (props: { isOpen: boolean; isClosing: boolean }) => ReactNode
-	menuOptions: MenuOption[]
-	render: (item: MenuOption) => ReactNode
+interface CollapsableMenuProps extends HTMLAttributes<HTMLDivElement> {
+	trigger?: ReactNode
 }
 
-const CollapsableMenu = <T extends { id: number | string }>({
-	isNav,
+const CollapsableMenu: FC<CollapsableMenuProps> = ({
+	role,
 	trigger,
-	menuOptions,
-	render,
+	children,
 	...props
-}: CollapsableMenuProps<T>) => {
-	const [isOpen, setIsOpen] = useState(false)
-	const [isClosing, setIsClosing] = useState(false)
-	const submenuRef = useRef<HTMLDivElement>(null)
-	const toggleRef = useRef<HTMLDivElement>(null)
+}) => {
+	const id = useId()
+	const ref = useRef<HTMLDivElement>(null)
+	const isCollapsed = useCollapsable(ref)
 
-	const handleBlur = (e: FocusEvent) => {
-		if (!isOpen) return
-
-		const tabbedTo = e.relatedTarget as HTMLElement
-		if (!toggleRef.current?.contains(tabbedTo)) return setIsClosing(true)
-
-		tabbedTo?.addEventListener('blur', handleBlur, { once: true })
+	const container = (menu: ReactNode) => {
+		return role === 'navigation' ? (
+			<nav className={styles.collapsableMenu} ref={ref} {...props}>
+				{menu}
+			</nav>
+		) : (
+			<div role={role} className={styles.collapsableMenu} ref={ref} {...props}>
+				{menu}
+			</div>
+		)
 	}
 
-	useEventListener('blur', handleBlur, toggleRef)
+	return container(
+		<>
+			<Button
+				variant="flat"
+				data-trigger
+				className="text-neutral-900"
+				aria-controls={id}
+				aria-expanded={!isCollapsed}
+			>
+				{trigger}
+				<IoChevronDown style={{ rotate: isCollapsed ? '0deg' : '180deg' }} />
+			</Button>
 
-	useEventListener(
-		'animationend',
-		() => {
-			if (!isClosing) return
-
-			setIsClosing(false)
-			setIsOpen(false)
-		},
-		submenuRef
-	)
-
-	const handleKeyDown: KeyboardEventHandler<HTMLDivElement> = e => {
-		if (!['enter', ' '].includes(e.key.toLowerCase())) return
-
-		e.preventDefault()
-		setIsOpen(o => !o)
-	}
-
-	const handleClick = () => {
-		const setState = isOpen ? setIsClosing : setIsOpen
-		setState(true)
-	}
-
-	return (
-		<div
-			className={classNames(styles['collapsable-menu'], 'relative')}
-			ref={toggleRef}
-			onClick={handleClick}
-			onKeyDown={handleKeyDown}
-			{...props}
-		>
-			<span className={styles['collapsable-menu-trigger']}>
-				{trigger({ isOpen, isClosing })}
-			</span>
-
-			<List
-				items={menuOptions}
-				render={render}
-				data-closing={isClosing}
+			<ul
+				id={id}
+				// @ts-ignore React doesn't yet support the inert attribute properly
+				// but it's already standardized in the HTML spec
+				// TODO: once React fixes this issue, the line below should be turned
+				// to inert={isCollapsed} and this comment should be removed
+				// eslint-disable-next-line react/no-unknown-property
+				inert={isCollapsed ? 'true' : undefined}
+				style={{
+					translate: isCollapsed ? '0 -100%' : undefined,
+					boxShadow: isCollapsed ? 'none' : undefined,
+					listStyle: 'none',
+				}}
 				className={classNames(
 					'absolute',
-					'text-bold',
-					styles['collapsable-menu-options'],
-					{ hide: !isOpen }
+					'font-weight-bold',
+					'box-shadow-medium',
+					'border-radius-100',
+					styles.collapsableMenuList
 				)}
-			/>
-		</div>
+			>
+				{children}
+			</ul>
+		</>
 	)
 }
 

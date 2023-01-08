@@ -20,17 +20,18 @@ interface IListProps<ListItem>
 	liProps?: DetailedHTMLProps<HTMLAttributes<HTMLLIElement>, HTMLLIElement>
 }
 
-const List = <T extends { id: number | string }>({
+const List = <T extends { key: number | string }>({
 	items,
 	render,
 	listStyle,
 	liProps,
+	style,
 	...props
 }: IListProps<T>) => {
 	return (
-		<ul style={{ listStyle }} {...props}>
+		<ul style={{ ...style, listStyle }} {...props}>
 			{items.map(i => (
-				<li key={i.id} {...liProps}>
+				<li key={i.key} {...liProps}>
 					{render(i)}
 				</li>
 			))}

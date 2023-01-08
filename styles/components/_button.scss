@@ -1,0 +1,109 @@
+$colors: 'neutral', 'primary', 'accent', 'success', 'warning', 'danger';
+
+@layer components {
+	.button {
+		--border-width: 1px;
+
+		position: relative;
+		padding: 0.3em 0.5em;
+		border: var(--border-width) solid var(--bg-color);
+
+		border-radius: var(--size-100);
+		isolation: isolate;
+
+		color: var(--text-color);
+		background-color: var(--bg-color);
+		font-weight: bold;
+		box-shadow: var(--box-shadow-small);
+
+		transform: scale(var(--scale, 1));
+
+		cursor: pointer;
+		outline-offset: 0;
+		transition: 100ms outline-offset ease-in-out, transform 150ms ease-in-out,
+			box-shadow 150ms ease-in-out;
+
+		&::before,
+		&::after {
+			content: '';
+			position: absolute;
+			inset: calc(-1 * var(--border-width));
+
+			z-index: -1;
+			pointer-events: none;
+
+			opacity: 0;
+			border-radius: inherit;
+			transition: opacity 150ms ease-in-out;
+		}
+
+		&::before {
+			box-shadow: inset var(--box-shadow-medium);
+		}
+
+		&::after {
+			--bg-opacity: 0.25;
+			background-color: hsl(var(--color-neutral-300) / var(--bg-opacity));
+		}
+
+		&:not(:disabled):is(:hover, :focus-visible)::after {
+			opacity: 1;
+		}
+
+		&:not([data-type]) {
+			--bg-color: hsl(var(--color-neutral-600));
+			--text-color: hsl(var(--color-neutral-100));
+		}
+
+		&:disabled {
+			box-shadow: none;
+			filter: grayscale(0.5);
+			cursor: not-allowed;
+		}
+
+		&[data-inverted] {
+			background-color: transparent;
+			--text-color: var(--bg-color);
+		}
+
+		&:not([data-inverted]) {
+			--text-color: hsl(var(--color-neutral-100));
+
+			@media (prefers-color-scheme: dark) {
+				--text-color: hsl(var(--color-neutral-900));
+
+				.light & {
+					--text-color: hsl(var(--color-neutral-100));
+				}
+			}
+
+			.dark & {
+				--text-color: hsl(var(--color-neutral-900));
+			}
+		}
+
+		&:focus {
+			outline: none;
+		}
+
+		&:focus-visible {
+			outline: 2px solid var(--bg-color);
+			outline-offset: 2px;
+		}
+
+		&:active {
+			--scale: 0.975;
+			box-shadow: none;
+
+			&::before {
+				opacity: 1;
+			}
+		}
+
+		@each $color in $colors {
+			&:where([data-type='#{$color}']) {
+				--bg-color: hsl(var(--color-#{$color}-500));
+			}
+		}
+	}
+}

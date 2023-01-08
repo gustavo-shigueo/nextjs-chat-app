@@ -1,27 +1,30 @@
-@mixin fontWeight($i) {
-	.font-weight-#{$i}00 {
-		font-weight: 100 * $i;
-	}
-}
+$weights: lighter, bold, bolder, normal;
+$alignments: start, end, justify, center;
 
 @layer utilities {
-	.text-light {
-		font-weight: light;
+	@for $i from 1 to 10 {
+		.font-size-#{$i}00 {
+			font-size: var(--size-#{$i}00);
+		}
+
+		.font-weight-#{$i}00 {
+			font-weight: 100 * $i;
+		}
 	}
 
-	.text-regular {
-		font-weight: normal;
+	@each $weight in $weights {
+		.font-weight-#{$weight} {
+			font-weight: $weight;
+		}
 	}
 
-	.text-bold {
-		font-weight: bold;
+	@each $alignment in $alignments {
+		.text-align-#{$alignment} {
+			text-align: $alignment;
+		}
 	}
 
-	.text-bolder {
-		font-weight: bolder;
-	}
-
-	@for $i from 1 through 9 {
-		@include fontWeight($i);
+	.underline {
+		text-decoration: underline;
 	}
 }

@@ -1,5 +1,7 @@
 @use './layers';
-@use './abstracts' as *;
-@use './resets' as *;
-@use './base' as *;
-@use './utilities/' as *;
+
+@use './resets';
+@use './base';
+@use './layout';
+@use './components';
+@use './utilities';

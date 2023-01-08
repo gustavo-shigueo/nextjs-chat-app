@@ -1,0 +1,9 @@
+@layer components {
+	.form {
+		display: grid;
+		grid-template-columns: repeat(12, 1fr);
+		gap: var(--size-200);
+
+		container-type: inline-size;
+	}
+}

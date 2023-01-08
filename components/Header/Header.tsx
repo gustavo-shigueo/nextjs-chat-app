@@ -1,53 +1,103 @@
+import AuthFormsDialog from 'components/AuthFormsDialog'
 import Avatar from 'components/Avatar'
-import LinkButton from 'components/LinkButton'
+import {
+	CollapsableMenu,
+	CollapsableMenuItem,
+} from 'components/CollapsableMenu'
 import { useAuth } from 'contexts/UserContext'
+import useTheme from 'hooks/useTheme'
 import Link from 'next/link'
-import React from 'react'
-import classNames from 'utils/classNames'
-import styles from './Header.module.scss'
+import { useRouter } from 'next/router'
+import { FC, MouseEvent, useEffect, useState } from 'react'
+import { IoCreate, IoLogIn, IoLogOut, IoMoon, IoSunny } from 'react-icons/io5'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
-const Header = () => {
-	const { user, logout } = useAuth()
+interface HeaderProps {}
+
+const Header: FC<HeaderProps> = () => {
+	const [theme, toggleTheme] = useTheme()
+	const [dialog, setDialog] = useState<undefined | 'login' | 'signup'>()
+	const { user, logout, error } = useAuth()
+	const { locale } = useRouter()
+
+	const openDialog = (d: 'login' | 'signup') => (e: MouseEvent) => {
+		e.stopPropagation()
+		setDialog(d)
+	}
+
+	useEffect(() => {
+		;(async () => {
+			if (!error?.name) return
+
+			if (locale?.includes('en')) {
+				toast.error(error.message)
+				return
+			}
+
+			const translation = await import(`./errors/${locale}.json`)
+			toast.error(translation[error.name])
+		})()
+	}, [error?.message, error?.name, locale])
+
 	return (
-		<header
-			className={classNames(
-				'font-size-500',
-				'flex-space-between',
-				'flex-stretch',
-				'fullbleed',
-				'box-shadow-large',
-				styles.header
-			)}
-		>
-			<h1>
-				<Link href="/" role={'logo'}>
-					MiChat
-				</Link>
-			</h1>
+		<>
+			<header className="flex justify-content-space-between align-items-center | padding-inline-800 padding-block-300 background-neutral-200 text-neutral-900 font-size-500">
+				<h1>
+					<Link href="/">MiChat</Link>
+				</h1>
 
-			<nav>
-				<ul>
+				<CollapsableMenu
+					role="navigation"
+					trigger={user && <Avatar user={user} />}
+				>
 					{user ? (
-						<li>
-							<Avatar user={user} logout={logout} />
-						</li>
+						<>
+							<CollapsableMenuItem rightIcon={<IoLogOut />} onClick={logout}>
+								Sair
+							</CollapsableMenuItem>
+							<CollapsableMenuItem
+								rightIcon={theme === 'dark' ? <IoSunny /> : <IoMoon />}
+								onClick={toggleTheme}
+							>
+								Mudar tema
+							</CollapsableMenuItem>
+						</>
 					) : (
 						<>
-							<li>
-								<LinkButton href="/login" variant="outline-primary" shallow>
-									Entre
-								</LinkButton>
-							</li>
-							<li>
-								<LinkButton href="/signup" variant="outline-accent" shallow>
-									Cadastre-se
-								</LinkButton>
-							</li>
+							<CollapsableMenuItem
+								rightIcon={<IoLogIn />}
+								onClick={openDialog('login')}
+							>
+								Entre
+							</CollapsableMenuItem>
+							<CollapsableMenuItem
+								rightIcon={<IoCreate />}
+								onClick={openDialog('signup')}
+							>
+								Cadastre-se
+							</CollapsableMenuItem>
+							<CollapsableMenuItem
+								rightIcon={theme === 'dark' ? <IoSunny /> : <IoMoon />}
+								onClick={toggleTheme}
+							>
+								Mudar tema
+							</CollapsableMenuItem>
 						</>
 					)}
-				</ul>
-			</nav>
-		</header>
+				</CollapsableMenu>
+			</header>
+			<AuthFormsDialog form={dialog} setForm={setDialog} />
+			<ToastContainer
+				position="top-right"
+				pauseOnHover
+				closeOnClick
+				autoClose={5000}
+				draggable
+				theme={theme}
+				pauseOnFocusLoss={false}
+			/>
+		</>
 	)
 }
 

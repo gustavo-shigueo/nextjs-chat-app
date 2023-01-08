@@ -1,0 +1,13 @@
+{
+	"DatabaseConnectionFailed": "Falha na conexão com o banco de dados",
+	"EmailAlreadyInUse": "Este e-mail já está em uso",
+	"RequiredFieldWasNotProvided": "Preencha todos os campos",
+	"GoogleAuthError": "Falha ao verificar sua conta Google",
+	"InvalidCredentials": "Credenciais inválidas",
+	"InvalidField": "Dados inválidos",
+	"InvalidOrExpiredToken": "Autenticação inálida ou expirada",
+	"InvalidSignInMethod": "Faça login com sua conta Google",
+	"MethodNotAllowed": "Método HTTP inválido",
+	"NotAuthenticated": "Não autenticado",
+	"NotFound": "Não encontrado"
+}
