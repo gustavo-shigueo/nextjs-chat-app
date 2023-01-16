@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-const useLocalStorage = <T extends string | null = string>(
+const useLocalStorage = <T extends Record<string, any> | string | null>(
 	key: string
 ): [T | null, (value: T) => void] => {
 	const [value, setValue] = useState<T | null>(null)
@@ -8,11 +8,22 @@ const useLocalStorage = <T extends string | null = string>(
 	useEffect(() => {
 		if (value === null) return
 
-		localStorage.setItem(key, value)
+		localStorage.setItem(key, JSON.stringify(value))
 	}, [value, key])
 
 	useEffect(() => {
-		setValue(localStorage.getItem(key) as T | null)
+		const value = localStorage.getItem(key)
+
+		if (!value) {
+			setValue(value as T | null)
+			return
+		}
+
+		try {
+			setValue(JSON.parse(value) as T)
+		} catch {
+			setValue(value as T)
+		}
 	}, [key])
 
 	return [value, setValue]
