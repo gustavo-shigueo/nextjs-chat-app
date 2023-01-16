@@ -36,7 +36,7 @@ const AuthFormsDialog: FC<AuthFormsDialogProps> = ({ form, setForm }) => {
 		const sizes = blockSizes.map(b => parseInt(b.replace('px', '')))
 		const contentSize = sizes.reduce((acc, cur) => acc + cur, 0)
 
-		const targetSize = `${contentSize}px + ${paddingBlockEnd} + 2 * var(--size-300)`
+		const targetSize = `${contentSize}px + ${paddingBlockEnd} + 2 * var(--size-300) + 0.5px`
 		const maxSize = `90vb - ${headerSize}px`
 
 		wrapper.style.blockSize = `min(${targetSize}, ${maxSize})`
@@ -56,6 +56,11 @@ const AuthFormsDialog: FC<AuthFormsDialogProps> = ({ form, setForm }) => {
 
 		const observer = new ResizeObserver(setBlockSize)
 		observer.observe(document.body)
+
+		const ref = form === 'login' ? loginRef : signupRef
+		if (ref.current) {
+			;[...ref.current.children].forEach(e => observer.observe(e))
+		}
 
 		return () => observer.disconnect()
 	}, [form, setBlockSize])
