@@ -1,4 +1,4 @@
-import MainPanel from '_components/MainPanel'
+import MainPanel from 'components/MainPanel'
 import authGuard from 'guards/autth/authGuard'
 import IChat from 'interfaces/IChat'
 import { GetServerSideProps } from 'next'
@@ -33,6 +33,7 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
 			},
 		}
 	} catch (error: any) {
+		console.warn(error)
 		return {
 			props: {
 				authenticatedUserData: {

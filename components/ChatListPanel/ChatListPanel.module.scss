@@ -1,0 +1,18 @@
+.contacts-section {
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+
+	& > form > div {
+		--input-text-color: var(--color-neutral-800);
+		--input-back-color: var(--color-neutral-200) / 0.15;
+	}
+
+	& > ul {
+		display: flex;
+		flex-direction: column;
+		gap: var(--size-300);
+
+		overflow-y: auto;
+	}
+}

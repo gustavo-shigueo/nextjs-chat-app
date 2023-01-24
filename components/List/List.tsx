@@ -1,4 +1,13 @@
-import { DetailedHTMLProps, HTMLAttributes, ReactNode } from 'react'
+import {
+	CSSProperties,
+	DetailedHTMLProps,
+	HTMLAttributes,
+	ReactNode,
+} from 'react'
+
+type ItemKey<T> = {
+	[R in keyof T]: T[R] extends string | number ? R : never
+}[keyof T]
 
 interface IListProps<ListItem>
 	extends DetailedHTMLProps<
@@ -6,37 +15,29 @@ interface IListProps<ListItem>
 		HTMLUListElement
 	> {
 	items: ListItem[]
-	render: (item: ListItem) => ReactNode
-	listStyle?:
-		| '-moz-initial'
-		| 'inherit'
-		| 'initial'
-		| 'inside'
-		| 'none'
-		| 'outside'
-		| 'revert'
-		| 'unset'
-		| undefined
+	itemKey: ItemKey<ListItem>
+	renderItem: (item: ListItem) => ReactNode
+	listStyle?: CSSProperties['listStyle']
+	style?: Omit<CSSProperties, 'listStyle'>
 	liProps?: DetailedHTMLProps<HTMLAttributes<HTMLLIElement>, HTMLLIElement>
 }
 
-const List = <T extends { key: number | string }>({
+const List = <T,>({
 	items,
-	render,
+	renderItem,
 	listStyle,
 	liProps,
 	style,
+	itemKey,
 	...props
-}: IListProps<T>) => {
-	return (
-		<ul style={{ ...style, listStyle }} {...props}>
-			{items.map(i => (
-				<li key={i.key} {...liProps}>
-					{render(i)}
-				</li>
-			))}
-		</ul>
-	)
-}
+}: IListProps<T>) => (
+	<ul style={{ ...style, listStyle }} {...props}>
+		{items.map(i => (
+			<li key={i[itemKey] as unknown as string | number} {...liProps}>
+				{renderItem(i)}
+			</li>
+		))}
+	</ul>
+)
 
 export default List

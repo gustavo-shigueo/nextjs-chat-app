@@ -1,7 +1,10 @@
 import dateFormatter from 'utils/formatters/date'
 import timeFormatter from 'utils/formatters/time'
 
-const isToday = (date: Date, today: Date): boolean => {
+export const isToday = (date: Date): boolean => {
+	const now = Date.now()
+	const today = new Date(now)
+
 	return (
 		today.getDate() === date.getDate() &&
 		today.getMonth() === date.getMonth() &&
@@ -9,7 +12,10 @@ const isToday = (date: Date, today: Date): boolean => {
 	)
 }
 
-const isYesterday = (date: Date, today: Date): boolean => {
+export const isYesterday = (date: Date): boolean => {
+	const now = Date.now()
+	const today = new Date(now)
+
 	return (
 		today.getDate() === date.getDate() + 1 &&
 		today.getMonth() === date.getMonth() &&
@@ -18,12 +24,9 @@ const isYesterday = (date: Date, today: Date): boolean => {
 }
 
 const parseDateDifference = (date: Date): string => {
-	const now = Date.now()
-	const today = new Date(now)
+	if (isToday(date)) return timeFormatter.format(date)
 
-	if (isToday(date, today)) return timeFormatter.format(date)
-
-	if (isYesterday(date, today)) return 'Ontem'
+	if (isYesterday(date)) return 'Ontem'
 
 	return dateFormatter.format(date)
 }

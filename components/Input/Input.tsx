@@ -8,7 +8,7 @@ export interface InputProps<T extends Record<string, unknown>>
 	name: Path<T>
 	label: string
 	controlSize?: 'small' | 'medium' | 'large' | 'full'
-	register: UseFormRegister<T>
+	register?: UseFormRegister<T>
 	errors?: Partial<DeepMap<T, FieldError>>
 	type:
 		| 'date'
@@ -42,7 +42,7 @@ const Input = <T extends Record<string, unknown>>({
 
 	const errorMessage = errors?.[name]
 	const invalid = !!errorMessage
-	const control = register(name, {
+	const control = register?.(name, {
 		onBlur: e => {
 			onBlur?.(e)
 			setDirty(true)

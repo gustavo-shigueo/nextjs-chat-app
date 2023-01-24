@@ -8,7 +8,7 @@ export default {
 export const Default = ({
 	darkMode,
 	...args
-}: InputProps & { darkMode: boolean }) => (
+}: InputProps<any> & { darkMode: boolean }) => (
 	<div className={darkMode ? 'dark' : 'light'}>
 		<Input {...args} />
 	</div>

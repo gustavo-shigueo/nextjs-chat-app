@@ -5,7 +5,7 @@ export default {
 	title: 'CollapsableMenu',
 }
 
-export const Default = () => <CollapsableMenu menuOptions={[]} />
+export const Default = () => <CollapsableMenu />
 
 Default.story = {
 	name: 'default',

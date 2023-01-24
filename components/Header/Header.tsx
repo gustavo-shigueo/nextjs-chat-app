@@ -42,7 +42,7 @@ const Header: FC<HeaderProps> = () => {
 
 	return (
 		<>
-			<header className="flex justify-content-space-between align-items-center | padding-inline-800 padding-block-300 background-neutral-200 text-neutral-900 font-size-500">
+			<header className="flex justify-content-space-between align-items-center | padding-inline-800 padding-block-100 background-neutral-200 text-neutral-900 font-size-500">
 				<h1>
 					<Link href="/">MiChat</Link>
 				</h1>

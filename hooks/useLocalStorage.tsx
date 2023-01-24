@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 const useLocalStorage = <T extends Record<string, any> | string | null>(
 	key: string
-): [T | null, (value: T) => void] => {
+) => {
 	const [value, setValue] = useState<T | null>(null)
 
 	useEffect(() => {
@@ -26,7 +26,7 @@ const useLocalStorage = <T extends Record<string, any> | string | null>(
 		}
 	}, [key])
 
-	return [value, setValue]
+	return [value, setValue] as const
 }
 
 export default useLocalStorage

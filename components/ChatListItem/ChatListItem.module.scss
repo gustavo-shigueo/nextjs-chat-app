@@ -1,0 +1,45 @@
+@layer components {
+	.chatListItem {
+		position: relative;
+
+		display: grid;
+		grid-template-columns: auto 1fr;
+		gap: var(--size-100) var(--size-400);
+
+		inline-size: 100%;
+		border: none;
+		outline: none;
+
+		cursor: pointer;
+		background-color: hsl(var(--color-neutral-200));
+		transition: background-color 150ms ease-in-out;
+
+		&:hover,
+		&:focus-visible {
+			background-color: hsl(var(--color-neutral-300));
+			outline: 2px solid hsl(var(--color-neutral-800));
+		}
+
+		&.active {
+			background-color: hsl(var(--color-neutral-400));
+		}
+
+		& > :first-child {
+			place-self: center;
+			grid-row: 1 / span 3;
+		}
+	}
+
+	li:not(:last-child):has(.chatListItem) .chatListItem::after {
+		position: absolute;
+		content: '';
+
+		left: 0;
+		right: 0;
+		bottom: calc(-0.5 * var(--size-300));
+
+		block-size: 1px;
+
+		background-color: hsl(var(--color-neutral-500));
+	}
+}

@@ -43,7 +43,6 @@ const Login: NextPage = () => {
 	})
 
 	const onSubmit: SubmitHandler<FormData> = async data => {
-		console.log(data)
 		login({ profile: data })
 	}
 
