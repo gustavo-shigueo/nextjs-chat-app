@@ -1,0 +1,37 @@
+.wrapper {
+	&::after,
+	& > textarea {
+		@apply max-bs-[calc(2ex_*_var(--max-lines,_1)_+_2_*_theme(spacing.3))] [grid-row:_-1];
+	}
+
+	& > textarea {
+		@apply bg-neutral-300/[0.075];
+
+		&[pattern]:valid {
+			@apply border-green-600 bg-green-300/[0.075] text-green-600;
+		}
+	}
+
+	&:has(> .error) {
+		&::after,
+		& > textarea {
+			@apply [grid-row:_-2];
+		}
+	}
+
+	&:has(> textarea:focus) {
+		@apply text-sky-600;
+
+		& > textarea {
+			@apply bg-sky-300/[0.075];
+		}
+	}
+
+	&:has(> textarea:not(:focus) ~ .error) {
+		@apply text-red-500;
+
+		& > textarea {
+			@apply border-red-500 bg-red-400/[0.075];
+		}
+	}
+}

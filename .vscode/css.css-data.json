@@ -1,0 +1,77 @@
+{
+	"version": 1.1,
+	"atDirectives": [
+		{
+			"name": "@container",
+			"description": "A container query is created using @container. This will query the nearest containment context.",
+			"references": [
+				{
+					"name": "@container",
+					"url": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Container_Queries"
+				}
+			]
+		},
+		{
+			"name": "@tailwind",
+			"description": "Tailwind directive",
+			"relevance": 50,
+			"status": "standard",
+			"references": [
+				{
+					"name": "Tailwind Docs",
+					"url": "https://tailwindcss.com/docs/functions-and-directives#tailwind"
+				}
+			]
+		},
+		{
+			"name": "@apply",
+			"description": "Apply tailwind custom classes from a CSS file",
+			"relevance": 50,
+			"status": "standard",
+			"references": [
+				{
+					"name": "Tailwind Docs",
+					"url": "https://tailwindcss.com/docs/functions-and-directives#apply"
+				}
+			]
+		}
+	],
+	"properties": [
+		{
+			"name": "container-type",
+			"description": "Defines an element as a query container. Descendants can query aspects of its sizing, layout, style and state.",
+			"status": "standard",
+			"relevance": 75,
+			"references": [
+				{
+					"name": "MDN reference",
+					"url": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Container_Queries#container-type"
+				}
+			]
+		},
+		{
+			"name": "container-name",
+			"description": "Specifies a list of query container names for @container rules to use to filter which query containers are targeted.",
+			"status": "standard",
+			"relevance": 75,
+			"references": [
+				{
+					"name": "MDN reference",
+					"url": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Container_Queries#container-name"
+				}
+			]
+		},
+		{
+			"name": "container",
+			"description": "A shorthand property to set both container-type and container-name",
+			"status": "standard",
+			"relevance": 75,
+			"references": [
+				{
+					"name": "MDN reference",
+					"url": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Container_Queries#container"
+				}
+			]
+		}
+	]
+}

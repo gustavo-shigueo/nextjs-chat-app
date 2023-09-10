@@ -1,0 +1,79 @@
+.wrapper {
+	& > span > input {
+		@apply bg-neutral-300/[0.075];
+
+		&[pattern]:valid {
+			@apply border-green-600 bg-green-300/[0.075];
+		}
+	}
+
+	&:has(> span > input[pattern]:valid) {
+		@apply text-green-600;
+
+		& > span:has(:first-child + input) > :first-child {
+			@apply border-green-600 bg-green-300/[0.075];
+		}
+
+		& > span:has(input + :last-child) > :last-child {
+			@apply border-green-600 bg-green-300/[0.075];
+		}
+	}
+
+	& > span {
+		&:has(> :first-child + input) {
+			& > :first-child {
+				@apply border-2 border-gray-500 bg-neutral-300/[0.075] outline-none rounded-se-none rounded-ee-none;
+			}
+
+			& > input {
+				@apply rounded-ss-none rounded-es-none;
+			}
+		}
+
+		&:has(> input + :last-child) {
+			& > input {
+				@apply rounded-se-none rounded-ee-none;
+			}
+
+			& > :last-child {
+				@apply border-2 border-gray-500 bg-neutral-300/[0.075] outline-none rounded-ss-none rounded-es-none;
+			}
+		}
+	}
+
+	&::after {
+		@apply bg-neutral-300/[0.075] text-transparent dark:bg-neutral-800;
+	}
+
+	&:has(> span > input:focus:not([pattern]:valid)) {
+		@apply text-sky-600;
+
+		& > span > input {
+			@apply bg-sky-300/[0.075];
+		}
+
+		& > span:has(:first-child + input) > :first-child {
+			@apply border-sky-600 bg-sky-300/[0.075];
+		}
+
+		& > span:has(input + :last-child) > :last-child {
+			@apply border-sky-600 bg-sky-300/[0.075];
+		}
+	}
+
+	&:has(> span > input:not(:focus)):has(> .error) {
+		@apply text-red-500;
+
+		& > span > input {
+			@apply border-red-500 bg-red-400/[0.075];
+		}
+
+		& > span:has(:first-child + input) > :first-child {
+			@apply border-red-500 bg-red-400/[0.075];
+		}
+
+		& > span:has(input + :last-child) > :last-child {
+			@apply border-red-500 bg-red-400/[0.075];
+		}
+	}
+}

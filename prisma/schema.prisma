@@ -1,0 +1,127 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "mysql"
+    url      = env("DATABASE_URL")
+}
+
+model Account {
+    id                Bytes   @id @default(dbgenerated("(UUID_TO_BIN(UUID()))")) @db.Binary(16)
+    userId            Bytes   @db.Binary(16)
+    type              String
+    provider          String
+    providerAccountId String
+    refresh_token     String? @db.Text
+    access_token      String? @db.Text
+    expires_at        Int?
+    token_type        String?
+    scope             String?
+    id_token          String? @db.Text
+    session_state     String?
+    user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@unique([provider, providerAccountId])
+}
+
+model User {
+    id            Bytes     @id @default(dbgenerated("(UUID_TO_BIN(UUID()))")) @db.Binary(16)
+    name          String
+    email         String    @unique
+    passwordHash  String?
+    emailVerified DateTime?
+    image         String
+    createdAt     DateTime  @unique @default(now())
+
+    accounts Account[]
+
+    contacts    User[] @relation("Contacts")
+    contactedBy User[] @relation("Contacts")
+
+    chats        Chat[] @relation(name: "ChatMembers")
+    chatsCreated Chat[] @relation(name: "ChatsCreated")
+
+    messagesSent   Message[]
+    callsInitiated Call[]
+
+    participantInCalls CallParticipant[]
+
+    @@index([name])
+    @@index([email])
+}
+
+model Chat {
+    id           Bytes    @id @default(dbgenerated("(UUID_TO_BIN(UUID()))")) @db.Binary(16)
+    name         String?
+    thumbnailUrl String?
+    chatType     ChatType
+    createdAt    DateTime @default(now())
+
+    messages Message[]
+    calls    Call[]
+    users    User[]    @relation(name: "ChatMembers")
+
+    creator   User  @relation(name: "ChatsCreated", fields: [creatorId], references: [id])
+    creatorId Bytes @db.Binary(16)
+}
+
+enum ChatType {
+    PrivateChat
+    GroupChat
+}
+
+model Message {
+    id     Bytes    @id @default(dbgenerated("(UUID_TO_BIN(UUID()))")) @db.Binary(16)
+    text   String   @db.Text
+    sentAt DateTime @unique @default(now())
+
+    sender   User  @relation(references: [id], fields: [senderId], onDelete: Cascade)
+    senderId Bytes @db.Binary(16)
+    chat     Chat  @relation(references: [id], fields: [chatId], onDelete: Cascade)
+    chatId   Bytes @db.Binary(16)
+
+    @@index([senderId])
+    @@index([chatId])
+    @@index([sentAt])
+}
+
+enum CallType {
+    Audio
+    Video
+}
+
+model Call {
+    id        Bytes     @id @default(dbgenerated("(UUID_TO_BIN(UUID()))")) @db.Binary(16)
+    startedAt DateTime  @default(now())
+    endedAt   DateTime?
+    callType  CallType
+
+    caller   User  @relation(fields: [callerId], references: [id])
+    callerId Bytes @map("userId") @db.Binary(16)
+    chat     Chat  @relation(fields: [chatId], references: [id])
+    chatId   Bytes @db.Binary(16)
+
+    participants CallParticipant[]
+}
+
+model CallParticipant {
+    call   Call  @relation(fields: [callId], references: [id])
+    callId Bytes @db.Binary(16)
+
+    participant   User  @relation(fields: [participantId], references: [id])
+    participantId Bytes @db.Binary(16)
+
+    joinedAt DateTime  @default(now())
+    leftAt   DateTime?
+
+    @@id([callId, participantId])
+}
+
+model VerificationToken {
+    identifier String
+    token      String   @unique
+    expires    DateTime
+
+    @@unique([identifier, token])
+}

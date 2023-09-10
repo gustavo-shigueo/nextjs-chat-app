@@ -1,0 +1,19 @@
+.spinner {
+	animation: spinner 2000ms linear 0ms infinite normal forwards;
+}
+
+@keyframes spinner {
+	0% {
+		rotate: 0deg;
+		stroke-dasharray: 20 80;
+	}
+
+	20% {
+		stroke-dasharray: 40 60;
+	}
+
+	100% {
+		rotate: 360deg;
+		stroke-dasharray: 20 80;
+	}
+}
