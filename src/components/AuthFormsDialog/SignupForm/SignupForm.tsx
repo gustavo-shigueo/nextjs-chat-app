@@ -1,5 +1,4 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { signIn } from 'next-auth/react'
 import {
 	forwardRef,
 	useEffect,
@@ -18,6 +17,7 @@ import GoogleLoginButton from '../../../components/GoogleLoginButton'
 import Input from '../../../components/Input'
 import passwordRegex from '../../../utils/regex/password'
 import { api } from 'src/utils/api'
+import { useRouter } from 'next/router'
 
 interface LoginFormProps extends Omit<HTMLAttributes<HTMLDivElement>, 'inert'> {
 	setForm: Dispatch<SetStateAction<'login' | 'signup' | undefined>>
@@ -56,6 +56,7 @@ const SignupForm = forwardRef<HTMLDivElement, LoginFormProps>(
 		const overflowRef = useRef<HTMLDivElement>(null)
 		const signup = api.users.signup.useMutation()
 		const [error, setError] = useState('')
+		const { locale, defaultLocale = 'pt-br' } = useRouter()
 
 		const {
 			register,
@@ -78,8 +79,8 @@ const SignupForm = forwardRef<HTMLDivElement, LoginFormProps>(
 
 				setError('')
 
-				await signup.mutateAsync({ name, email, password })
-				void signIn('credentials', { redirect: true, email, password })
+				const id = await signup.mutateAsync({ name, email, password })
+				location.pathname = `/${locale ?? defaultLocale}/confirm-email/${id}`
 			} catch (e) {
 				switch ((e as Error).message) {
 					case 'User already exists':
@@ -137,7 +138,7 @@ const SignupForm = forwardRef<HTMLDivElement, LoginFormProps>(
 						className="em:gap-3"
 						onSubmit={e => {
 							e.preventDefault()
-							void handleSubmit(onSubmit)(e)
+							void handleSubmit(onSubmit, () => undefined)(e)
 						}}
 					>
 						<Input
@@ -156,7 +157,7 @@ const SignupForm = forwardRef<HTMLDivElement, LoginFormProps>(
 							autoComplete="username"
 							type="email"
 							required
-							pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
+							pattern="^[a-zA-Z0-9.!#$%&'*+\/=?^_`\{\|\}~\-]+@[a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?)*$"
 							disabled={inert}
 							error={errors.email?.message}
 							{...register('email')}

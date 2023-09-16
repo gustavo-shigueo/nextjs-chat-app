@@ -17,4 +17,7 @@ export default interface IUserRepository {
 		limit: number,
 		cursor?: Date | undefined
 	): Promise<User[]>
+
+	confirmEmail(id: Buffer): Promise<User>
+	resetPassword(id: Buffer, passwordHash: string): Promise<User>
 }

@@ -46,6 +46,7 @@ export default class PrismaUserRepository implements IUserRepository {
 				email,
 				image: imageUrl.toString(),
 				passwordHash,
+				emailVerified: null,
 			},
 		})
 	}
@@ -82,6 +83,20 @@ export default class PrismaUserRepository implements IUserRepository {
 				NOT: { OR: [{ id }, { emailVerified: null }] },
 				contactedBy: { none: { id } },
 			},
+		})
+	}
+
+	public confirmEmail(id: Buffer): Promise<User> {
+		return this.#prismaClient.user.update({
+			where: { id },
+			data: { emailVerified: new Date() },
+		})
+	}
+
+	public resetPassword(id: Buffer, passwordHash: string): Promise<User> {
+		return this.#prismaClient.user.update({
+			where: { id },
+			data: { passwordHash },
 		})
 	}
 }

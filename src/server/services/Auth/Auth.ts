@@ -7,19 +7,28 @@ import type { IAuthService } from '.'
 import type { IPasswordService } from '../Password'
 import type { UserSchema } from '../../../server/api/schemas/userSchema'
 import type { Credentials } from './IAuth'
+import type { IEmailService } from '../Email'
+import type { IJwtService } from '../Jwt'
+import { env } from '../../../env'
 
 export default class AuthService implements IAuthService {
 	#userRepository: IUserRepository
+	#emailService: IEmailService
 	#passwordService: IPasswordService
 	#uuidSerializer: IUuidSerializer
+	#jwtService: IJwtService
 
 	public constructor(
 		userRepository: IUserRepository,
+		emailService: IEmailService,
 		passwordService: IPasswordService,
+		jwtService: IJwtService,
 		uuidSerializer: IUuidSerializer
 	) {
 		this.#userRepository = userRepository
+		this.#emailService = emailService
 		this.#passwordService = passwordService
+		this.#jwtService = jwtService
 		this.#uuidSerializer = uuidSerializer
 	}
 
@@ -39,11 +48,15 @@ export default class AuthService implements IAuthService {
 		const { passwordHash, ...user } = await this.#userRepository
 			.findByEmail(credentials.email)
 			.catch(() => {
-				throw new UnauthorizedError('Invalid e-mail or password')
+				throw new UnauthorizedError('InvalidCredentials')
 			})
 
 		if (!passwordHash) {
-			throw new UnauthorizedError('Invalid signin method')
+			throw new UnauthorizedError('InvalidSigninMethod')
+		}
+
+		if (!user.emailVerified) {
+			throw new UnauthorizedError('EmailNotVerified')
 		}
 
 		const isPasswordValid = await this.#passwordService.verify(
@@ -52,7 +65,7 @@ export default class AuthService implements IAuthService {
 		)
 
 		if (!isPasswordValid) {
-			throw new UnauthorizedError('Invalid e-mail or password')
+			throw new UnauthorizedError('InvalidCredentials')
 		}
 
 		return this.#uuidSerializer.deepStringify(user)
@@ -69,6 +82,72 @@ export default class AuthService implements IAuthService {
 		}
 
 		const hashedPassword = await this.#passwordService.hash(password)
-		await this.#userRepository.create(name, email, hashedPassword)
+		const user = await this.#userRepository.create(name, email, hashedPassword)
+
+		const id = this.#uuidSerializer.stringify(user.id)
+
+		const token = this.#jwtService.sign({ id })
+		const url = new URL(`/confirm-email/${id}/${token}`, env.NEXTAUTH_URL)
+
+		void this.#emailService.sendConfirmation(email, user.name, url.href)
+
+		return this.#uuidSerializer.stringify(user.id)
+	}
+
+	public async requestConfirmationEmail(email: string) {
+		const user = await this.#userRepository.findByEmail(email)
+
+		const id = this.#uuidSerializer.stringify(user.id)
+
+		const token = this.#jwtService.sign({ id })
+		const url = new URL(`/confirm-email/${id}/${token}`, env.NEXTAUTH_URL)
+
+		await this.#emailService.sendConfirmation(email, user.name, url.href)
+	}
+
+	public async requestPasswordReset(email: string) {
+		try {
+			const user = await this.#userRepository.findByEmail(email)
+
+			const id = this.#uuidSerializer.stringify(user.id)
+
+			const token = this.#jwtService.sign({ id })
+			const url = new URL(`/reset-password/${id}/${token}`, env.NEXTAUTH_URL)
+
+			void this.#emailService.sendPasswordReset(email, user.name, url.href)
+		} catch {}
+	}
+
+	public async confirmEmail(id: string, token: string) {
+		try {
+			const payload = this.#jwtService.verify<{ id: string }>(token)
+
+			if (payload.id !== id) {
+				throw new Error()
+			}
+
+			await this.#userRepository.confirmEmail(this.#uuidSerializer.toBuffer(id))
+		} catch {
+			throw new BadRequestError('Invalid Token')
+		}
+	}
+
+	public async resetPassword(id: string, token: string, password: string) {
+		try {
+			const payload = this.#jwtService.verify<{ id: string }>(token)
+
+			if (payload.id !== id) {
+				throw new Error()
+			}
+
+			const hashedPassword = await this.#passwordService.hash(password)
+
+			await this.#userRepository.resetPassword(
+				this.#uuidSerializer.toBuffer(id),
+				hashedPassword
+			)
+		} catch {
+			throw new BadRequestError('Invalid Token')
+		}
 	}
 }

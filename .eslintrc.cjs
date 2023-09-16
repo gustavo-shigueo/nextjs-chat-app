@@ -31,5 +31,6 @@ module.exports = {
 			'warn',
 			{ vars: 'all', ignoreRestSiblings: true },
 		],
+		'@typescript-eslint/no-misused-promises': 'off',
 	},
 }

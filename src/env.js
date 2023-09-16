@@ -22,6 +22,9 @@ const server = z.object({
 	// Add `.min(1) on ID and SECRET if you want to make sure they're not empty
 	GOOGLE_CLIENT_ID: z.string(),
 	GOOGLE_CLIENT_SECRET: z.string(),
+	NODEMAILER_EMAIL: z.string().email(),
+	NODEMAILER_PASSWORD: z.string().length(16),
+	JWT_SECRET: z.string(),
 })
 
 /**
@@ -48,6 +51,9 @@ const processEnv = {
 	GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
 	NEXT_PUBLIC_DICEBEAR_URL: process.env.NEXT_PUBLIC_DICEBEAR_URL,
 	NEXT_PUBLIC_WS_URL: process.env.NEXT_PUBLIC_WS_URL,
+	NODEMAILER_EMAIL: process.env.NODEMAILER_EMAIL,
+	NODEMAILER_PASSWORD: process.env.NODEMAILER_PASSWORD,
+	JWT_SECRET: process.env.JWT_SECRET,
 	// NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
 }
 

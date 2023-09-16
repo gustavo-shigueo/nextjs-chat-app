@@ -18,6 +18,7 @@ import Form from '../../../components/Form'
 import GoogleLoginButton from '../../../components/GoogleLoginButton'
 import Input from '../../../components/Input'
 import passwordRegex from '../../../utils/regex/password'
+import Link from 'next/link'
 
 interface LoginFormProps extends Omit<HTMLAttributes<HTMLDivElement>, 'inert'> {
 	setForm: Dispatch<SetStateAction<'login' | 'signup' | undefined>>
@@ -76,16 +77,7 @@ const LoginForm = forwardRef<HTMLDivElement, LoginFormProps>(
 			}
 
 			setForm('login')
-			switch (response.error) {
-				case 'CredentialsNotProvided':
-					setError('Por favor forneça suas credenciais')
-					break
-				case 'InvalidCredentials':
-					setError('Credenciais inválidas')
-					break
-				default:
-					setError('Erro desconhecido')
-			}
+			setError(response.error ?? '')
 		}
 
 		useEffect(() => {
@@ -121,9 +113,9 @@ const LoginForm = forwardRef<HTMLDivElement, LoginFormProps>(
 					<h2 className="text-center text-3xl font-bold em:mlb-3">Login</h2>
 
 					{error && (
-						<p className="text-md text-center text-lg font-bold text-red-600 mbe-2 dark:text-red-500">
-							{error}
-						</p>
+						<div className="text-md text-center text-lg font-bold text-red-600 mbe-2 dark:text-red-500">
+							<Error error={error} />
+						</div>
 					)}
 
 					<Form
@@ -140,7 +132,7 @@ const LoginForm = forwardRef<HTMLDivElement, LoginFormProps>(
 							required
 							disabled={inert}
 							error={errors.email?.message}
-							pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
+							pattern="^[a-zA-Z0-9.!#$%&'*+\/=?^_`\{\|\}~\-]+@[a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?)*$"
 							{...register('email')}
 						/>
 						<Input
@@ -165,6 +157,7 @@ const LoginForm = forwardRef<HTMLDivElement, LoginFormProps>(
 							}
 							{...register('password')}
 						/>
+
 						<div className="grid text-sm em:gap-1">
 							<p>
 								Não tem uma conta?&nbsp;
@@ -176,6 +169,15 @@ const LoginForm = forwardRef<HTMLDivElement, LoginFormProps>(
 								>
 									Cadastre-se
 								</button>
+							</p>
+
+							<p className="font-bold underline">
+								<Link
+									onClick={() => setForm(undefined)}
+									href={`/${locale ?? defaultLocale}/reset-password`}
+								>
+									Esqueceu sua senha?
+								</Link>
 							</p>
 						</div>
 						<div className="max grid auto-cols-fr grid-flow-row auto-rows-fr justify-end em:gap-3">
@@ -192,5 +194,24 @@ const LoginForm = forwardRef<HTMLDivElement, LoginFormProps>(
 )
 
 LoginForm.displayName = 'LoginForm'
+
+function Error({ error }: { error: string }) {
+	switch (error) {
+		case 'CredentialsNotProvided':
+			return <p>Por favor forneça suas credenciais</p>
+		case 'InvalidCredentials':
+			return <p>Credenciais inválidas</p>
+		case 'InvalidSigninMethod':
+			return (
+				<p>
+					Modo de login inválido! Por favor use sua conta Google para entrar
+				</p>
+			)
+		case 'EmailNotVerified':
+			return <p>Seu e-mail não foi verificado! Verifique seu e-mail</p>
+		default:
+			return <p>Erro desconhecido</p>
+	}
+}
 
 export default LoginForm

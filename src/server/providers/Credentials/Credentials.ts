@@ -10,8 +10,6 @@ export const credentialsProvider = CredentialsProvider({
 	authorize(credentials) {
 		if (!credentials) throw new Error('CredentialsNotProvided')
 
-		return authService.authenticate(credentials).catch(() => {
-			throw new Error('InvalidCredentials')
-		})
+		return authService.authenticate(credentials)
 	},
 })
