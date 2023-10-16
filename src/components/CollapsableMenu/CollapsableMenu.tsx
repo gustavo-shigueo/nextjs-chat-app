@@ -14,7 +14,7 @@ type CollapsableMenuProps = HTMLAttributes<HTMLDivElement> & {
 
 const Container = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
 	({ children, className: cn, role, ...props }, ref) => {
-		const className = twMerge('relative bg-inherit', cn)
+		const className = twMerge('relative z-[20] bg-inherit', cn)
 
 		if (role === 'navigation') {
 			return (
@@ -71,7 +71,7 @@ function CollapsableMenu({
 					translate: isCollapsed ? '0 -100%' : undefined,
 					boxShadow: isCollapsed ? 'none' : undefined,
 				}}
-				className="absolute z-[1] translate-y-[-100%] list-none border-2 border-neutral-100/25 bg-inherit font-bold opacity-0 shadow-xl min-is-[11.25em] inline-end-0 block-end-0 em:rounded motion-safe:transition-[opacity,transform] [[aria-expanded=true]_+_&]:translate-y-[110%] [[aria-expanded=true]_+_&]:opacity-100"
+				className="absolute z-[1] translate-y-[-100%] list-none border-2 border-neutral-100/25 bg-inherit font-bold opacity-0 shadow-xl min-is-[11.25em] block-end-0 inline-end-0 em:rounded motion-safe:transition-[opacity,transform] [[aria-expanded=true]_+_&]:translate-y-[110%] [[aria-expanded=true]_+_&]:opacity-100"
 			>
 				{children}
 			</ul>
