@@ -9,7 +9,7 @@ const Video = forwardRef<HTMLVideoElement, VideoProps>(
 		const localRef = useRef<HTMLVideoElement | null>(null)
 
 		return (
-			<div className="aspect-video self-center">
+			<div className="aspect-video self-center bg-black">
 				<video
 					className="block aspect-video object-cover bs-full max-bs-full is-full max-is-full"
 					autoPlay

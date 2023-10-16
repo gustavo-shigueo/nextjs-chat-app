@@ -171,7 +171,10 @@ export function CallProvider({ children }: CallProviderProps) {
 		}
 
 		if (isVideoEnabled) {
-			streamRef.current.getVideoTracks().forEach(track => track.stop())
+			streamRef.current.getVideoTracks().forEach(track => {
+				track.enabled = false
+				track.stop()
+			})
 		} else {
 			await enableVideo()
 		}
@@ -198,6 +201,10 @@ export function CallProvider({ children }: CallProviderProps) {
 		}
 	}
 
+	useEventListener('unload', () => {
+		void hangupCall()
+	})
+
 	api.calls.receive.useSubscription(undefined, {
 		onData(call) {
 			setCallState(prev => (prev[0] === 'idle' ? ['receiving', call] : prev))
@@ -216,7 +223,21 @@ export function CallProvider({ children }: CallProviderProps) {
 				const element = document.querySelector(
 					`[id="${data.userId}"]` as 'video' | 'audio'
 				)
-				if (element) element.srcObject = stream
+
+				if (!element) {
+					return
+				}
+
+				element.srcObject = stream
+				stream.getVideoTracks().forEach(track => {
+					track.addEventListener('mute', () => element.classList.add('hidden'))
+
+					track.addEventListener('unmute', e => {
+						if ((e.currentTarget as MediaStreamTrack).kind === 'video') {
+							element.classList.remove('hidden')
+						}
+					})
+				})
 			})
 
 			peer.on('signal', signal => {
@@ -240,15 +261,26 @@ export function CallProvider({ children }: CallProviderProps) {
 				const element = document.querySelector(
 					`[id="${data.from}"]` as 'video' | 'audio'
 				)
-				if (element) element.srcObject = stream
+
+				if (!element) {
+					return
+				}
+
+				element.srcObject = stream
+				stream.getVideoTracks().forEach(track => {
+					track.addEventListener('mute', () => element.classList.add('hidden'))
+
+					track.addEventListener('unmute', e => {
+						if ((e.currentTarget as MediaStreamTrack).kind === 'video') {
+							element.classList.remove('hidden')
+						}
+					})
+				})
 			})
 
 			peer.on('signal', signal => {
 				void sendAnswer.mutateAsync({ to: data.from, answer: signal })
 			})
-
-			peer.on('data', console.log)
-			peer.on('connect', () => console.log('CONNECT'))
 
 			peer.signal(data.offer as SignalData)
 
