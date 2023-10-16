@@ -2,22 +2,10 @@ import type { ChatSchema } from '../../server/api/schemas/chatSchema'
 import type { MessageSchema } from '../../server/api/schemas/messageSchema'
 
 export function sortChats(a: ChatSchema, b: ChatSchema): number {
-	const lastA = a.messages.at(-1)
-	const lastB = b.messages.at(-1)
+	const lastA = a.messages.at(-1)?.sentAt ?? a.createdAt
+	const lastB = b.messages.at(-1)?.sentAt ?? b.createdAt
 
-	if (lastA && lastB) {
-		return lastB.sentAt.valueOf() - lastA.sentAt.valueOf()
-	}
-
-	if (lastA) {
-		return b.createdAt.valueOf() - lastA.sentAt.valueOf()
-	}
-
-	if (lastB) {
-		return lastB.sentAt.valueOf() - a.createdAt.valueOf()
-	}
-
-	return b.createdAt.valueOf() - a.createdAt.valueOf()
+	return lastB.valueOf() - lastA.valueOf()
 }
 
 export function appendMessageToEnd(message: MessageSchema) {
