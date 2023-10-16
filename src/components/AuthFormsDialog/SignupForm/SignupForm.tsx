@@ -16,8 +16,9 @@ import Form from '../../../components/Form'
 import GoogleLoginButton from '../../../components/GoogleLoginButton'
 import Input from '../../../components/Input'
 import passwordRegex from '../../../utils/regex/password'
-import { api } from 'src/utils/api'
+import { api } from '../../../utils/api'
 import { useRouter } from 'next/router'
+import emailRegex from '../../../utils/regex/email'
 
 interface LoginFormProps extends Omit<HTMLAttributes<HTMLDivElement>, 'inert'> {
 	setForm: Dispatch<SetStateAction<'login' | 'signup' | undefined>>
@@ -157,7 +158,7 @@ const SignupForm = forwardRef<HTMLDivElement, LoginFormProps>(
 							autoComplete="username"
 							type="email"
 							required
-							pattern="^[a-zA-Z0-9.!#$%&'*+\/=?^_`\{\|\}~\-]+@[a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?)*$"
+							pattern={emailRegex.source}
 							disabled={inert}
 							error={errors.email?.message}
 							{...register('email')}
@@ -221,7 +222,7 @@ const SignupForm = forwardRef<HTMLDivElement, LoginFormProps>(
 								</button>
 							</p>
 						</div>
-						<div className="max grid auto-cols-fr grid-flow-row auto-rows-fr justify-end em:gap-3">
+						<div className="grid auto-cols-fr grid-flow-row auto-rows-fr justify-end em:gap-3">
 							<Button type="submit" disabled={inert} variant="success">
 								Enviar
 							</Button>
