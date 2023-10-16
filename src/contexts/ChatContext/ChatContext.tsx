@@ -18,6 +18,7 @@ import {
 	mapChatNames,
 	sortChats,
 } from './helpers'
+import type { UserSchema } from '../../server/api/schemas/userSchema'
 
 type ChatProviderProps = {
 	children: ReactNode
@@ -31,6 +32,7 @@ type ChatContextData = {
 	chats: MappedChat[]
 	selectedChat: MappedChat | undefined
 	selectedChatId: string
+	addUser: (chatId: string, user: UserSchema) => void
 	setSelectedChatId: Dispatch<SetStateAction<string>>
 	pushMessage: (message: MessageSchema) => void
 	unshiftMessages: (chatId: string, messages: MessageSchema[]) => void
@@ -58,6 +60,14 @@ export function ChatProvider({
 	const unshiftChat = useCallback((chat: ChatSchema) => {
 		setData(state => [chat, ...state])
 		setSelectedChatId(chat.id)
+	}, [])
+
+	const addUser = useCallback((chatId: string, user: UserSchema) => {
+		setData(state =>
+			state.map(x =>
+				x.id === chatId ? { ...x, users: [...x.users, user] } : x
+			)
+		)
 	}, [])
 
 	const selectedChat = useMemo(
@@ -141,6 +151,7 @@ export function ChatProvider({
 			value={{
 				chats,
 				unshiftChat,
+				addUser,
 				pushMessage,
 				unshiftMessages,
 				selectedChat,

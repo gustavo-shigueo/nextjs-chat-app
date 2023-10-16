@@ -73,7 +73,10 @@ export default function UserList({ search }: UserListProps) {
 				renderItem={user => (
 					<UserListItem
 						user={user}
-						onClick={contactId => addContact.mutateAsync({ contactId })}
+						onClick={async contactId => {
+							await addContact.mutateAsync({ contactId })
+							await refetch()
+						}}
 					/>
 				)}
 			/>

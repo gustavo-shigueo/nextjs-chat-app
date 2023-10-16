@@ -11,6 +11,9 @@ import { useCall } from '../../../contexts/CallContext'
 import { useChats } from '../../../contexts/ChatContext'
 import type { MappedChat } from '../../../contexts/ChatContext/ChatContext'
 import { formatList } from '../../../utils/formatters/list'
+import Dialog from '../../../components/Dialog'
+import { useRef } from 'react'
+import AddMemberForm from './AddMemberForm'
 
 type MessagesPanelHeaderProps = {
 	chat: MappedChat
@@ -26,6 +29,7 @@ export default function MessagesPanelHeader({
 		callState: [state],
 	} = useCall()
 	const { locale } = useRouter()
+	const ref = useRef<HTMLDialogElement>(null)
 
 	return (
 		<header className="flex items-center justify-start gap-2 border-neutral-600 bg-neutral-200 plb-2 border-be-2 dark:bg-neutral-900">
@@ -82,15 +86,28 @@ export default function MessagesPanelHeader({
 				<IoVideocam />
 			</Button>
 
-			<CollapsableMenu>
-				<CollapsableMenuItem
-					onClick={() => {
-						void 1
-					}}
-				>
-					TEST
-				</CollapsableMenuItem>
-			</CollapsableMenu>
+			{chat.chatType === 'GroupChat' &&
+				chat.creator.id === session?.user.id && (
+					<>
+						<Dialog ref={ref}>
+							<h3 className="text-center text-2xl font-bold plb-2">
+								Adicionar ao grupo:
+							</h3>
+
+							<AddMemberForm id={session.user.id} chat={chat} />
+						</Dialog>
+
+						<CollapsableMenu>
+							<CollapsableMenuItem
+								onClick={() => {
+									ref.current?.showModal()
+								}}
+							>
+								Adicionar membro
+							</CollapsableMenuItem>
+						</CollapsableMenu>
+					</>
+				)}
 		</header>
 	)
 }

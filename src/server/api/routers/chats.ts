@@ -48,9 +48,13 @@ export const chatsRouter = createTRPCRouter({
 
 	addUser: protectedProcedure
 		.input(z.object({ chatId: z.string().uuid(), userId: z.string().uuid() }))
-		.mutation(async ({ input }) => {
+		.mutation(async ({ input, ctx }) => {
 			try {
-				const chat = await chatService.addUser(input.chatId, input.userId)
+				const chat = await chatService.addUser(
+					input.chatId,
+					ctx.session.user.id,
+					input.userId
+				)
 
 				eventEmitter.emit('addmember', chat)
 

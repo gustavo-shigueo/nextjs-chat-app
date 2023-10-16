@@ -13,7 +13,7 @@ export default interface IChatService {
 
 	findByParticipantId(participantId: string): Promise<ChatSchema[]>
 
-	addUser(id: string, userId: string): Promise<ChatSchema>
+	addUser(id: string, userId: string, newMemberId: string): Promise<ChatSchema>
 
 	isUserMember(userId: string, chatId: string): Promise<boolean>
 }

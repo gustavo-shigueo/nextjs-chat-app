@@ -61,10 +61,14 @@ export default class ChatService implements IChatService {
 		return this.#uuidSerializer.deepStringify(data)
 	}
 
-	public async addUser(id: string, userId: string): Promise<ChatSchema> {
+	public async addUser(
+		id: string,
+		userId: string,
+		newMemberId: string
+	): Promise<ChatSchema> {
 		const chat = await this.findById(id)
 
-		if (id !== chat.creator.id) {
+		if (userId !== chat.creator.id) {
 			throw new UnauthorizedError(
 				'Only the creator of the group can add a user'
 			)
@@ -76,7 +80,7 @@ export default class ChatService implements IChatService {
 
 		const data = await this.#chatRepository.addUser(
 			this.#uuidSerializer.toBuffer(id),
-			this.#uuidSerializer.toBuffer(userId)
+			this.#uuidSerializer.toBuffer(newMemberId)
 		)
 
 		return this.#uuidSerializer.deepStringify(data)
