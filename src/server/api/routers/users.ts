@@ -3,7 +3,7 @@ import { createTRPCRouter, publicProcedure } from '../trpc'
 import passwordRegex from '../../../utils/regex/password'
 import authService from '../../../server/services/Auth'
 import { TRPCError } from '@trpc/server'
-import userService from 'src/server/services/User'
+import userService from '../../../server/services/User'
 import { userSchema } from '../schemas/userSchema'
 
 export const usersRouter = createTRPCRouter({
