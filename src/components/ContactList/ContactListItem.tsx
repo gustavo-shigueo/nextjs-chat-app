@@ -1,5 +1,5 @@
-import Avatar from '../../../../../components/Avatar'
-import Button from '../../../../../components/Button'
+import Avatar from '../Avatar'
+import Button from '../Button'
 
 type ContactListItemProps = {
 	contact: {
