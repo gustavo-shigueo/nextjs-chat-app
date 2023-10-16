@@ -10,7 +10,7 @@ export default function Spinner({ size = 2, className }: SpinnerProps) {
 	return (
 		<svg
 			className={twMerge(
-				'block fill-transparent stroke-neutral-50 bs-[min-content] max-is-[100%]',
+				'block fill-transparent stroke-neutral-500 bs-[min-content] max-is-[100%]',
 				className
 			)}
 			style={{
