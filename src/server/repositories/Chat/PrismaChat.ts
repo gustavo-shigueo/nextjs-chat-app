@@ -33,7 +33,7 @@ export default class PrismaChatRepository implements IChatRepository {
 		users: readonly Buffer[]
 	): Promise<JoinedChat> {
 		const imageUrl = new URL(
-			`${env.NEXT_PUBLIC_DICEBEAR_URL}/${name}-${randomUUID()}.svg`
+			`${env.NEXT_PUBLIC_DICEBEAR_URL}?seed=${name}-${randomUUID()}`
 		)
 
 		return this.#prismaClient.chat.create({

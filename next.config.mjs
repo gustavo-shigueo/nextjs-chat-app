@@ -10,7 +10,8 @@
 const config = {
 	reactStrictMode: true,
 	images: {
-		domains: ['lh3.googleusercontent.com', 'avatars.dicebear.com'],
+		domains: ['lh3.googleusercontent.com', 'api.dicebear.com'],
+		dangerouslyAllowSVG: true,
 	},
 
 	/**

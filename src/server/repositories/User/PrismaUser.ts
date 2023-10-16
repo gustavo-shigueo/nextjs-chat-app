@@ -37,7 +37,7 @@ export default class PrismaUserRepository implements IUserRepository {
 		passwordHash: string
 	): Promise<User> {
 		const imageUrl = new URL(
-			`${env.NEXT_PUBLIC_DICEBEAR_URL}/${name}-${randomUUID()}.svg`
+			`${env.NEXT_PUBLIC_DICEBEAR_URL}?seed=${name}-${randomUUID()}`
 		)
 
 		return this.#prismaClient.user.create({
