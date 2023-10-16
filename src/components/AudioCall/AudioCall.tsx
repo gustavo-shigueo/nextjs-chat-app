@@ -12,8 +12,13 @@ export default function VideoCall() {
 	const [moved, setMoved] = useState(false)
 
 	const ref = useRef<HTMLDivElement>(null)
-	useEventListener('mousemove', e => {
+
+	useEventListener('pointercancel', console.log)
+
+	useEventListener('pointermove', e => {
+		console.log('a')
 		if (!moving || !ref.current) return
+		console.log('b')
 
 		const { height, width } = ref.current.getBoundingClientRect()
 
@@ -30,15 +35,16 @@ export default function VideoCall() {
 		setMoved(true)
 	})
 
-	useEventListener('mouseup', () => {
+	useEventListener('pointerup', () => {
 		setMoving(false)
+		console.log('damn')
 		document.body.style.cursor = ''
 	})
 
 	return (
 		<div
 			ref={ref}
-			className="fixed z-50 flex select-none bg-[rgb(15_15_15)] block-start-4 inline-end-4 em:rounded"
+			className="fixed z-50 flex touch-none select-none bg-[rgb(15_15_15)] block-start-4 inline-end-4 em:rounded"
 			style={
 				moved
 					? {
@@ -50,7 +56,7 @@ export default function VideoCall() {
 			}
 		>
 			<div
-				onMouseDown={() => {
+				onPointerDown={() => {
 					if (!ref.current) return
 
 					const { x, y } = ref.current.getBoundingClientRect()
@@ -59,7 +65,7 @@ export default function VideoCall() {
 					setCoordinates({ x, y })
 					document.body.style.cursor = 'move'
 				}}
-				className="grid cursor-move place-items-center text-2xl pis-2"
+				className="grid cursor-move touch-none place-items-center text-2xl pis-2"
 			>
 				<PiDotsSixVerticalBold />
 			</div>
