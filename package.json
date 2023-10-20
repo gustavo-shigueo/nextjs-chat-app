@@ -12,7 +12,7 @@
 		"generate": "prisma generate",
 		"lint": "next lint",
 		"start": "cross-env NODE_ENV=production node dist/server/api/prodServer.js",
-    "format": "prettier -w \"src/**/*.(ts|tsx|scss)\""
+		"format": "prettier -w \"src/**/*.(ts|tsx|scss)\""
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^2.9.11",
