@@ -62,7 +62,7 @@ const Tabs = forwardRef<HTMLDivElement, TabsProps>(
 					ref={ref}
 					data-direction={direction}
 					className={twMerge(
-						'relative grid gap-1 overflow-hidden data-[direction=vertical]:grid-cols-[auto_1fr] data-[direction=horizontal]:grid-cols-[1fr] data-[direction=vertical]:grid-rows-[1fr] data-[direction=horizontal]:grid-rows-[auto_1fr]',
+						'relative grid gap-1 overflow-hidden data-[direction=horizontal]:grid-cols-[1fr] data-[direction=vertical]:grid-cols-[auto_1fr] data-[direction=horizontal]:grid-rows-[auto_1fr] data-[direction=vertical]:grid-rows-[1fr]',
 						className
 					)}
 					{...props}

@@ -72,7 +72,7 @@ export default function MessageListItem({
 				ref={ref}
 				data-sender={isSender}
 				data-chevron={isDifferentSender || isDifferentDate}
-				className="relative grid gap-1 break-all rounded opacity-0 shadow-md is-max min-is-[10ch] max-is-[min(65%,_75ch)] plb-1 pli-2 [line-height:_1] after:absolute after:border-4 after:block-start-0 after:border-be-transparent data-[sender='true']:self-end data-[sender='true']:bg-purple-800 data-[sender='false']:bg-neutral-300 data-[sender='true']:text-neutral-50 data-[sender='true']:data-[chevron='true']:rounded-se-none data-[sender='false']:data-[chevron='true']:rounded-ss-none data-[chevron='false']:after:hidden data-[sender='true']:after:translate-x-full data-[sender='false']:after:-translate-x-full data-[sender='true']:after:border-purple-800 data-[sender='true']:after:inline-end-0 data-[sender='false']:after:inline-start-0 data-[sender='true']:after:border-ie-transparent data-[sender='true']:after:border-be-transparent data-[sender='false']:after:border-is-transparent data-[sender='false']:after:border-be-transparent data-[sender='true']:motion-safe:translate-x-full data-[sender='false']:motion-safe:-translate-x-full data-[sender='false']:dark:bg-neutral-700 data-[sender='false']:dark:text-neutral-50 data-[sender='false']:dark:after:border-ie-neutral-700 data-[sender='false']:dark:after:border-bs-neutral-700"
+				className="relative grid gap-1 break-all rounded opacity-0 shadow-md is-max min-is-[10ch] max-is-[min(65%,_75ch)] plb-1 pli-2 [line-height:_1] after:absolute after:border-4 after:block-start-0 after:border-be-transparent data-[sender='true']:self-end data-[sender='false']:data-[chevron='true']:rounded-ss-none data-[sender='true']:data-[chevron='true']:rounded-se-none data-[sender='false']:bg-neutral-300 data-[sender='true']:bg-purple-800 data-[sender='true']:text-neutral-50 data-[chevron='false']:after:hidden data-[sender='false']:after:-translate-x-full data-[sender='true']:after:translate-x-full data-[sender='true']:after:border-purple-800 data-[sender='false']:after:inline-start-0 data-[sender='true']:after:inline-end-0 data-[sender='false']:after:border-be-transparent data-[sender='false']:after:border-is-transparent data-[sender='true']:after:border-be-transparent data-[sender='true']:after:border-ie-transparent data-[sender='false']:motion-safe:-translate-x-full data-[sender='true']:motion-safe:translate-x-full data-[sender='false']:dark:bg-neutral-700 data-[sender='false']:dark:text-neutral-50 data-[sender='false']:dark:after:border-bs-neutral-700 data-[sender='false']:dark:after:border-ie-neutral-700"
 			>
 				{chat.chatType === 'GroupChat' &&
 					!isSender &&
@@ -90,7 +90,7 @@ export default function MessageListItem({
 				<blockquote>{message.text}</blockquote>
 				<time
 					dateTime={message.sentAt.toISOString()}
-					className="block font-light text-end [line-height:_1] [font-size:_0.65rem]"
+					className="block text-end font-light [line-height:_1] [font-size:_0.65rem]"
 				>
 					{formatTime(message.sentAt, locale)}
 				</time>

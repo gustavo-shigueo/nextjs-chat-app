@@ -54,7 +54,7 @@ const Dialog = forwardRef<HTMLDialogElement, DialogProps>(
 		return (
 			<dialog
 				className={twMerge(
-					'fixed m-0 translate-x-[-50%] translate-y-[-100%] overflow-hidden rounded-lg border-none bg-neutral-100 p-0 text-inherit min-bs-0 max-bs-[90svb] is-[min(90svi,_50em)] max-is-[50ch] inline-start-[50%] block-start-0 backdrop:bg-neutral-900 backdrop:opacity-0 backdrop:transition-opacity open:translate-y-[-50%] open:block-start-[50%] open:backdrop:opacity-75 motion-safe:transition-[inset-block-start,_transform] dark:bg-neutral-800',
+					'fixed m-0 translate-x-[-50%] translate-y-[-100%] overflow-hidden rounded-lg border-none bg-neutral-100 p-0 text-inherit min-bs-0 max-bs-[90svb] is-[min(90svi,_50em)] max-is-[50ch] block-start-0 inline-start-[50%] backdrop:bg-neutral-900 backdrop:opacity-0 backdrop:transition-opacity open:translate-y-[-50%] open:block-start-[50%] open:backdrop:opacity-75 motion-safe:transition-[inset-block-start,_transform] dark:bg-neutral-800',
 					className
 				)}
 				ref={node => {

@@ -52,7 +52,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
 					'relative isolate grid text-[var(--text-color)] text-neutral-800 outline-offset-[3px] outline-[var(--text-color)] em:gap-1 dark:text-neutral-300',
 
 					// ::after
-					'after:invisible after:-z-10 after:whitespace-pre-wrap after:break-all after:rounded after:border-2 after:text-transparent after:opacity-[0.075] after:content-[attr(data-value)_"_"] after:max-is-[100%] after:plb-2 after:pli-3 after:[word-wrap:_break-word] after:[font:_inherit] after:[grid-column:_1_/_-1]',
+					'after:invisible after:-z-10 after:whitespace-pre-wrap after:break-all after:rounded after:border-2 after:text-transparent after:opacity-[0.075] after:content-[attr(data-value)_"_"] after:max-is-[100%] after:plb-2 after:pli-3 after:[font:_inherit] after:[grid-column:_1_/_-1] after:[word-wrap:_break-word]',
 
 					// Colors, block-size calculation and grid-row logic
 					// Most of these could be tailwind classes, but they
@@ -70,7 +70,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
 				)}
 				<textarea
 					className={twMerge(
-						'break-all rounded shadow max-is-[100%] plb-2 pli-3 [word-wrap:_break-word] [grid-column:_1_/_-1] placeholder:text-inherit',
+						'break-all rounded shadow max-is-[100%] plb-2 pli-3 [grid-column:_1_/_-1] [word-wrap:_break-word] placeholder:text-inherit',
 
 						className
 					)}

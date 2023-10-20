@@ -17,7 +17,7 @@ export default function Controls() {
 	}, [])
 
 	return (
-		<div className="flex gap-4 text-2xl pli-4 plb-2">
+		<div className="flex gap-4 text-2xl plb-2 pli-4">
 			<div className="grid place-items-center border-neutral-50 pie-4 border-ie-2">
 				{new Date(time * 1000)
 					.toISOString()

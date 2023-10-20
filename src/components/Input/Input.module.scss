@@ -22,21 +22,21 @@
 	& > span {
 		&:has(> :first-child + input) {
 			& > :first-child {
-				@apply border-2 border-gray-500 bg-neutral-300/[0.075] outline-none rounded-se-none rounded-ee-none;
+				@apply rounded-ee-none rounded-se-none border-2 border-gray-500 bg-neutral-300/[0.075] outline-none;
 			}
 
 			& > input {
-				@apply rounded-ss-none rounded-es-none;
+				@apply rounded-es-none rounded-ss-none;
 			}
 		}
 
 		&:has(> input + :last-child) {
 			& > input {
-				@apply rounded-se-none rounded-ee-none;
+				@apply rounded-ee-none rounded-se-none;
 			}
 
 			& > :last-child {
-				@apply border-2 border-gray-500 bg-neutral-300/[0.075] outline-none rounded-ss-none rounded-es-none;
+				@apply rounded-es-none rounded-ss-none border-2 border-gray-500 bg-neutral-300/[0.075] outline-none;
 			}
 		}
 	}

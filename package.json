@@ -7,11 +7,12 @@
 		"build:2-server": "tsc --project tsconfig.server.json",
 		"build": "run-s build:*",
 		"dev": "run-p dev:*",
-		"dev:next": "cross-env NODE_OPTIONS=\"--inspect\" next dev",
-		"dev:wss": "cross-env PORT=3001 tsx watch src/server/api/wsDevServer.ts --tsconfig tsconfig.server.json ",
+		"dev:next": "cross-env NODE_ENV=development NODE_OPTIONS=\"--inspect\" next dev",
+		"dev:wss": "cross-env PORT=3001 NODE_ENV=development tsx watch src/server/api/wsDevServer.ts --tsconfig tsconfig.server.json ",
 		"generate": "prisma generate",
 		"lint": "next lint",
-		"start": "cross-env NODE_ENV=production node dist/server/api/prodServer.js"
+		"start": "cross-env NODE_ENV=production node dist/server/api/prodServer.js",
+    "format": "prettier -w \"src/**/*.(ts|tsx|scss)\""
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^2.9.11",

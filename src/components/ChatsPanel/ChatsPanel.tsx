@@ -99,7 +99,7 @@ export default function ChatsPanel() {
 				itemKey="id"
 				items={chatList}
 				role="tablist"
-				className="flex flex-col gap-4 overflow-auto border-none pli-3 plb-1 [&_>_:last-child_>_button]:after:hidden [&_>_li_>_button]:after:content-['']"
+				className="flex flex-col gap-4 overflow-auto border-none plb-1 pli-3 [&_>_:last-child_>_button]:after:hidden [&_>_li_>_button]:after:content-['']"
 				listStyle="none"
 				renderItem={chat => (
 					<ChatListItem

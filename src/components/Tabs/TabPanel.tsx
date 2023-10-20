@@ -26,7 +26,7 @@ const TabPanel = forwardRef<HTMLDivElement, TabPanelProps>(
 				tabIndex={index === selectedIndex ? 0 : -1}
 				inert={index !== selectedIndex ? 'true' : undefined}
 				className={twMerge(
-					'm-1 transition-[translate,opacity] [grid-row-end:-1] [grid-column-end:-1]',
+					'm-1 transition-[translate,opacity] [grid-column-end:-1] [grid-row-end:-1]',
 					className
 				)}
 				style={{

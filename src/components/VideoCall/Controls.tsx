@@ -23,7 +23,7 @@ export default function Controls() {
 	}, [])
 
 	return (
-		<div className="absolute flex -translate-x-1/2 gap-4 bg-[rgb(15_15_15)] text-2xl pli-4 plb-2 inline-start-1/2 block-end-4 em:rounded">
+		<div className="absolute flex -translate-x-1/2 gap-4 bg-[rgb(15_15_15)] text-2xl plb-2 pli-4 block-end-4 inline-start-1/2 em:rounded">
 			<div className="grid place-items-center border-neutral-50 pie-4 border-ie-2">
 				{new Date(time * 1000)
 					.toISOString()

@@ -23,7 +23,7 @@ const CollapsableMenuItem: FC<ICollapsableMenuItemProps> = ({
 			<Button
 				variant="flat"
 				onClick={onClick}
-				className="shadow-none text-start is-[100%] before:hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-neutral-800 dark:focus-visible:outline-neutral-50 [&_>+.content]:text-start [&_>_span_>_.content]:justify-self-start"
+				className="text-start shadow-none is-[100%] before:hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-neutral-800 dark:focus-visible:outline-neutral-50 [&_>+.content]:text-start [&_>_span_>_.content]:justify-self-start"
 				{...props}
 			>
 				<p className="grow text-start">{children}</p>

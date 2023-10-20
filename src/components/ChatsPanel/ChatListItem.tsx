@@ -36,7 +36,7 @@ export default function ChatListItem({
 
 	return (
 		<button
-			className="relative grid cursor-pointer grid-cols-[auto_1fr] gap-y-1 gap-x-4 rounded-md border-none bg-neutral-300 outline-none transition-colors text-start is-[100%] pli-2 plb-2 after:absolute after:bg-neutral-400 after:bs-[2px] after:is-[100%] after:block-end-[-9px] hover:bg-neutral-400 focus-visible:bg-neutral-400 focus-visible:outline-2 focus-visible:outline-neutral-400 active:bg-neutral-500 aria-selected:bg-neutral-500 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus-visible:bg-neutral-700 dark:active:bg-neutral-600 dark:aria-selected:bg-neutral-700"
+			className="relative grid cursor-pointer grid-cols-[auto_1fr] gap-x-4 gap-y-1 rounded-md border-none bg-neutral-300 text-start outline-none transition-colors is-[100%] plb-2 pli-2 after:absolute after:bg-neutral-400 after:bs-[2px] after:is-[100%] after:block-end-[-9px] hover:bg-neutral-400 focus-visible:bg-neutral-400 focus-visible:outline-2 focus-visible:outline-neutral-400 active:bg-neutral-500 aria-selected:bg-neutral-500 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus-visible:bg-neutral-700 dark:active:bg-neutral-600 dark:aria-selected:bg-neutral-700"
 			onClick={() => setSelectedChatId(chat.id)}
 			aria-selected={active}
 			role="tab"
@@ -58,7 +58,7 @@ export default function ChatListItem({
 			{sentAt && (
 				<time
 					dateTime={sentAt.toISOString()}
-					className="text-xs text-neutral-700 text-end dark:text-neutral-300"
+					className="text-end text-xs text-neutral-700 dark:text-neutral-300"
 				>
 					{formatLastMessageTime(sentAt, locale)}
 				</time>
