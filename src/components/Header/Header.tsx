@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { type Session } from 'next-auth'
 import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
@@ -51,9 +52,22 @@ export default function Header() {
 
 	return (
 		<>
-			<header className="flex items-center justify-between border-solid border-neutral-500 bg-neutral-900 text-xl text-neutral-50 border-be-2 em:pli-8 em:plb-1">
+			<header className="flex items-center justify-between border-solid border-neutral-500 bg-neutral-900 text-xl text-neutral-50 border-be-2 em:plb-1 em:pli-4">
 				<h1>
-					<Link href={`/${locale}`}>MiChat</Link>
+					<Link
+						href={`/${locale}`}
+						className="flex items-center text-2xl font-bold"
+					>
+						<Image
+							src="/logo.png"
+							alt="OurChat logo"
+							title="Ourchat"
+							width="72"
+							height="72"
+						/>
+						<span className="text-[hsl(200_100%_60%)] mis-[-8px]">Our</span>
+						<span className="text-[hsl(0_0%_40%)] pis-[2px]">Chat</span>
+					</Link>
 				</h1>
 				<CollapsableMenu role="navigation" trigger={MenuTrigger({ session })}>
 					{session?.user ? (

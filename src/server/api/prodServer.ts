@@ -14,7 +14,8 @@ const handle = app.getRequestHandler()
 void app.prepare().then(() => {
 	const server = http.createServer((req, res) => {
 		const proto = req.headers['x-forwarded-proto']
-		if (proto && proto === 'http') {
+
+		if (proto === 'http') {
 			// redirect to ssl
 			res.writeHead(303, {
 				location: `https://${req.headers.host ?? ''}${
@@ -24,6 +25,7 @@ void app.prepare().then(() => {
 			res.end()
 			return
 		}
+
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		const parsedUrl = parse(req.url!, true)
 		void handle(req, res, parsedUrl)
@@ -42,7 +44,7 @@ void app.prepare().then(() => {
 	server.listen(port)
 
 	console.log(
-		`> Server listening at http://localhost:${port} as ${
+		`> Server listening at http://${process.env.HOST ?? ''} as ${
 			dev ? 'development' : process.env.NODE_ENV
 		}`
 	)
