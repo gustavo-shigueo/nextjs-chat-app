@@ -60,12 +60,12 @@ export default function Header() {
 					>
 						<Image
 							src="/logo.png"
-							alt="OurChat logo"
-							title="Ourchat"
+							alt="WeChat logo"
+							title="Wechat"
 							width="72"
 							height="72"
 						/>
-						<span className="text-[hsl(200_100%_60%)] mis-[-8px]">Our</span>
+						<span className="text-[hsl(200_100%_60%)] mis-[-8px]">We</span>
 						<span className="text-[hsl(0_0%_40%)] pis-[2px]">Chat</span>
 					</Link>
 				</h1>
