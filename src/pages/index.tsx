@@ -1,29 +1,35 @@
 import { type GetServerSideProps } from 'next'
 import { Tab, TabList, TabPanel, Tabs } from '../components/Tabs'
 import { getServerAuthSession } from '../server/auth'
+import Head from 'next/head'
 
 export default function Home() {
 	return (
-		<main>
-			Página Inicial
-			<Tabs direction="vertical">
-				<TabList>
-					<Tab active index={1}>
-						Teste 1
-					</Tab>
+		<>
+			<Head>
+				<title>WeChat</title>
+			</Head>
+			<main>
+				Página Inicial
+				<Tabs direction="vertical">
+					<TabList>
+						<Tab active index={1}>
+							Teste 1
+						</Tab>
 
-					<Tab index={2}>Teste 2</Tab>
+						<Tab index={2}>Teste 2</Tab>
 
-					<Tab index={3}>Teste 3</Tab>
-				</TabList>
+						<Tab index={3}>Teste 3</Tab>
+					</TabList>
 
-				<TabPanel index={1}>teste 1</TabPanel>
+					<TabPanel index={1}>teste 1</TabPanel>
 
-				<TabPanel index={2}>teste 2</TabPanel>
+					<TabPanel index={2}>teste 2</TabPanel>
 
-				<TabPanel index={3}>teste 3</TabPanel>
-			</Tabs>
-		</main>
+					<TabPanel index={3}>teste 3</TabPanel>
+				</Tabs>
+			</main>
+		</>
 	)
 }
 

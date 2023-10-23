@@ -6,6 +6,7 @@ import { CallProvider } from '../contexts/CallContext'
 import { ChatProvider } from '../contexts/ChatContext'
 import { getServerAuthSession } from '../server/auth'
 import { api } from '../utils/api'
+import Head from 'next/head'
 
 const DashBoard: NextPage = () => {
 	const { data: chats, isLoading } = api.chats.list.useQuery()
@@ -14,11 +15,16 @@ const DashBoard: NextPage = () => {
 	if (isLoading || !chats || !session) return <Spinner size={5} />
 
 	return (
-		<ChatProvider chats={chats} userId={session.user.id}>
-			<CallProvider>
-				<MainPanel />
-			</CallProvider>
-		</ChatProvider>
+		<>
+			<Head>
+				<title>WeChat</title>
+			</Head>
+			<ChatProvider chats={chats} userId={session.user.id}>
+				<CallProvider>
+					<MainPanel />
+				</CallProvider>
+			</ChatProvider>
+		</>
 	)
 }
 

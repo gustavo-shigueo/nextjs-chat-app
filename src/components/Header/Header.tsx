@@ -65,8 +65,12 @@ export default function Header() {
 							width="72"
 							height="72"
 						/>
-						<span className="text-[hsl(200_100%_60%)] mis-[-8px]">We</span>
-						<span className="text-[hsl(0_0%_40%)] pis-[2px]">Chat</span>
+						<span className="text-[hsl(200_100%_60%)] mis-[-8px] max-sm:hidden">
+							We
+						</span>
+						<span className="text-[hsl(0_0%_40%)] pis-[2px] max-sm:hidden">
+							Chat
+						</span>
 					</Link>
 				</h1>
 				<CollapsableMenu role="navigation" trigger={MenuTrigger({ session })}>
