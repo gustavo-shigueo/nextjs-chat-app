@@ -56,7 +56,9 @@ export default class AuthService implements IAuthService {
 		}
 
 		if (!user.emailVerified) {
-			throw new UnauthorizedError(`EmailNotVerified:${user.id}`)
+			throw new UnauthorizedError(
+				`EmailNotVerified:${this.#uuidSerializer.stringify(user.id)}`
+			)
 		}
 
 		const isPasswordValid = await this.#passwordService.verify(
