@@ -60,13 +60,13 @@ export default function Header() {
 					>
 						<Image
 							src="/logo.png"
-							alt="WeChat logo"
-							title="Wechat"
+							alt="MimisChat logo"
+							title="Mimischat"
 							width="72"
 							height="72"
 						/>
 						<span className="text-[hsl(200_100%_60%)] mis-[-8px] max-sm:hidden">
-							We
+							Mimis
 						</span>
 						<span className="text-[hsl(0_0%_40%)] pis-[2px] max-sm:hidden">
 							Chat
