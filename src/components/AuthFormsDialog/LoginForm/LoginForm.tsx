@@ -197,7 +197,7 @@ const LoginForm = forwardRef<HTMLDivElement, LoginFormProps>(
 LoginForm.displayName = 'LoginForm'
 
 function Error({ error }: { error: string }) {
-	switch (error) {
+	switch (error.split(':')[0]) {
 		case 'CredentialsNotProvided':
 			return <p>Por favor forneça suas credenciais</p>
 		case 'InvalidCredentials':
@@ -209,7 +209,17 @@ function Error({ error }: { error: string }) {
 				</p>
 			)
 		case 'EmailNotVerified':
-			return <p>Seu e-mail não foi verificado! Verifique seu e-mail</p>
+			return (
+				<p>
+					Seu e-mail não foi verificado!{' '}
+					<a
+						href={`/confirm-email/${error.split(':')[1]}`}
+						className="underline"
+					>
+						Verifique seu e-mail
+					</a>
+				</p>
+			)
 		default:
 			return <p>Erro desconhecido</p>
 	}

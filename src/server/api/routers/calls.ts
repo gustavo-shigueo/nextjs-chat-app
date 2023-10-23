@@ -112,7 +112,7 @@ export const callsRouter = createTRPCRouter({
 				ctx.session.user.id
 			)
 
-			if (call.participants?.length === 0) {
+			if (call.participants && call.participants?.length < 2 && !call.endedAt) {
 				await callService.end(call.id)
 			}
 
