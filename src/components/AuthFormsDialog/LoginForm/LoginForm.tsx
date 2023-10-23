@@ -213,7 +213,7 @@ function Error({ error }: { error: string }) {
 				<p>
 					Seu e-mail não foi verificado!{' '}
 					<a
-						href={`/confirm-email/${error.split(':')[1]}`}
+						href={`/confirm-email/${error.split(':')[1] ?? ''}`}
 						className="underline"
 					>
 						Verifique seu e-mail
