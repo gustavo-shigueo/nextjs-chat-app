@@ -27,10 +27,15 @@ export function appendMessagesToStart(
 	}
 }
 
+export type MappedChat = {
+	[K in keyof ChatSchema]: K extends 'name' | 'thumbnailUrl'
+		? string
+		: ChatSchema[K]
+}
 export function mapChatNames(userId: string) {
 	return (chat: ChatSchema) => {
 		if (chat.chatType === 'GroupChat') {
-			return chat as ChatSchema & { name: string; thumbnailUrl: string }
+			return chat as MappedChat
 		}
 
 		const user = chat.users?.find(user => user.id !== userId)

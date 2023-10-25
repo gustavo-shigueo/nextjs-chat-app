@@ -13,6 +13,7 @@ import type { ChatSchema } from '../../server/api/schemas/chatSchema'
 import type { MessageSchema } from '../../server/api/schemas/messageSchema'
 import { api } from '../../utils/api'
 import {
+	type MappedChat,
 	appendMessageToEnd,
 	appendMessagesToStart,
 	mapChatNames,
@@ -20,13 +21,13 @@ import {
 } from './helpers'
 import type { UserSchema } from '../../server/api/schemas/userSchema'
 
+export { type MappedChat }
+
 type ChatProviderProps = {
 	children: ReactNode
 	chats: ChatSchema[]
 	userId: string
 }
-
-export type MappedChat = ReturnType<ReturnType<typeof mapChatNames>>
 
 type ChatContextData = {
 	chats: MappedChat[]
@@ -70,8 +71,8 @@ export function ChatProvider({
 		)
 	}, [])
 
-	const selectedChat = useMemo(
-		() => chats.find(c => c.id === selectedChatId),
+	const selectedChat = useMemo<MappedChat | null>(
+		() => chats.find(c => c.id === selectedChatId) ?? null,
 		[chats, selectedChatId]
 	)
 
@@ -154,7 +155,7 @@ export function ChatProvider({
 				addUser,
 				pushMessage,
 				unshiftMessages,
-				selectedChat,
+				selectedChat: selectedChat ?? undefined,
 				selectedChatId,
 				setSelectedChatId,
 			}}
