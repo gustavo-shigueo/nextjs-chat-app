@@ -17,7 +17,7 @@ export default class PrismaUserRepository implements IUserRepository {
 
 	public findByName(name: string): Promise<User[]> {
 		return this.#prismaClient.user.findMany({
-			where: { name, NOT: { emailVerified: null } },
+			where: { name, NOT: { emailVerified: null, passwordHash: null } },
 		})
 	}
 
@@ -80,7 +80,7 @@ export default class PrismaUserRepository implements IUserRepository {
 					{ name: { startsWith: search } },
 					{ email: { startsWith: search } },
 				],
-				NOT: { OR: [{ id }, { emailVerified: null }] },
+				NOT: { OR: [{ id }, { emailVerified: null, passwordHash: null }] },
 				contactedBy: { none: { id } },
 			},
 		})
