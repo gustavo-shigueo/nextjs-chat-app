@@ -54,6 +54,8 @@ export default function ConfirmEmail() {
 			)
 
 		case 'success':
-			return <main>Success! You can login now!</main>
+			return <main className='grid place-items-center gap-2'>
+        E-mail confirmado com sucesso!
+      </main>
 	}
 }
