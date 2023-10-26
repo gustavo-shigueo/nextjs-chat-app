@@ -113,9 +113,11 @@ export default function Header() {
 					)}
 				</CollapsableMenu>
 			</header>
-			<Portal>
-				<AuthFormsDialog form={dialog} setForm={setDialog} />
-			</Portal>
+			{!session?.user && (
+				<Portal>
+					<AuthFormsDialog form={dialog} setForm={setDialog} />
+				</Portal>
+			)}
 		</>
 	)
 }
