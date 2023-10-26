@@ -33,6 +33,9 @@ export default function MessageForm({ chat }: MessageFormProps) {
 
 		const text = ref.current.value
 		ref.current.value = ''
+		if (ref.current.parentElement) {
+			ref.current.parentElement.dataset.value = ''
+		}
 
 		if (!text?.trim()) return
 
@@ -56,6 +59,16 @@ export default function MessageForm({ chat }: MessageFormProps) {
 				maxLines={5}
 				rows={1}
 				ref={ref}
+				onKeyDown={e => {
+					if (e.key === 'Enter') {
+						if (e.shiftKey) {
+							return
+						}
+
+						e.preventDefault()
+						e.currentTarget.form?.querySelector('button')?.click()
+					}
+				}}
 			/>
 
 			<div className="min-bs-[100%]">
