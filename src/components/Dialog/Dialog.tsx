@@ -1,4 +1,4 @@
-import { forwardRef, useRef, type DialogHTMLAttributes } from 'react'
+import { forwardRef, useRef, type DialogHTMLAttributes, useEffect } from 'react'
 import { IoClose } from 'react-icons/io5'
 import { twMerge } from 'tailwind-merge'
 import Button from '../Button'
@@ -8,6 +8,35 @@ type DialogProps = DialogHTMLAttributes<HTMLDialogElement>
 const Dialog = forwardRef<HTMLDialogElement, DialogProps>(
 	({ children, className, title, ...props }, ref) => {
 		const localRef = useRef<HTMLDialogElement | null>(null)
+
+		useEffect(() => {
+			if (!localRef.current) return
+
+			const observer = new MutationObserver(entries => {
+				const [entry] = entries
+				const target = entry?.target as HTMLDialogElement | undefined
+
+				if (!target) return
+
+				if (target.hasAttribute('open')) {
+					target.removeAttribute('inert')
+				} else {
+					target.setAttribute('inert', '')
+				}
+			})
+
+			observer.observe(localRef.current, {
+				attributes: true,
+				attributeFilter: ['open'],
+				subtree: false,
+				attributeOldValue: false,
+				characterData: false,
+				characterDataOldValue: false,
+				childList: false,
+			})
+
+			return () => observer.disconnect()
+		}, [])
 
 		const closeDialog = () => {
 			if (!localRef.current) return
@@ -43,6 +72,7 @@ const Dialog = forwardRef<HTMLDialogElement, DialogProps>(
 					if (typeof ref === 'function') ref(node)
 					else if (ref) ref.current = node
 				}}
+				inert={'true'}
 				{...props}
 			>
 				<header className="flex justify-between bg-neutral-300 text-xl dark:bg-neutral-700">
