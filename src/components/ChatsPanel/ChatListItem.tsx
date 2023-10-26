@@ -30,7 +30,7 @@ export default function ChatListItem({ active, chat }: IChatListItemProps) {
 
 	return (
 		<div
-			className="max-[40em]:!pis-0 relative grid cursor-pointer grid-cols-[auto_1fr] gap-x-4 gap-y-1 rounded-md border-none bg-neutral-300 text-start outline-none transition-colors is-[100%] plb-2 pli-2 after:absolute after:bg-neutral-400 after:bs-[2px] after:is-[100%] after:block-end-[-9px] hover:bg-neutral-400 focus-visible:bg-neutral-400 focus-visible:outline-2 focus-visible:outline-neutral-400 active:bg-neutral-500 data-[selected=true]:bg-neutral-500 dark:bg-neutral-800 dark:hover:bg-neutral-500 dark:focus-visible:bg-neutral-700 dark:active:bg-neutral-600 dark:data-[selected=true]:bg-neutral-700"
+			className="relative grid cursor-pointer grid-cols-[auto_1fr] gap-x-4 gap-y-1 rounded-md border-none bg-neutral-300 text-start outline-none transition-colors is-[100%] plb-2 pli-2 after:absolute after:bg-neutral-400 after:bs-[2px] after:is-[100%] after:block-end-[-9px] hover:bg-neutral-400 focus-visible:bg-neutral-400 focus-visible:outline-2 focus-visible:outline-neutral-400 active:bg-neutral-500 data-[selected=true]:bg-neutral-500 dark:bg-neutral-800 dark:hover:bg-neutral-500 dark:focus-visible:bg-neutral-700 dark:active:bg-neutral-600 dark:data-[selected=true]:bg-neutral-700"
 			data-selected={active}
 			id={chat.id}
 			tabIndex={-1}
