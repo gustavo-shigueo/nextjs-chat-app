@@ -19,6 +19,7 @@ export default function MessageList({ chat }: MessageListProps) {
 			ref={wrapperRef}
 			role="tabpanel"
 			aria-labelledby={chat.id}
+			tabIndex={0}
 		>
 			<div className="flex items-end justify-center" ref={spinnerRef}>
 				{hasNextPage && <Spinner size={2} />}

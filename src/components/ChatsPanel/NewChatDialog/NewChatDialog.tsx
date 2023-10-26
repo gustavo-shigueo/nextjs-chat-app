@@ -16,19 +16,19 @@ const NewChatDialog = forwardRef<HTMLDialogElement>((_, ref) => {
 				<Tabs className="overflow-y-auto">
 					<TabList>
 						<Tab index={0}>
-							<div className="flex items-center gap-1">
+							<div className="flex items-center gap-1 text-xl plb-2">
 								<IoChatbox className="mli-auto" />
-								<p className="text-xs">Nova Conversa</p>
+								<p className="text-xs">Conversa Privada</p>
 							</div>
 						</Tab>
 						<Tab index={1}>
-							<div className="flex items-center gap-1">
+							<div className="flex items-center gap-1 text-xl plb-2">
 								<MdGroups className="mli-auto" />
 								<p className="text-xs">Novo Grupo</p>
 							</div>
 						</Tab>
-						<Tab index={2}>
-							<div className="flex items-center gap-1">
+						<Tab index={2} active>
+							<div className="flex items-center gap-1 text-xl plb-2">
 								<RiContactsBookFill className="mli-auto" />
 								<p className="text-xs">Adicionar Contato</p>
 							</div>

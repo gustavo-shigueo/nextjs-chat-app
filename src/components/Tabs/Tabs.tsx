@@ -11,6 +11,8 @@ import { twMerge } from 'tailwind-merge'
 
 type TabsProps = HTMLAttributes<HTMLDivElement> & {
 	direction?: 'horizontal' | 'vertical'
+	manual?: boolean
+	loop?: boolean
 	onSelect?: () => void
 }
 
@@ -19,6 +21,8 @@ type TabsContextData = {
 	previousIndex: number
 	selectedIndex: number
 	direction: 'horizontal' | 'vertical'
+	loop: boolean | undefined
+	manual: boolean | undefined
 	selectIndex: (index: number) => void
 	onSelect?: () => void
 }
@@ -28,12 +32,20 @@ export const useTabs = () => useContext(TabsContext)
 
 const Tabs = forwardRef<HTMLDivElement, TabsProps>(
 	(
-		{ children, className, onSelect, direction = 'horizontal', ...props },
+		{
+			children,
+			className,
+			manual,
+			loop,
+			onSelect,
+			direction = 'horizontal',
+			...props
+		},
 		ref
 	) => {
 		const id = useId()
-		const [previousIndex, setPreviousIndex] = useState(0)
-		const [selectedIndex, setSelectedIndex] = useState(0)
+		const [previousIndex, setPreviousIndex] = useState(NaN)
+		const [selectedIndex, setSelectedIndex] = useState(NaN)
 
 		const selectIndex = useCallback(
 			(i: number) => {
@@ -51,6 +63,8 @@ const Tabs = forwardRef<HTMLDivElement, TabsProps>(
 			<TabsContext.Provider
 				value={{
 					id,
+					loop,
+					manual,
 					previousIndex,
 					selectedIndex,
 					direction,

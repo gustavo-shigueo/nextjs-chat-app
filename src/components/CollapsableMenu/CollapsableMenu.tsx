@@ -53,6 +53,7 @@ function CollapsableMenu({
 			<Button
 				variant="flat"
 				data-trigger
+				aria-label="Abrir menu"
 				className="aria-expanded:[&_+_ul]:tranlate-y-[100%] text-inherit aria-expanded:[&_+_ul]:opacity-100"
 				aria-controls={id}
 				aria-expanded={!isCollapsed}

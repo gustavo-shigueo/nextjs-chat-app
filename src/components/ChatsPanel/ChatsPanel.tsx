@@ -6,9 +6,9 @@ import useMediaQuery from '../../hooks/useMediaQuery'
 import Button from '../Button'
 import Form from '../Form'
 import Input from '../Input'
-import List from '../List'
 import ChatListItem from './ChatListItem'
 import NewChatDialog from './NewChatDialog'
+import { Tab, TabList, Tabs } from '../Tabs'
 
 export default function ChatsPanel() {
 	const ref = useRef<HTMLDivElement>(null)
@@ -95,20 +95,29 @@ export default function ChatsPanel() {
 				</Button>
 			</span>
 
-			<List
-				itemKey="id"
-				items={chatList}
-				role="tablist"
-				className="flex flex-col gap-4 overflow-auto border-none plb-1 pli-3 [&_>_:last-child_>_button]:after:hidden [&_>_li_>_button]:after:content-['']"
-				listStyle="none"
-				renderItem={chat => (
-					<ChatListItem
-						chat={chat}
-						active={chat.id === selectedChatId}
-						setSelectedChatId={setSelectedChatId}
-					/>
-				)}
-			/>
+			<Tabs
+				id="chatlist"
+				direction="vertical"
+				loop={false}
+				manual
+				className="data-[direction=vertical]:grid-cols-1fr"
+			>
+				<TabList className="grid justify-stretch gap-0 overflow-auto border-none is-full plb-1 pli-3 [&_>_:last-child_>_button]:after:hidden [&_>_li_>_button]:after:content-['']">
+					{chatList.map((chat, i) => {
+						return (
+							<Tab
+								className="is-full !pie-0 before:bg-neutral-800 after:!bg-transparent dark:before:bg-neutral-50 dark:after:!bg-transparent max-sm:!pis-0 max-sm:before:content-none"
+								key={chat.id}
+								index={i}
+								onClick={() => setSelectedChatId(chat.id)}
+								onSelected={() => setSelectedChatId(chat.id)}
+							>
+								<ChatListItem chat={chat} active={chat.id === selectedChatId} />
+							</Tab>
+						)
+					})}
+				</TabList>
+			</Tabs>
 		</aside>
 	)
 }

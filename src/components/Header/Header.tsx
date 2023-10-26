@@ -68,7 +68,7 @@ export default function Header() {
 						<span className="text-[hsl(200_100%_60%)] mis-[-8px] max-sm:hidden">
 							Mimis
 						</span>
-						<span className="text-[hsl(0_0%_40%)] pis-[2px] max-sm:hidden">
+						<span className="text-[hsl(0_0%_55%)] pis-[2px] max-sm:hidden">
 							Chat
 						</span>
 					</Link>
