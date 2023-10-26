@@ -50,7 +50,7 @@ export default function ConfirmationMessage() {
 	}
 
 	return (
-		<main>
+		<main className="grid gap-2 justify-center">
 			<h2>Seu cadastro foi realizado com sucesso!</h2>
 			<p>Confirme seu email para fazer login</p>
 
