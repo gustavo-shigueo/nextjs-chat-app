@@ -64,6 +64,7 @@ export default function Header() {
 							title="Mimischat"
 							width="72"
 							height="72"
+							loading="eager"
 						/>
 						<span className="text-[hsl(200_100%_60%)] mis-[-8px] max-sm:hidden">
 							Mimis
