@@ -1,7 +1,6 @@
 import { forwardRef, useRef, type DialogHTMLAttributes } from 'react'
 import { IoClose } from 'react-icons/io5'
 import { twMerge } from 'tailwind-merge'
-import useEventListener from '../../hooks/useEventListener'
 import Button from '../Button'
 
 type DialogProps = DialogHTMLAttributes<HTMLDialogElement>
@@ -32,25 +31,6 @@ const Dialog = forwardRef<HTMLDialogElement, DialogProps>(
 				)
 		}
 
-		useEventListener(
-			'click',
-			e => {
-				// Can only close a dialog if it is open
-				if (!localRef.current?.open) return
-
-				// Detects that the click event was fired by hitting
-				// Enter or Space while focusing a button inside the
-				// dialog and prevents that from closing it
-				if (e.detail === 0) return
-
-				const { x, y, height, width } = localRef.current.getBoundingClientRect()
-				if (e.x < x || e.y < y || e.x > x + width || e.y > y + height) {
-					closeDialog()
-				}
-			},
-			localRef
-		)
-
 		return (
 			<dialog
 				className={twMerge(
@@ -71,6 +51,7 @@ const Dialog = forwardRef<HTMLDialogElement, DialogProps>(
 						variant="flat"
 						className="text-neutral-900 mis-auto dark:text-neutral-50"
 						onClick={() => closeDialog()}
+						aria-label="Fechar"
 					>
 						<IoClose />
 					</Button>
