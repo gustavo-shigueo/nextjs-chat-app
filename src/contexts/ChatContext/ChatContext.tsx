@@ -2,7 +2,6 @@ import {
 	createContext,
 	useCallback,
 	useContext,
-	useEffect,
 	useMemo,
 	useState,
 	type Dispatch,
@@ -59,6 +58,10 @@ export function ChatProvider({
 	)
 
 	const unshiftChat = useCallback((chat: ChatSchema) => {
+		if (Notification.permission === 'default') {
+			void Notification.requestPermission()
+		}
+
 		setData(state => [chat, ...state])
 		setSelectedChatId(chat.id)
 	}, [])
@@ -142,10 +145,6 @@ export function ChatProvider({
 	})
 
 	api.messages.receive.useSubscription(undefined, { onData: pushMessage })
-
-	useEffect(() => {
-		void Notification.requestPermission()
-	}, [])
 
 	return (
 		<ChatContext.Provider
