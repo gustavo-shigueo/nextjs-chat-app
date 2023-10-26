@@ -14,6 +14,7 @@ import { formatList } from '../../../utils/formatters/list'
 import Dialog from '../../../components/Dialog'
 import { useRef } from 'react'
 import AddMemberForm from './AddMemberForm'
+import Portal from '../../../components/Portal'
 
 type MessagesPanelHeaderProps = {
 	chat: MappedChat
@@ -89,6 +90,7 @@ export default function MessagesPanelHeader({
 			{chat.chatType === 'GroupChat' &&
 				chat.creator.id === session?.user.id && (
 					<>
+					<Portal>
 						<Dialog ref={ref}>
 							<h3 className="text-center text-2xl font-bold plb-2">
 								Adicionar ao grupo:
@@ -96,6 +98,8 @@ export default function MessagesPanelHeader({
 
 							<AddMemberForm id={session.user.id} chat={chat} />
 						</Dialog>
+
+					</Portal>
 
 						<CollapsableMenu>
 							<CollapsableMenuItem
