@@ -87,7 +87,9 @@ export default function MessageListItem({
 							{chat.users.find(u => u.id === message.senderId)?.name}
 						</span>
 					)}
-				<blockquote>{message.text}</blockquote>
+				<blockquote>
+					<pre className="font-[inherit]">{message.text}</pre>
+				</blockquote>
 				<time
 					dateTime={message.sentAt.toISOString()}
 					className="block text-end font-light [line-height:_1] [font-size:_0.65rem]"
