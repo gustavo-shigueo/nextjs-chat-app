@@ -7,7 +7,7 @@ export default function Home() {
 	return (
 		<>
 			<Head>
-				<title>WeChat</title>
+				<title>MimisChat</title>
 			</Head>
 			<main>
 				Página Inicial

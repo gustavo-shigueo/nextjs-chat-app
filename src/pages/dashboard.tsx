@@ -17,7 +17,7 @@ const DashBoard: NextPage = () => {
 	return (
 		<>
 			<Head>
-				<title>WeChat</title>
+				<title>MimisChat</title>
 			</Head>
 			<ChatProvider chats={chats} userId={session.user.id}>
 				<CallProvider>
