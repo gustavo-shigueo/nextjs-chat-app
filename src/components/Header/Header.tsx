@@ -55,7 +55,7 @@ export default function Header() {
 			<header className="flex items-center justify-between border-solid border-neutral-500 bg-neutral-900 text-xl text-neutral-50 border-be-2 em:plb-1 em:pli-4">
 				<h1>
 					<Link
-						href={`/${locale}`}
+						href={session?.user ? `/${locale}/dashboard` : `/${locale}`}
 						className="flex items-center text-2xl font-bold"
 					>
 						<Image
