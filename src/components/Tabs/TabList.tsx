@@ -42,28 +42,27 @@ const TabList = forwardRef<HTMLUListElement, TabListProps>(
 						tabs[selectedIndex]?.click()
 					}
 
+					if (e.key in DIRECTION_MAP[direction]) {
+						e.preventDefault()
+
+						if (Number.isNaN(selectedIndex)) {
+							selectIndex(0)
+							return
+						}
+					}
+
 					if (DIRECTION_MAP[direction][e.key] === 'NEXT') {
-						if (Number.isNaN(selectedIndex)) {
-							selectIndex(0)
-							return
-						}
+						const targetIndex = loop
+							? (selectedIndex + 1) % tabCount
+							: Math.min(selectedIndex + 1, tabCount - 1)
 
-						if (loop) {
-							selectIndex((selectedIndex + 1) % tabCount)
-						} else {
-							selectIndex(Math.min(selectedIndex + 1, tabCount - 1))
-						}
+						selectIndex(targetIndex)
 					} else if (DIRECTION_MAP[direction][e.key] === 'PREVIOUS') {
-						if (Number.isNaN(selectedIndex)) {
-							selectIndex(0)
-							return
-						}
+						const targetIndex = loop
+							? (tabCount + selectedIndex - 1) % tabCount
+							: Math.max(selectedIndex - 1, 0)
 
-						if (loop) {
-							selectIndex((tabCount + selectedIndex - 1) % tabCount)
-						} else {
-							selectIndex(Math.max(selectedIndex - 1, 0))
-						}
+						selectIndex(targetIndex)
 					}
 				}}
 				className={twMerge(
