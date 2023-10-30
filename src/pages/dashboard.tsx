@@ -12,7 +12,17 @@ const DashBoard: NextPage = () => {
 	const { data: chats, isLoading } = api.chats.list.useQuery()
 	const { data: session } = useSession()
 
-	if (isLoading || !chats || !session) return <Spinner size={5} />
+	if (isLoading || !chats || !session)
+		return (
+			<>
+				<Head>
+					<title>MimisChat</title>
+				</Head>
+				<section className="grid place-items-center">
+					<Spinner size={5} />
+				</section>
+			</>
+		)
 
 	return (
 		<>
