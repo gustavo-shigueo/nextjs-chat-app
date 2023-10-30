@@ -1,4 +1,4 @@
-import { useEffect, type ButtonHTMLAttributes } from 'react'
+import { useEffect, type ButtonHTMLAttributes, useRef } from 'react'
 import { twMerge } from 'tailwind-merge'
 import Button from '../Button'
 import { useTabs } from './Tabs'
@@ -19,19 +19,26 @@ export default function Tab({
 	...props
 }: TabProps) {
 	const { selectIndex, selectedIndex, id, direction, manual } = useTabs()
+	const ref = useRef<HTMLLIElement>(null)
 
 	useEffect(() => {
 		if (active) selectIndex(index)
 	}, [active, index, selectIndex])
 
 	useEffect(() => {
-		if (selectedIndex === index && !manual) {
+		if (selectedIndex !== index) {
+			return
+		}
+
+		if (!manual) {
 			onSelected?.()
 		}
-	}, [index, selectedIndex, onSelected, manual])
+
+		ref.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+	}, [index, selectedIndex, onSelected, manual, ref])
 
 	return (
-		<li className="grow" role="presentation">
+		<li ref={ref} className="grow" role="presentation">
 			<Button
 				id={`${id}-${index}`}
 				role="tab"
