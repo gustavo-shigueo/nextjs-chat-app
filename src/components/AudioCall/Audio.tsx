@@ -7,5 +7,5 @@ type AudioProps = VideoHTMLAttributes<HTMLVideoElement> & {
 export default function Audio(props: AudioProps) {
 	const ref = useRef<HTMLAudioElement | null>(null)
 
-	return <audio ref={ref} className="hidden" autoPlay playsInline {...props} />
+	return <audio ref={ref} className="hidden" autoPlay {...props} />
 }
