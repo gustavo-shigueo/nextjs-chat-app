@@ -30,7 +30,15 @@ export default class PrismaCallRepository implements ICallRepository {
 	public end(callId: Buffer): Promise<Call> {
 		return this.#prismaClient.call.update({
 			where: { id: callId },
-			data: { endedAt: new Date() },
+			data: {
+				endedAt: new Date(),
+				participants: {
+					updateMany: {
+						data: { leftAt: new Date() },
+						where: { leftAt: null, callId },
+					},
+				},
+			},
 		})
 	}
 
