@@ -328,56 +328,54 @@ export function CallProvider({ children }: CallProviderProps) {
 	}, [callState])
 
 	useEffect(() => {
+		if (timeoutRef.current !== 0) {
+			return
+		}
+
+		if (callState[0] === 'idle' || callState[0] === 'active') {
+			clearTimeout(timeoutRef.current)
+			timeoutRef.current = 0
+			return
+		}
+
+		timeoutRef.current = window.setTimeout(() => {
+			if (callState[0] === 'receiving') {
+				void reject()
+			} else if (callState[0] === 'calling') {
+				void leaveCall.mutateAsync({ callId: callState[1].id })
+				streamRef.current?.getTracks().forEach(x => x.stop())
+				setCallState(['idle', null])
+				setStream(undefined)
+				setIsAudioEnabled(false)
+				setIsVideoEnabled(false)
+			}
+		}, 30_000)
+
+		return () => {
+			clearTimeout(timeoutRef.current)
+			timeoutRef.current = 0
+		}
+	}, [callState, leaveCall, reject, setStream, streamRef])
+
+	useEffect(() => {
 		if (callState[0] !== 'calling') {
 			return
 		}
 
 		const chat = chats.find(c => c.id === callState[1].chatId)
 
-		if (!chat) {
+		if (!chat || rejectionCount < chat.users.length - 1) {
 			return
 		}
 
-		if (rejectionCount >= chat.users.length - 1) {
-			void leaveCall.mutateAsync({ callId: callState[1].id })
+		void leaveCall.mutateAsync({ callId: callState[1].id })
 
-			streamState?.getTracks().forEach(x => x.stop())
-			setCallState(['idle', null])
-			setStream(undefined)
-			setIsAudioEnabled(false)
-			setIsVideoEnabled(false)
-		}
+		streamState?.getTracks().forEach(x => x.stop())
+		setCallState(['idle', null])
+		setStream(undefined)
+		setIsAudioEnabled(false)
+		setIsVideoEnabled(false)
 	}, [callState, chats, leaveCall, rejectionCount, setStream, streamState])
-
-	useEffect(() => {
-		window.clearTimeout(timeoutRef.current)
-		timeoutRef.current = 0
-
-		switch (callState[0]) {
-			case 'calling':
-				timeoutRef.current = window.setTimeout(() => {
-					window.clearTimeout(timeoutRef.current)
-					timeoutRef.current = 0
-
-					void leaveCall.mutateAsync({ callId: callState[1].id })
-
-					streamState?.getTracks().forEach(x => x.stop())
-					setCallState(['idle', null])
-					setStream(undefined)
-					setIsAudioEnabled(false)
-					setIsVideoEnabled(false)
-				}, 30_000)
-				break
-
-			case 'receiving':
-				timeoutRef.current = window.setTimeout(() => {
-					void reject()
-					window.clearTimeout(timeoutRef.current)
-					timeoutRef.current = 0
-				}, 15_000)
-				break
-		}
-	}, [callState, leaveCall, reject, setStream, streamState])
 
 	useEventListener('beforeunload', () => void hangupCall())
 
@@ -404,6 +402,8 @@ export function CallProvider({ children }: CallProviderProps) {
 						{callState[1].callType === 'Video' ? 'vídeo' : 'voz'} de{' '}
 						{chats.find(c => c.id === callState[1].chatId)?.name ?? ''}
 					</h2>
+
+					<audio src="/ringtone.mp3" autoPlay loop className="hidden" />
 
 					<Button
 						onClick={() => void reject()}
