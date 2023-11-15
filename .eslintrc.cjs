@@ -11,6 +11,7 @@ module.exports = {
 			},
 		},
 	],
+	ignorePatterns: '*.spec.ts',
 	parser: '@typescript-eslint/parser',
 	parserOptions: {
 		project: './tsconfig.json',
