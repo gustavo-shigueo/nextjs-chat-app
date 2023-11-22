@@ -24,7 +24,7 @@ export class NodeMailerEmailService implements IEmailService {
 			from: this.#from,
 			subject: 'Confirmação de e-mail',
 			html: `
-				<h1>Olá ${name}, bem-vindo ao MiChat</h1>
+				<h1>Olá ${name}, bem-vindo ao MimisChat</h1>
 
 				<p>
 					Para fazer login, por favor confirme seu e-mail clicando
