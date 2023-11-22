@@ -34,6 +34,7 @@
 		"react-dom": "18.2.0",
 		"react-hook-form": "^7.43.1",
 		"react-icons": "^4.7.1",
+		"sharp": "^0.32.6",
 		"simple-peer": "^9.11.1",
 		"superjson": "1.9.1",
 		"tailwind-merge": "^1.14.0",
