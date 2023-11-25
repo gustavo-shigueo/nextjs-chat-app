@@ -39,9 +39,7 @@ export default function MessageForm({ chat }: MessageFormProps) {
 
 		if (!text?.trim()) return
 
-		ref.current.closest('form')
-
-		if (Notification.permission === 'default') {
+		if ('Notification' in window && Notification.permission === 'default') {
 			Notification.requestPermission().catch(console.error)
 		}
 
