@@ -26,8 +26,8 @@ const useMessageList = (chat: ChatSchema, limit = 50) => {
 			{ chatId: chat.id, limit },
 			{
 				initialCursor: chat.messages[0]?.sentAt,
-				getNextPageParam(lastPage) {
-					return lastPage.length === limit + 1
+				getNextPageParam(lastPage, allPages) {
+					return allPages.length === 1 || lastPage.length === limit + 1
 						? lastPage.at(-1)?.sentAt
 						: undefined
 				},
