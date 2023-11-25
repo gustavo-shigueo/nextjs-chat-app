@@ -42,7 +42,7 @@ export default function MessageForm({ chat }: MessageFormProps) {
 		ref.current.closest('form')
 
 		if (Notification.permission === 'default') {
-			void Notification.requestPermission()
+			Notification.requestPermission().catch(console.error)
 		}
 
 		void sendMessage.mutateAsync({
