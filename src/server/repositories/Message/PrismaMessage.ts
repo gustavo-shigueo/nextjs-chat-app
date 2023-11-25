@@ -15,11 +15,9 @@ export default class PrismaMessageRepository implements IMessageRepository {
 		cursor?: Date | undefined
 	): Promise<Message[]> {
 		return this.#prismaClient.message.findMany({
-			where: { chatId },
+			where: { chatId, sentAt: { lt: cursor } },
 			take: limit + 1,
-			cursor: cursor ? { sentAt: cursor } : undefined,
 			orderBy: { sentAt: 'desc' },
-			skip: 1,
 		})
 	}
 

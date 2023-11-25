@@ -21,27 +21,27 @@ const useMessageList = (chat: ChatSchema, limit = 50) => {
 	const firstMessage = chat.messages[0]
 	const lastMessage = chat.messages.at(-1)
 
-	const { fetchNextPage, hasNextPage, isFetching } =
+	const { fetchNextPage, hasNextPage, isLoading } =
 		api.messages.listByChat.useInfiniteQuery(
 			{ chatId: chat.id, limit },
 			{
 				initialCursor: chat.messages[0]?.sentAt,
-				getNextPageParam(lastPage, allPages) {
-					return allPages.length < 2 || lastPage.length === limit + 1
-						? lastPage[0]?.sentAt
+				getNextPageParam(lastPage) {
+					return lastPage.length === limit + 1
+						? lastPage.at(-1)?.sentAt
 						: undefined
 				},
 			}
 		)
 
 	const updateMssageList = useCallback(async () => {
-		if (!hasNextPage || isFetching) return
+		if (!hasNextPage || isLoading) return
 
 		const { data } = await fetchNextPage()
 		const messages = data?.pages.at(-1)?.reverse() ?? []
 
 		unshiftMessages(chat.id, messages)
-	}, [chat.id, unshiftMessages, fetchNextPage, hasNextPage, isFetching])
+	}, [chat.id, unshiftMessages, fetchNextPage, hasNextPage, isLoading])
 
 	useLayoutEffect(() => {
 		if (!wrapperRef.current) return
