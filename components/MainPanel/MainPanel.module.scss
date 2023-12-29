@@ -1,8 +1,0 @@
-@layer components {
-	.main-panel {
-		display: grid;
-		grid-template-columns: minmax(0, 22em) 1fr;
-
-		overflow: hidden;
-	}
-}

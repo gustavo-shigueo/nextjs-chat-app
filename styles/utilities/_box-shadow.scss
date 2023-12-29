@@ -1,9 +1,0 @@
-$sizes: 'small', 'medium', 'large';
-
-@layer utilities {
-	@each $size in $sizes {
-		.box-shadow-#{$size} {
-			box-shadow: var(--box-shadow-#{$size});
-		}
-	}
-}

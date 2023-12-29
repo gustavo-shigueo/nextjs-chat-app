@@ -1,6 +1,0 @@
-@forward './border-radius';
-@forward './box-shadow' hide $sizes;
-@forward './color' hide $props, $colors;
-@forward './spacing' hide $props, $logicalDirections, $logicalSides;
-@forward './typography';
-@forward './display';
