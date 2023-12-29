@@ -1,28 +1,20 @@
-# Create T3 App
+# MimisChat video chatting web app
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+This is a messaging web app that allows for making video calls using the WebRTC protocol
+It was created with TypeScript, Next.js, TailwindCSS and Prisma
 
-## What's next? How do I make an app with this?
+This project was created in a period of two years with the purpose of being mine and
+[@EUMIRIAM](https://github.com/EUMIRIAM)'s college graduation project.
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+It is a reimaging of my original [WebRTC-videochat](https://github.com/gustavo-shigueo/WebRTC-videochat)
+webapp implemented with NextJS, created with the goal of creating a great user experience
+with a much nicer UI and a much more robust backend with tRPC, a MySQL database to store
+the users and their chats, a messaging system, group calls (the previous app is limited to
+2 people per call) and authentication with JWT combined with Google OAuth.
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## How to run the project
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+Clone this repository and create a `.env` file in the root directory, containing the
+environment variables shown in `.env.example`.
 
-## Learn More
-
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
-
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
-
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
-
-## How do I deploy this?
-
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+Install the project dependencies by running `yarn` and then execute it by running `yarn dev`
