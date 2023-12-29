@@ -1,0 +1,1584 @@
+<svg version="1.1" baseProfile="full" width="7996.0" height="2674.0" viewbox="0 0 7996 2674" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events">
+<desc >#.interface: fill=lightblue
+#.enumeration: fill=lightgreen
+#.type: fill=lightgray
+[&lt;type&gt;CreateContextOptions|+session: Session \| null|]
+[ChatTypeError||]
+[UnauthorizedError||]
+[CallEventEmitter||]
+[&lt;interface&gt;CallEvents|+start: (chat: { name: string \| null; id: string; thumbnailUrl: string \| null; chatType: &quot;GroupChat&quot; \| &quot;PrivateChat&quot;; messages: { id: string; text: string; sentAt: Date; senderId: string; chatId: string; }\[\]; users: { ...; }\[\]; createdAt: Date; creator: { ...; }; }, call: { ...; }) =&gt; void;+userJoin: (call: { participants?: { participantId: string; joinedAt: Date; leftAt: Date \| null; }\[\] \| undefined; id: string; chatId: string; callType: &quot;Audio&quot; \| &quot;Video&quot;; callerId: string; startedAt: Date; endedAt: Date \| null; }, userId: string) =&gt; void;+userLeave: (call: { participants?: { participantId: string; joinedAt: Date; leftAt: Date \| null; }\[\] \| undefined; id: string; chatId: string; callType: &quot;Audio&quot; \| &quot;Video&quot;; callerId: string; startedAt: Date; endedAt: Date \| null; }, userId: string) =&gt; void;+userReject: (callerId: string) =&gt; void;+rtcOffer: (offer: SignalData \| { type: &quot;candidate&quot;; candidate: RTCIceCandidateInit; }, from: string, to: string) =&gt; void;+rtcAnswer: (answer: SignalData \| { type: &quot;candidate&quot;; candidate: RTCIceCandidateInit; }, from: string, to: string) =&gt; void|]
+[&lt;interface&gt;CallEventEmitter||+on(): this;+off(): this;+once(): this;+emit(): boolean]
+[EventEmitter]&lt;:-[CallEventEmitter]
+[EventEmitter]&lt;:--[CallEventEmitter]
+[EventEmitter]&lt;:--[CallEventEmitter]
+[ChatEventEmitter||]
+[&lt;interface&gt;ChatEvents|+create: (chat: { name: string \| null; id: string; thumbnailUrl: string \| null; chatType: &quot;GroupChat&quot; \| &quot;PrivateChat&quot;; messages: { id: string; text: string; sentAt: Date; senderId: string; chatId: string; }\[\]; users: { ...; }\[\]; createdAt: Date; creator: { ...; }; }) =&gt; void;+addmember: (chat: { name: string \| null; id: string; thumbnailUrl: string \| null; chatType: &quot;GroupChat&quot; \| &quot;PrivateChat&quot;; messages: { id: string; text: string; sentAt: Date; senderId: string; chatId: string; }\[\]; users: { ...; }\[\]; createdAt: Date; creator: { ...; }; }) =&gt; void|]
+[&lt;interface&gt;ChatEventEmitter||+on(): this;+off(): this;+once(): this;+emit(): boolean]
+[EventEmitter]&lt;:-[ChatEventEmitter]
+[EventEmitter]&lt;:--[ChatEventEmitter]
+[EventEmitter]&lt;:--[ChatEventEmitter]
+[MessageEventEmitter||]
+[&lt;interface&gt;MessageEvents|+send: (chat: { name: string \| null; id: string; thumbnailUrl: string \| null; chatType: &quot;GroupChat&quot; \| &quot;PrivateChat&quot;; messages: { id: string; text: string; sentAt: Date; senderId: string; chatId: string; }\[\]; users: { ...; }\[\]; createdAt: Date; creator: { ...; }; }, message: { ...; }) =&gt; void|]
+[&lt;interface&gt;MessageEventEmitter||+on(): this;+off(): this;+once(): this;+emit(): boolean]
+[EventEmitter]&lt;:-[MessageEventEmitter]
+[EventEmitter]&lt;:--[MessageEventEmitter]
+[EventEmitter]&lt;:--[MessageEventEmitter]
+[&lt;interface&gt;IAccountRepository||+findById(): Promise&lt;JoinedAccount&gt;;+findByEmail(): Promise&lt;JoinedAccount\[\]&gt;]
+[PrismaAccountRepository|+#prismaClient: PrismaClient&lt;PrismaClientOptions, never, DefaultArgs&gt;|+findById(): Promise&lt;{ id: Buffer; userId: Buffer; type: string; provider: string; providerAccountId: string; refresh_token: string \| null; access_token: string \| null; expires_at: number \| null; ... 4 more ...; session_state: string \| null; } &amp; { ...; }&gt;;+findByEmail(): Promise&lt;({ id: Buffer; userId: Buffer; type: string; provider: string; providerAccountId: string; refresh_token: string \| null; access_token: string \| null; expires_at: number \| null; ... 4 more ...; session_state: string \| null; } &amp; { ...; })\[\]&gt;]
+[IAccountRepository]&lt;:--[PrismaAccountRepository]
+[&lt;interface&gt;ICallRepository||+create(): Promise&lt;Call&gt;;+end(): Promise&lt;Call&gt;;+userJoin(): Promise&lt;Call&gt;;+userLeave(): Promise&lt;Call&gt;]
+[PrismaCallRepository|+#prismaClient: PrismaClient&lt;PrismaClientOptions, never, DefaultArgs&gt;|+create(): Promise&lt;Call&gt;;+end(): Promise&lt;Call&gt;;+userJoin(): Promise&lt;Call&gt;;+userLeave(): Promise&lt;Call&gt;]
+[ICallRepository]&lt;:--[PrismaCallRepository]
+[&lt;interface&gt;IChatRepository||+findById(): Promise&lt;JoinedChat&gt;;+findByParticipantId(): Promise&lt;JoinedChat\[\]&gt;;+createPrivateChat(): Promise&lt;JoinedChat&gt;;+createGroupChat(): Promise&lt;JoinedChat&gt;;+addUser(): Promise&lt;JoinedChat&gt;]
+[PrismaChatRepository|+#prismaClient: PrismaClient&lt;PrismaClientOptions, never, DefaultArgs&gt;|+createPrivateChat(): Promise&lt;JoinedChat&gt;;+createGroupChat(): Promise&lt;JoinedChat&gt;;+findById(): Promise&lt;JoinedChat&gt;;+findByParticipantId(): Promise&lt;JoinedChat\[\]&gt;;+addUser(): Promise&lt;JoinedChat&gt;]
+[IChatRepository]&lt;:--[PrismaChatRepository]
+[&lt;interface&gt;IMessageRepository||+findByChatId(): Promise&lt;{ id: Buffer; text: string; sentAt: Date; senderId: Buffer; chatId: Buffer; }\[\]&gt;;+create(): Promise&lt;{ id: Buffer; text: string; sentAt: Date; senderId: Buffer; chatId: Buffer; }&gt;]
+[PrismaMessageRepository|+#prismaClient: PrismaClient&lt;PrismaClientOptions, never, DefaultArgs&gt;|+findByChatId(): Promise&lt;{ id: Buffer; text: string; sentAt: Date; senderId: Buffer; chatId: Buffer; }\[\]&gt;;+create(): Promise&lt;{ id: Buffer; text: string; sentAt: Date; senderId: Buffer; chatId: Buffer; }&gt;]
+[IMessageRepository]&lt;:--[PrismaMessageRepository]
+[&lt;interface&gt;IUserRepository||+findById(): Promise&lt;{ id: Buffer; name: string; email: string; emailVerified: Date \| null; image: string; createdAt: Date; }&gt;;+findByEmail(): Promise&lt;{ id: Buffer; name: string; email: string; emailVerified: Date \| null; image: string; createdAt: Date; }&gt;;+findByName(): Promise&lt;{ id: Buffer; name: string; email: string; emailVerified: Date \| null; image: string; createdAt: Date; }\[\]&gt;;+findContacts(): Promise&lt;{ id: Buffer; name: string; email: string; emailVerified: Date \| null; image: string; createdAt: Date; }\[\]&gt;;+create(): Promise&lt;{ id: Buffer; name: string; email: string; emailVerified: Date \| null; image: string; createdAt: Date; }&gt;;+addContact(): Promise&lt;void&gt;;+removeContact(): Promise&lt;void&gt;;+searchNewContact(): Promise&lt;{ id: Buffer; name: string; email: string; emailVerified: Date \| null; image: string; createdAt: Date; }\[\]&gt;]
+[PrismaUserRepository|+#prismaClient: PrismaClient&lt;PrismaClientOptions, never, DefaultArgs&gt;|+findById(): Promise&lt;{ id: Buffer; name: string; email: string; emailVerified: Date \| null; image: string; createdAt: Date; }&gt;;+findByName(): Promise&lt;{ id: Buffer; name: string; email: string; emailVerified: Date \| null; image: string; createdAt: Date; }\[\]&gt;;+findByEmail(): Promise&lt;{ id: Buffer; name: string; email: string; emailVerified: Date \| null; image: string; createdAt: Date; }&gt;;+findContacts(): Promise&lt;{ id: Buffer; name: string; email: string; emailVerified: Date \| null; image: string; createdAt: Date; }\[\]&gt;;+create(): Promise&lt;{ id: Buffer; name: string; email: string; emailVerified: Date \| null; image: string; createdAt: Date; }&gt;;+addContact(): Promise&lt;void&gt;;+removeContact(): Promise&lt;void&gt;;+searchNewContact(): Promise&lt;{ id: Buffer; name: string; email: string; emailVerified: Date \| null; image: string; createdAt: Date; }\[\]&gt;]
+[IUserRepository]&lt;:--[PrismaUserRepository]
+[&lt;interface&gt;IUuidSerializer||+toBuffer(): Buffer;+stringify(): string;+deepStringify(): ReplaceBuffer&lt;T&gt;]
+[UuidSerializer||+toBuffer(): Buffer;+stringify(): string;+deepStringify(): ReplaceBuffer&lt;T&gt;]
+[IUuidSerializer]&lt;:--[UuidSerializer]
+[AuthService|+#accountRepository: IAccountRepository;+#userRepository: IUserRepository;+#passwordService: IPasswordService;+#uuidSerializer: IUuidSerializer|+authenticate(): Promise&lt;{ name: string; id: string; image: string; email: string; createdAt: Date; }&gt;;+#signup(): Promise&lt;{ id: string; name: string; email: string; emailVerified: Date \| null; image: string; createdAt: Date; }&gt;]
+[IAuthService]&lt;:--[AuthService]
+[&lt;interface&gt;Credentials|+name?: string;+email: string;+password: string|]
+[&lt;interface&gt;IAuthService||+authenticate(): Promise&lt;{ name: string; id: string; image: string; email: string; createdAt: Date; }&gt;]
+[CallService|+#callRepository: ICallRepository;+#uuidSerializer: IUuidSerializer|+create(): Promise&lt;{ participants?: { participantId: string; joinedAt: Date; leftAt: Date \| null; }\[\] \| undefined; id: string; chatId: string; callType: &quot;Audio&quot; \| &quot;Video&quot;; callerId: string; startedAt: Date; endedAt: Date \| null; }&gt;;+end(): Promise&lt;{ participants?: { participantId: string; joinedAt: Date; leftAt: Date \| null; }\[\] \| undefined; id: string; chatId: string; callType: &quot;Audio&quot; \| &quot;Video&quot;; callerId: string; startedAt: Date; endedAt: Date \| null; }&gt;;+userJoin(): Promise&lt;{ participants?: { participantId: string; joinedAt: Date; leftAt: Date \| null; }\[\] \| undefined; id: string; chatId: string; callType: &quot;Audio&quot; \| &quot;Video&quot;; callerId: string; startedAt: Date; endedAt: Date \| null; }&gt;;+userLeave(): Promise&lt;{ participants?: { participantId: string; joinedAt: Date; leftAt: Date \| null; }\[\] \| undefined; id: string; chatId: string; callType: &quot;Audio&quot; \| &quot;Video&quot;; callerId: string; startedAt: Date; endedAt: Date \| null; }&gt;]
+[ICallService]&lt;:--[CallService]
+[&lt;interface&gt;ICallService||+create(): Promise&lt;{ participants?: { participantId: string; joinedAt: Date; leftAt: Date \| null; }\[\] \| undefined; id: string; chatId: string; callType: &quot;Audio&quot; \| &quot;Video&quot;; callerId: string; startedAt: Date; endedAt: Date \| null; }&gt;;+end(): Promise&lt;{ participants?: { participantId: string; joinedAt: Date; leftAt: Date \| null; }\[\] \| undefined; id: string; chatId: string; callType: &quot;Audio&quot; \| &quot;Video&quot;; callerId: string; startedAt: Date; endedAt: Date \| null; }&gt;;+userJoin(): Promise&lt;{ participants?: { participantId: string; joinedAt: Date; leftAt: Date \| null; }\[\] \| undefined; id: string; chatId: string; callType: &quot;Audio&quot; \| &quot;Video&quot;; callerId: string; startedAt: Date; endedAt: Date \| null; }&gt;;+userLeave(): Promise&lt;{ participants?: { participantId: string; joinedAt: Date; leftAt: Date \| null; }\[\] \| undefined; id: string; chatId: string; callType: &quot;Audio&quot; \| &quot;Video&quot;; callerId: string; startedAt: Date; endedAt: Date \| null; }&gt;]
+[ChatService|+#chatRepository: IChatRepository;+#uuidSerializer: IUuidSerializer|+createPrivateChat(): Promise&lt;{ name: string \| null; id: string; thumbnailUrl: string \| null; chatType: &quot;GroupChat&quot; \| &quot;PrivateChat&quot;; messages: { id: string; text: string; sentAt: Date; senderId: string; chatId: string; }\[\]; users: { ...; }\[\]; createdAt: Date; creator: { ...; }; }&gt;;+createGroupChat(): Promise&lt;{ name: string \| null; id: string; thumbnailUrl: string \| null; chatType: &quot;GroupChat&quot; \| &quot;PrivateChat&quot;; messages: { id: string; text: string; sentAt: Date; senderId: string; chatId: string; }\[\]; users: { ...; }\[\]; createdAt: Date; creator: { ...; }; }&gt;;+findById(): Promise&lt;{ name: string \| null; id: string; thumbnailUrl: string \| null; chatType: &quot;GroupChat&quot; \| &quot;PrivateChat&quot;; messages: { id: string; text: string; sentAt: Date; senderId: string; chatId: string; }\[\]; users: { ...; }\[\]; createdAt: Date; creator: { ...; }; }&gt;;+findByParticipantId(): Promise&lt;{ name: string \| null; id: string; thumbnailUrl: string \| null; chatType: &quot;GroupChat&quot; \| &quot;PrivateChat&quot;; messages: { id: string; text: string; sentAt: Date; senderId: string; chatId: string; }\[\]; users: { ...; }\[\]; createdAt: Date; creator: { ...; }; }\[\]&gt;;+addUser(): Promise&lt;{ name: string \| null; id: string; thumbnailUrl: string \| null; chatType: &quot;GroupChat&quot; \| &quot;PrivateChat&quot;; messages: { id: string; text: string; sentAt: Date; senderId: string; chatId: string; }\[\]; users: { ...; }\[\]; createdAt: Date; creator: { ...; }; }&gt;;+isUserMember(): Promise&lt;boolean&gt;]
+[IChatService]&lt;:--[ChatService]
+[&lt;interface&gt;IChatService||+createPrivateChat(): Promise&lt;{ name: string \| null; id: string; thumbnailUrl: string \| null; chatType: &quot;GroupChat&quot; \| &quot;PrivateChat&quot;; messages: { id: string; text: string; sentAt: Date; senderId: string; chatId: string; }\[\]; users: { ...; }\[\]; createdAt: Date; creator: { ...; }; }&gt;;+createGroupChat(): Promise&lt;{ name: string \| null; id: string; thumbnailUrl: string \| null; chatType: &quot;GroupChat&quot; \| &quot;PrivateChat&quot;; messages: { id: string; text: string; sentAt: Date; senderId: string; chatId: string; }\[\]; users: { ...; }\[\]; createdAt: Date; creator: { ...; }; }&gt;;+findById(): Promise&lt;{ name: string \| null; id: string; thumbnailUrl: string \| null; chatType: &quot;GroupChat&quot; \| &quot;PrivateChat&quot;; messages: { id: string; text: string; sentAt: Date; senderId: string; chatId: string; }\[\]; users: { ...; }\[\]; createdAt: Date; creator: { ...; }; }&gt;;+findByParticipantId(): Promise&lt;{ name: string \| null; id: string; thumbnailUrl: string \| null; chatType: &quot;GroupChat&quot; \| &quot;PrivateChat&quot;; messages: { id: string; text: string; sentAt: Date; senderId: string; chatId: string; }\[\]; users: { ...; }\[\]; createdAt: Date; creator: { ...; }; }\[\]&gt;;+addUser(): Promise&lt;{ name: string \| null; id: string; thumbnailUrl: string \| null; chatType: &quot;GroupChat&quot; \| &quot;PrivateChat&quot;; messages: { id: string; text: string; sentAt: Date; senderId: string; chatId: string; }\[\]; users: { ...; }\[\]; createdAt: Date; creator: { ...; }; }&gt;;+isUserMember(): Promise&lt;boolean&gt;]
+[&lt;interface&gt;IMessageService||+create(): Promise&lt;{ id: string; text: string; sentAt: Date; senderId: string; chatId: string; }&gt;;+findByChatId(): Promise&lt;{ id: string; text: string; sentAt: Date; senderId: string; chatId: string; }\[\]&gt;]
+[MessageService|+#messageRepository: IMessageRepository;+#uuidSerializer: IUuidSerializer|+create(): Promise&lt;{ id: string; text: string; sentAt: Date; senderId: string; chatId: string; }&gt;;+findByChatId(): Promise&lt;{ id: string; text: string; sentAt: Date; senderId: string; chatId: string; }\[\]&gt;]
+[IMessageService]&lt;:--[MessageService]
+[BcryptPasswordService||+hash(): Promise&lt;string&gt;;+verify(): Promise&lt;boolean&gt;]
+[IPasswordService]&lt;:--[BcryptPasswordService]
+[&lt;interface&gt;IPasswordService||+hash(): Promise&lt;string&gt;;+verify(): Promise&lt;boolean&gt;]
+[&lt;interface&gt;IUserService||+findById(): Promise&lt;{ name: string; id: string; image: string; email: string; createdAt: Date; }&gt;;+findByEmail(): Promise&lt;{ name: string; id: string; image: string; email: string; createdAt: Date; }&gt;;+findByName(): Promise&lt;{ name: string; id: string; image: string; email: string; createdAt: Date; }\[\]&gt;;+findContacts(): Promise&lt;{ name: string; id: string; image: string; email: string; createdAt: Date; }\[\]&gt;;+addContact(): Promise&lt;void&gt;;+removeContact(): Promise&lt;void&gt;;+searchNewContact(): Promise&lt;{ name: string; id: string; image: string; email: string; createdAt: Date; }\[\]&gt;]
+[UserService|+#userRepository: IUserRepository;+#uuidSerializer: IUuidSerializer|+findById(): Promise&lt;{ name: string; id: string; image: string; email: string; createdAt: Date; }&gt;;+findByName(): Promise&lt;{ name: string; id: string; image: string; email: string; createdAt: Date; }\[\]&gt;;+findByEmail(): Promise&lt;{ name: string; id: string; image: string; email: string; createdAt: Date; }&gt;;+findContacts(): Promise&lt;{ name: string; id: string; image: string; email: string; createdAt: Date; }\[\]&gt;;+addContact(): Promise&lt;void&gt;;+removeContact(): Promise&lt;void&gt;;+searchNewContact(): Promise&lt;{ name: string; id: string; image: string; email: string; createdAt: Date; }\[\]&gt;]
+[IUserService]&lt;:--[UserService]</desc>
+<g stroke-width="1.0" text-align="left" font="12pt Helvetica, Arial, sans-serif" font-size="12pt" font-family="Helvetica" font-weight="normal" font-style="normal">
+<g font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" stroke-width="3.0" stroke-linejoin="round" stroke-linecap="round" stroke="#33322E">
+<g stroke="transparent" fill="transparent">
+<rect x="0.0" y="0.0" height="2674.0" width="7996.0" stroke="none"></rect>
+</g>
+<g transform="translate(8, 8)" fill="#33322E">
+<g transform="translate(20, 20)" fill="#eee8d5" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal">
+<path d="M1153.6 663.3 L967.25 1290 L1005.8553412462908 1940.5 L1005.9 1940.5 " fill="none"></path>
+<path d="M1158.7 664.8 L1153.6 663.3 L1148.5 661.8 L1157.4 650.5 Z"></path>
+<g stroke-dasharray="6 6">
+<path d="M1156.8 663.6 L1042 1290 L1008.4616097922849 1940.5 L1008.5 1940.5 " fill="none"></path>
+</g>
+<path d="M1162.0 664.6 L1156.8 663.6 L1151.5 662.7 L1159.2 650.5 Z"></path>
+<g stroke-dasharray="6 6">
+<path d="M1158.5 663.7 L1082 1290 L1009.8562685459941 1940.5 L1009.9 1940.5 " fill="none"></path>
+</g>
+<path d="M1163.8 664.4 L1158.5 663.7 L1153.2 663.1 L1160.1 650.5 Z"></path>
+<path d="M1160.2 663.8 L1122 1290 L1194.143731454006 1940.5 L1194.1 1940.5 " fill="none"></path>
+<path d="M1165.6 664.1 L1160.2 663.8 L1154.9 663.5 L1161.1 650.5 Z"></path>
+<g stroke-dasharray="6 6">
+<path d="M1162.0 663.8 L1162 1290 L1195.538390207715 1940.5 L1195.5 1940.5 " fill="none"></path>
+</g>
+<path d="M1167.3 663.8 L1162.0 663.8 L1156.7 663.8 L1162.0 650.5 Z"></path>
+<g stroke-dasharray="6 6">
+<path d="M1174.8 662.6 L1465.5 1290 L1206.1203635014838 1940.5 L1206.1 1940.5 " fill="none"></path>
+</g>
+<path d="M1179.6 660.4 L1174.8 662.6 L1169.9 664.8 L1169.2 650.5 Z"></path>
+<path d="M1176.3 662.3 L1505.5 1290 L1607.0803041543027 1940.5 L1607.1 1940.5 " fill="none"></path>
+<path d="M1181.0 659.8 L1176.3 662.3 L1171.6 664.8 L1170.1 650.5 Z"></path>
+<g stroke-dasharray="6 6">
+<path d="M1177.8 662.0 L1545.5 1290 L1608.4749629080118 1940.5 L1608.5 1940.5 " fill="none"></path>
+</g>
+<path d="M1182.4 659.3 L1177.8 662.0 L1173.2 664.7 L1171.1 650.5 Z"></path>
+<g stroke-dasharray="6 6">
+<path d="M1186.5 660.0 L1802.75 1290 L1617.4443620178042 1940.5 L1617.4 1940.5 " fill="none"></path>
+</g>
+<path d="M1190.3 656.3 L1186.5 660.0 L1182.7 663.8 L1177.2 650.5 Z"></path>
+<g stroke-dasharray="6 6">
+<path d="M2163.5 690.8 L2163.5 1290 L2163.5 1745 L2163.5 1745.0 " fill="none"></path>
+</g>
+<path d="M2168.8 690.8 L2163.5 690.8 L2158.2 690.8 L2163.5 677.5 Z"></path>
+<g stroke-dasharray="6 6">
+<path d="M2783.5 705.8 L2783.5 1290 L2783.5 1895 L2783.5 1895.0 " fill="none"></path>
+</g>
+<path d="M2788.8 705.8 L2783.5 705.8 L2778.2 705.8 L2783.5 692.5 Z"></path>
+<g stroke-dasharray="6 6">
+<path d="M3403.5 713.3 L3403.5 1290 L3403.5 1887.5 L3403.5 1887.5 " fill="none"></path>
+</g>
+<path d="M3408.8 713.3 L3403.5 713.3 L3398.2 713.3 L3403.5 700.0 Z"></path>
+<g stroke-dasharray="6 6">
+<path d="M4023.5 765.8 L4023.5 1290 L4023.5 1835 L4023.5 1835.0 " fill="none"></path>
+</g>
+<path d="M4028.8 765.8 L4023.5 765.8 L4018.2 765.8 L4023.5 752.5 Z"></path>
+<g stroke-dasharray="6 6">
+<path d="M4643.5 1005.8 L4643.5 1290 L4643.5 1595 L4643.5 1595.0 " fill="none"></path>
+</g>
+<path d="M4648.8 1005.8 L4643.5 1005.8 L4638.2 1005.8 L4643.5 992.5 Z"></path>
+<g stroke-dasharray="6 6">
+<path d="M5120.5 698.3 L5120.5 1290 L5120.5 1914 L5120.5 1914.0 " fill="none"></path>
+</g>
+<path d="M5125.8 698.3 L5120.5 698.3 L5115.2 698.3 L5120.5 685.0 Z"></path>
+<g stroke-dasharray="6 6">
+<path d="M5481.5 720.8 L5481.5 1290 L5481.5 1805 L5481.5 1805.0 " fill="none"></path>
+</g>
+<path d="M5486.8 720.8 L5481.5 720.8 L5476.2 720.8 L5481.5 707.5 Z"></path>
+<g stroke-dasharray="6 6">
+<path d="M6128.0 1005.8 L6128 1290 L6128 1587.5 L6128.0 1587.5 " fill="none"></path>
+</g>
+<path d="M6133.3 1005.8 L6128.0 1005.8 L6122.7 1005.8 L6128.0 992.5 Z"></path>
+<g stroke-dasharray="6 6">
+<path d="M6625.0 1283.3 L6625 1290 L6625 1310 L6625.0 1310.0 " fill="none"></path>
+</g>
+<path d="M6630.3 1283.3 L6625.0 1283.3 L6619.7 1283.3 L6625.0 1270.0 Z"></path>
+<g stroke-dasharray="6 6">
+<path d="M7058.5 765.8 L7058.5 1290 L7058.5 1827.5 L7058.5 1827.5 " fill="none"></path>
+</g>
+<path d="M7063.8 765.8 L7058.5 765.8 L7053.2 765.8 L7058.5 752.5 Z"></path>
+<g stroke-dasharray="6 6">
+<path d="M7400.5 690.8 L7400.5 1290 L7400.5 1921.5 L7400.5 1921.5 " fill="none"></path>
+</g>
+<path d="M7405.8 690.8 L7400.5 690.8 L7395.2 690.8 L7400.5 677.5 Z"></path>
+<g stroke-dasharray="6 6">
+<path d="M7750.0 915.8 L7750 1290 L7750 1677.5 L7750.0 1677.5 " fill="none"></path>
+</g>
+<path d="M7755.3 915.8 L7750.0 915.8 L7744.7 915.8 L7750.0 902.5 Z"></path>
+<g data-name="CreateContextOptions">
+<g fill="lightgray" stroke="#33322E" data-name="CreateContextOptions">
+<rect x="0.0" y="600.0" height="70.0" width="203.0" data-name="CreateContextOptions"></rect>
+<path d="M0.0 631.0 L203.0 631.0" fill="none" data-name="CreateContextOptions"></path>
+<path d="M0.0 662.0 L203.0 662.0" fill="none" data-name="CreateContextOptions"></path>
+</g>
+<g transform="translate(0, 600)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CreateContextOptions">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CreateContextOptions">
+<a id="src\server\api\trpc.ts.CreateContextOptions" xlink:href="src\server\api\trpc.ts"><text x="93.5" y="13.5" stroke="none" text-anchor="middle" data-name="CreateContextOptions">CreateContextOptions</text></a>
+
+</g>
+</g>
+<g transform="translate(0, 631)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CreateContextOptions">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="CreateContextOptions">
+<text x="0.0" y="13.5" stroke="none" data-name="CreateContextOptions">+session: Session | null</text>
+
+</g>
+</g>
+<g transform="translate(0, 662)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CreateContextOptions">
+<g transform="translate(8, 8)" fill="#33322E" data-name="CreateContextOptions">
+
+</g>
+</g>
+</g>
+<g data-name="ChatTypeError">
+<g fill="#eee8d5" stroke="#33322E" data-name="ChatTypeError">
+<rect x="243.0" y="611.5" height="47.0" width="131.0" data-name="ChatTypeError"></rect>
+<path d="M243.0 642.5 L374.0 642.5" fill="none" data-name="ChatTypeError"></path>
+<path d="M243.0 650.5 L374.0 650.5" fill="none" data-name="ChatTypeError"></path>
+</g>
+<g transform="translate(243, 611.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="ChatTypeError">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ChatTypeError">
+<a id="src\server\errors\ChatType.ts.ChatTypeError" xlink:href="src\server\errors\ChatType.ts"><text x="57.5" y="13.5" stroke="none" text-anchor="middle" data-name="ChatTypeError">ChatTypeError</text></a>
+
+</g>
+</g>
+<g transform="translate(243, 642.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ChatTypeError">
+<g transform="translate(8, 8)" fill="#33322E" data-name="ChatTypeError">
+
+</g>
+</g>
+<g transform="translate(243, 650.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ChatTypeError">
+<g transform="translate(8, 8)" fill="#33322E" data-name="ChatTypeError">
+
+</g>
+</g>
+</g>
+<g data-name="UnauthorizedError">
+<g fill="#eee8d5" stroke="#33322E" data-name="UnauthorizedError">
+<rect x="414.0" y="611.5" height="47.0" width="161.0" data-name="UnauthorizedError"></rect>
+<path d="M414.0 642.5 L575.0 642.5" fill="none" data-name="UnauthorizedError"></path>
+<path d="M414.0 650.5 L575.0 650.5" fill="none" data-name="UnauthorizedError"></path>
+</g>
+<g transform="translate(414, 611.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="UnauthorizedError">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="UnauthorizedError">
+<a id="src\server\errors\Unauthorized.ts.UnauthorizedError" xlink:href="src\server\errors\Unauthorized.ts"><text x="72.5" y="13.5" stroke="none" text-anchor="middle" data-name="UnauthorizedError">UnauthorizedError</text></a>
+
+</g>
+</g>
+<g transform="translate(414, 642.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="UnauthorizedError">
+<g transform="translate(8, 8)" fill="#33322E" data-name="UnauthorizedError">
+
+</g>
+</g>
+<g transform="translate(414, 650.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="UnauthorizedError">
+<g transform="translate(8, 8)" fill="#33322E" data-name="UnauthorizedError">
+
+</g>
+</g>
+</g>
+<g data-name="CallEventEmitter">
+<g fill="#eee8d5" stroke="#33322E" data-name="CallEventEmitter">
+<rect x="934.3" y="1940.5" height="47.0" width="146.0" data-name="CallEventEmitter"></rect>
+<path d="M934.3 1971.5 L1080.3 1971.5" fill="none" data-name="CallEventEmitter"></path>
+<path d="M934.3 1979.5 L1080.3 1979.5" fill="none" data-name="CallEventEmitter"></path>
+</g>
+<g transform="translate(934.25, 1940.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="CallEventEmitter">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CallEventEmitter">
+<a id="src\server\api\events\CallEventEmitter.ts.CallEventEmitter" xlink:href="src\server\api\events\CallEventEmitter.ts"><text x="65.0" y="13.5" stroke="none" text-anchor="middle" data-name="CallEventEmitter">CallEventEmitter</text></a>
+
+</g>
+</g>
+<g transform="translate(934.25, 1971.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CallEventEmitter">
+<g transform="translate(8, 8)" fill="#33322E" data-name="CallEventEmitter">
+
+</g>
+</g>
+<g transform="translate(934.25, 1979.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CallEventEmitter">
+<g transform="translate(8, 8)" fill="#33322E" data-name="CallEventEmitter">
+
+</g>
+</g>
+</g>
+<g data-name="CallEvents">
+<g fill="lightblue" stroke="#33322E" data-name="CallEvents">
+<rect x="615.0" y="262.5" height="745.0" width="449.0" data-name="CallEvents"></rect>
+<path d="M615.0 293.5 L1064.0 293.5" fill="none" data-name="CallEvents"></path>
+<path d="M615.0 999.5 L1064.0 999.5" fill="none" data-name="CallEvents"></path>
+</g>
+<g transform="translate(615, 262.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CallEvents">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CallEvents">
+<a id="src\server\api\events\CallEventEmitter.ts.CallEvents" xlink:href="src\server\api\events\CallEventEmitter.ts"><text x="216.5" y="13.5" stroke="none" text-anchor="middle" data-name="CallEvents">CallEvents</text></a>
+
+</g>
+</g>
+<g transform="translate(615, 293.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CallEvents">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="CallEvents">
+<text x="0.0" y="13.5" stroke="none" data-name="CallEvents">+start: (chat: { name: string | null</text>
+<text x="0.0" y="28.5" stroke="none" data-name="CallEvents">id: string</text>
+<text x="0.0" y="43.5" stroke="none" data-name="CallEvents">thumbnailUrl: string | null</text>
+<text x="0.0" y="58.5" stroke="none" data-name="CallEvents">chatType: &quot;GroupChat&quot; | &quot;PrivateChat&quot;</text>
+<text x="0.0" y="73.5" stroke="none" data-name="CallEvents">messages: { id: string</text>
+<text x="0.0" y="88.5" stroke="none" data-name="CallEvents">text: string</text>
+<text x="0.0" y="103.5" stroke="none" data-name="CallEvents">sentAt: Date</text>
+<text x="0.0" y="118.5" stroke="none" data-name="CallEvents">senderId: string</text>
+<text x="0.0" y="133.5" stroke="none" data-name="CallEvents">chatId: string</text>
+<text x="0.0" y="148.5" stroke="none" data-name="CallEvents">}[]</text>
+<text x="0.0" y="163.5" stroke="none" data-name="CallEvents">users: { ...</text>
+<text x="0.0" y="178.5" stroke="none" data-name="CallEvents">}[]</text>
+<text x="0.0" y="193.5" stroke="none" data-name="CallEvents">createdAt: Date</text>
+<text x="0.0" y="208.5" stroke="none" data-name="CallEvents">creator: { ...</text>
+<text x="0.0" y="223.5" stroke="none" data-name="CallEvents">}</text>
+<text x="0.0" y="238.5" stroke="none" data-name="CallEvents">}, call: { ...</text>
+<text x="0.0" y="253.5" stroke="none" data-name="CallEvents">}) =&gt; void</text>
+<text x="0.0" y="268.5" stroke="none" data-name="CallEvents">+userJoin: (call: { participants?: { participantId: string</text>
+<text x="0.0" y="283.5" stroke="none" data-name="CallEvents">joinedAt: Date</text>
+<text x="0.0" y="298.5" stroke="none" data-name="CallEvents">leftAt: Date | null</text>
+<text x="0.0" y="313.5" stroke="none" data-name="CallEvents">}[] | undefined</text>
+<text x="0.0" y="328.5" stroke="none" data-name="CallEvents">id: string</text>
+<text x="0.0" y="343.5" stroke="none" data-name="CallEvents">chatId: string</text>
+<text x="0.0" y="358.5" stroke="none" data-name="CallEvents">callType: &quot;Audio&quot; | &quot;Video&quot;</text>
+<text x="0.0" y="373.5" stroke="none" data-name="CallEvents">callerId: string</text>
+<text x="0.0" y="388.5" stroke="none" data-name="CallEvents">startedAt: Date</text>
+<text x="0.0" y="403.5" stroke="none" data-name="CallEvents">endedAt: Date | null</text>
+<text x="0.0" y="418.5" stroke="none" data-name="CallEvents">}, userId: string) =&gt; void</text>
+<text x="0.0" y="433.5" stroke="none" data-name="CallEvents">+userLeave: (call: { participants?: { participantId: string</text>
+<text x="0.0" y="448.5" stroke="none" data-name="CallEvents">joinedAt: Date</text>
+<text x="0.0" y="463.5" stroke="none" data-name="CallEvents">leftAt: Date | null</text>
+<text x="0.0" y="478.5" stroke="none" data-name="CallEvents">}[] | undefined</text>
+<text x="0.0" y="493.5" stroke="none" data-name="CallEvents">id: string</text>
+<text x="0.0" y="508.5" stroke="none" data-name="CallEvents">chatId: string</text>
+<text x="0.0" y="523.5" stroke="none" data-name="CallEvents">callType: &quot;Audio&quot; | &quot;Video&quot;</text>
+<text x="0.0" y="538.5" stroke="none" data-name="CallEvents">callerId: string</text>
+<text x="0.0" y="553.5" stroke="none" data-name="CallEvents">startedAt: Date</text>
+<text x="0.0" y="568.5" stroke="none" data-name="CallEvents">endedAt: Date | null</text>
+<text x="0.0" y="583.5" stroke="none" data-name="CallEvents">}, userId: string) =&gt; void</text>
+<text x="0.0" y="598.5" stroke="none" data-name="CallEvents">+userReject: (callerId: string) =&gt; void</text>
+<text x="0.0" y="613.5" stroke="none" data-name="CallEvents">+rtcOffer: (offer: SignalData | { type: &quot;candidate&quot;</text>
+<text x="0.0" y="628.5" stroke="none" data-name="CallEvents">candidate: RTCIceCandidateInit</text>
+<text x="0.0" y="643.5" stroke="none" data-name="CallEvents">}, from: string, to: string) =&gt; void</text>
+<text x="0.0" y="658.5" stroke="none" data-name="CallEvents">+rtcAnswer: (answer: SignalData | { type: &quot;candidate&quot;</text>
+<text x="0.0" y="673.5" stroke="none" data-name="CallEvents">candidate: RTCIceCandidateInit</text>
+<text x="0.0" y="688.5" stroke="none" data-name="CallEvents">}, from: string, to: string) =&gt; void</text>
+
+</g>
+</g>
+<g transform="translate(615, 999.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CallEvents">
+<g transform="translate(8, 8)" fill="#33322E" data-name="CallEvents">
+
+</g>
+</g>
+</g>
+<g data-name="EventEmitter">
+<g fill="#eee8d5" stroke="#33322E" data-name="EventEmitter">
+<rect x="1104.0" y="619.5" height="31.0" width="116.0" data-name="EventEmitter"></rect>
+</g>
+<g transform="translate(1104, 619.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="EventEmitter">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="EventEmitter">
+<text x="50.0" y="13.5" stroke="none" text-anchor="middle" data-name="EventEmitter">EventEmitter</text>
+
+</g>
+</g>
+</g>
+<g data-name="ChatEventEmitter">
+<g fill="#eee8d5" stroke="#33322E" data-name="ChatEventEmitter">
+<rect x="1120.3" y="1940.5" height="47.0" width="153.0" data-name="ChatEventEmitter"></rect>
+<path d="M1120.3 1971.5 L1273.3 1971.5" fill="none" data-name="ChatEventEmitter"></path>
+<path d="M1120.3 1979.5 L1273.3 1979.5" fill="none" data-name="ChatEventEmitter"></path>
+</g>
+<g transform="translate(1120.25, 1940.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="ChatEventEmitter">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ChatEventEmitter">
+<a id="src\server\api\events\ChatEventEmitter.ts.ChatEventEmitter" xlink:href="src\server\api\events\ChatEventEmitter.ts"><text x="68.5" y="13.5" stroke="none" text-anchor="middle" data-name="ChatEventEmitter">ChatEventEmitter</text></a>
+
+</g>
+</g>
+<g transform="translate(1120.25, 1971.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ChatEventEmitter">
+<g transform="translate(8, 8)" fill="#33322E" data-name="ChatEventEmitter">
+
+</g>
+</g>
+<g transform="translate(1120.25, 1979.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ChatEventEmitter">
+<g transform="translate(8, 8)" fill="#33322E" data-name="ChatEventEmitter">
+
+</g>
+</g>
+</g>
+<g data-name="ChatEvents">
+<g fill="lightblue" stroke="#33322E" data-name="ChatEvents">
+<rect x="1260.0" y="367.5" height="535.0" width="332.0" data-name="ChatEvents"></rect>
+<path d="M1260.0 398.5 L1592.0 398.5" fill="none" data-name="ChatEvents"></path>
+<path d="M1260.0 894.5 L1592.0 894.5" fill="none" data-name="ChatEvents"></path>
+</g>
+<g transform="translate(1260, 367.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ChatEvents">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ChatEvents">
+<a id="src\server\api\events\ChatEventEmitter.ts.ChatEvents" xlink:href="src\server\api\events\ChatEventEmitter.ts"><text x="158.0" y="13.5" stroke="none" text-anchor="middle" data-name="ChatEvents">ChatEvents</text></a>
+
+</g>
+</g>
+<g transform="translate(1260, 398.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ChatEvents">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ChatEvents">
+<text x="0.0" y="13.5" stroke="none" data-name="ChatEvents">+create: (chat: { name: string | null</text>
+<text x="0.0" y="28.5" stroke="none" data-name="ChatEvents">id: string</text>
+<text x="0.0" y="43.5" stroke="none" data-name="ChatEvents">thumbnailUrl: string | null</text>
+<text x="0.0" y="58.5" stroke="none" data-name="ChatEvents">chatType: &quot;GroupChat&quot; | &quot;PrivateChat&quot;</text>
+<text x="0.0" y="73.5" stroke="none" data-name="ChatEvents">messages: { id: string</text>
+<text x="0.0" y="88.5" stroke="none" data-name="ChatEvents">text: string</text>
+<text x="0.0" y="103.5" stroke="none" data-name="ChatEvents">sentAt: Date</text>
+<text x="0.0" y="118.5" stroke="none" data-name="ChatEvents">senderId: string</text>
+<text x="0.0" y="133.5" stroke="none" data-name="ChatEvents">chatId: string</text>
+<text x="0.0" y="148.5" stroke="none" data-name="ChatEvents">}[]</text>
+<text x="0.0" y="163.5" stroke="none" data-name="ChatEvents">users: { ...</text>
+<text x="0.0" y="178.5" stroke="none" data-name="ChatEvents">}[]</text>
+<text x="0.0" y="193.5" stroke="none" data-name="ChatEvents">createdAt: Date</text>
+<text x="0.0" y="208.5" stroke="none" data-name="ChatEvents">creator: { ...</text>
+<text x="0.0" y="223.5" stroke="none" data-name="ChatEvents">}</text>
+<text x="0.0" y="238.5" stroke="none" data-name="ChatEvents">}) =&gt; void</text>
+<text x="0.0" y="253.5" stroke="none" data-name="ChatEvents">+addmember: (chat: { name: string | null</text>
+<text x="0.0" y="268.5" stroke="none" data-name="ChatEvents">id: string</text>
+<text x="0.0" y="283.5" stroke="none" data-name="ChatEvents">thumbnailUrl: string | null</text>
+<text x="0.0" y="298.5" stroke="none" data-name="ChatEvents">chatType: &quot;GroupChat&quot; | &quot;PrivateChat&quot;</text>
+<text x="0.0" y="313.5" stroke="none" data-name="ChatEvents">messages: { id: string</text>
+<text x="0.0" y="328.5" stroke="none" data-name="ChatEvents">text: string</text>
+<text x="0.0" y="343.5" stroke="none" data-name="ChatEvents">sentAt: Date</text>
+<text x="0.0" y="358.5" stroke="none" data-name="ChatEvents">senderId: string</text>
+<text x="0.0" y="373.5" stroke="none" data-name="ChatEvents">chatId: string</text>
+<text x="0.0" y="388.5" stroke="none" data-name="ChatEvents">}[]</text>
+<text x="0.0" y="403.5" stroke="none" data-name="ChatEvents">users: { ...</text>
+<text x="0.0" y="418.5" stroke="none" data-name="ChatEvents">}[]</text>
+<text x="0.0" y="433.5" stroke="none" data-name="ChatEvents">createdAt: Date</text>
+<text x="0.0" y="448.5" stroke="none" data-name="ChatEvents">creator: { ...</text>
+<text x="0.0" y="463.5" stroke="none" data-name="ChatEvents">}</text>
+<text x="0.0" y="478.5" stroke="none" data-name="ChatEvents">}) =&gt; void</text>
+
+</g>
+</g>
+<g transform="translate(1260, 894.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ChatEvents">
+<g transform="translate(8, 8)" fill="#33322E" data-name="ChatEvents">
+
+</g>
+</g>
+</g>
+<g data-name="MessageEventEmitter">
+<g fill="#eee8d5" stroke="#33322E" data-name="MessageEventEmitter">
+<rect x="1516.8" y="1940.5" height="47.0" width="188.0" data-name="MessageEventEmitter"></rect>
+<path d="M1516.8 1971.5 L1704.8 1971.5" fill="none" data-name="MessageEventEmitter"></path>
+<path d="M1516.8 1979.5 L1704.8 1979.5" fill="none" data-name="MessageEventEmitter"></path>
+</g>
+<g transform="translate(1516.75, 1940.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="MessageEventEmitter">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="MessageEventEmitter">
+<a id="src\server\api\events\MessageEventEmitter.ts.MessageEventEmitter" xlink:href="src\server\api\events\MessageEventEmitter.ts"><text x="86.0" y="13.5" stroke="none" text-anchor="middle" data-name="MessageEventEmitter">MessageEventEmitter</text></a>
+
+</g>
+</g>
+<g transform="translate(1516.75, 1971.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="MessageEventEmitter">
+<g transform="translate(8, 8)" fill="#33322E" data-name="MessageEventEmitter">
+
+</g>
+</g>
+<g transform="translate(1516.75, 1979.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="MessageEventEmitter">
+<g transform="translate(8, 8)" fill="#33322E" data-name="MessageEventEmitter">
+
+</g>
+</g>
+</g>
+<g data-name="MessageEvents">
+<g fill="lightblue" stroke="#33322E" data-name="MessageEvents">
+<rect x="1632.0" y="480.0" height="310.0" width="316.0" data-name="MessageEvents"></rect>
+<path d="M1632.0 511.0 L1948.0 511.0" fill="none" data-name="MessageEvents"></path>
+<path d="M1632.0 782.0 L1948.0 782.0" fill="none" data-name="MessageEvents"></path>
+</g>
+<g transform="translate(1632, 480)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="MessageEvents">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="MessageEvents">
+<a id="src\server\api\events\MessageEventEmitter.ts.MessageEvents" xlink:href="src\server\api\events\MessageEventEmitter.ts"><text x="150.0" y="13.5" stroke="none" text-anchor="middle" data-name="MessageEvents">MessageEvents</text></a>
+
+</g>
+</g>
+<g transform="translate(1632, 511)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="MessageEvents">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="MessageEvents">
+<text x="0.0" y="13.5" stroke="none" data-name="MessageEvents">+send: (chat: { name: string | null</text>
+<text x="0.0" y="28.5" stroke="none" data-name="MessageEvents">id: string</text>
+<text x="0.0" y="43.5" stroke="none" data-name="MessageEvents">thumbnailUrl: string | null</text>
+<text x="0.0" y="58.5" stroke="none" data-name="MessageEvents">chatType: &quot;GroupChat&quot; | &quot;PrivateChat&quot;</text>
+<text x="0.0" y="73.5" stroke="none" data-name="MessageEvents">messages: { id: string</text>
+<text x="0.0" y="88.5" stroke="none" data-name="MessageEvents">text: string</text>
+<text x="0.0" y="103.5" stroke="none" data-name="MessageEvents">sentAt: Date</text>
+<text x="0.0" y="118.5" stroke="none" data-name="MessageEvents">senderId: string</text>
+<text x="0.0" y="133.5" stroke="none" data-name="MessageEvents">chatId: string</text>
+<text x="0.0" y="148.5" stroke="none" data-name="MessageEvents">}[]</text>
+<text x="0.0" y="163.5" stroke="none" data-name="MessageEvents">users: { ...</text>
+<text x="0.0" y="178.5" stroke="none" data-name="MessageEvents">}[]</text>
+<text x="0.0" y="193.5" stroke="none" data-name="MessageEvents">createdAt: Date</text>
+<text x="0.0" y="208.5" stroke="none" data-name="MessageEvents">creator: { ...</text>
+<text x="0.0" y="223.5" stroke="none" data-name="MessageEvents">}</text>
+<text x="0.0" y="238.5" stroke="none" data-name="MessageEvents">}, message: { ...</text>
+<text x="0.0" y="253.5" stroke="none" data-name="MessageEvents">}) =&gt; void</text>
+
+</g>
+</g>
+<g transform="translate(1632, 782)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="MessageEvents">
+<g transform="translate(8, 8)" fill="#33322E" data-name="MessageEvents">
+
+</g>
+</g>
+</g>
+<g data-name="IAccountRepository">
+<g fill="lightblue" stroke="#33322E" data-name="IAccountRepository">
+<rect x="1988.0" y="592.5" height="85.0" width="351.0" data-name="IAccountRepository"></rect>
+<path d="M1988.0 623.5 L2339.0 623.5" fill="none" data-name="IAccountRepository"></path>
+<path d="M1988.0 631.5 L2339.0 631.5" fill="none" data-name="IAccountRepository"></path>
+</g>
+<g transform="translate(1988, 592.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IAccountRepository">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="IAccountRepository">
+<a id="src\server\repositories\Account\IAccount.ts.IAccountRepository" xlink:href="src\server\repositories\Account\IAccount.ts"><text x="167.5" y="13.5" stroke="none" text-anchor="middle" data-name="IAccountRepository">IAccountRepository</text></a>
+
+</g>
+</g>
+<g transform="translate(1988, 623.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IAccountRepository">
+<g transform="translate(8, 8)" fill="#33322E" data-name="IAccountRepository">
+
+</g>
+</g>
+<g transform="translate(1988, 631.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IAccountRepository">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="IAccountRepository">
+<text x="0.0" y="13.5" stroke="none" data-name="IAccountRepository">+findById(): Promise&lt;JoinedAccount&gt;</text>
+<text x="0.0" y="28.5" stroke="none" data-name="IAccountRepository">+findByEmail(): Promise&lt;JoinedAccount[]&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="PrismaAccountRepository">
+<g fill="#eee8d5" stroke="#33322E" data-name="PrismaAccountRepository">
+<rect x="1873.5" y="1745.0" height="438.0" width="580.0" data-name="PrismaAccountRepository"></rect>
+<path d="M1873.5 1776.0 L2453.5 1776.0" fill="none" data-name="PrismaAccountRepository"></path>
+<path d="M1873.5 1807.0 L2453.5 1807.0" fill="none" data-name="PrismaAccountRepository"></path>
+</g>
+<g transform="translate(1873.5, 1745)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="PrismaAccountRepository">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="PrismaAccountRepository">
+<a id="src\server\repositories\Account\PrismaAccount.ts.PrismaAccountRepository" xlink:href="src\server\repositories\Account\PrismaAccount.ts"><text x="282.0" y="13.5" stroke="none" text-anchor="middle" data-name="PrismaAccountRepository">PrismaAccountRepository</text></a>
+
+</g>
+</g>
+<g transform="translate(1873.5, 1776)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="PrismaAccountRepository">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="PrismaAccountRepository">
+<text x="0.0" y="13.5" stroke="none" data-name="PrismaAccountRepository">+#prismaClient: PrismaClient&lt;PrismaClientOptions, never, DefaultArgs&gt;</text>
+
+</g>
+</g>
+<g transform="translate(1873.5, 1807)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="PrismaAccountRepository">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="PrismaAccountRepository">
+<text x="0.0" y="13.5" stroke="none" data-name="PrismaAccountRepository">+findById(): Promise&lt;{ id: Buffer</text>
+<text x="0.0" y="28.5" stroke="none" data-name="PrismaAccountRepository">userId: Buffer</text>
+<text x="0.0" y="43.5" stroke="none" data-name="PrismaAccountRepository">type: string</text>
+<text x="0.0" y="58.5" stroke="none" data-name="PrismaAccountRepository">provider: string</text>
+<text x="0.0" y="73.5" stroke="none" data-name="PrismaAccountRepository">providerAccountId: string</text>
+<text x="0.0" y="88.5" stroke="none" data-name="PrismaAccountRepository">refresh_token: string | null</text>
+<text x="0.0" y="103.5" stroke="none" data-name="PrismaAccountRepository">access_token: string | null</text>
+<text x="0.0" y="118.5" stroke="none" data-name="PrismaAccountRepository">expires_at: number | null</text>
+<text x="0.0" y="133.5" stroke="none" data-name="PrismaAccountRepository">... 4 more ...</text>
+<text x="0.0" y="148.5" stroke="none" data-name="PrismaAccountRepository">session_state: string | null</text>
+<text x="0.0" y="163.5" stroke="none" data-name="PrismaAccountRepository">} &amp; { ...</text>
+<text x="0.0" y="178.5" stroke="none" data-name="PrismaAccountRepository">}&gt;</text>
+<text x="0.0" y="193.5" stroke="none" data-name="PrismaAccountRepository">+findByEmail(): Promise&lt;({ id: Buffer</text>
+<text x="0.0" y="208.5" stroke="none" data-name="PrismaAccountRepository">userId: Buffer</text>
+<text x="0.0" y="223.5" stroke="none" data-name="PrismaAccountRepository">type: string</text>
+<text x="0.0" y="238.5" stroke="none" data-name="PrismaAccountRepository">provider: string</text>
+<text x="0.0" y="253.5" stroke="none" data-name="PrismaAccountRepository">providerAccountId: string</text>
+<text x="0.0" y="268.5" stroke="none" data-name="PrismaAccountRepository">refresh_token: string | null</text>
+<text x="0.0" y="283.5" stroke="none" data-name="PrismaAccountRepository">access_token: string | null</text>
+<text x="0.0" y="298.5" stroke="none" data-name="PrismaAccountRepository">expires_at: number | null</text>
+<text x="0.0" y="313.5" stroke="none" data-name="PrismaAccountRepository">... 4 more ...</text>
+<text x="0.0" y="328.5" stroke="none" data-name="PrismaAccountRepository">session_state: string | null</text>
+<text x="0.0" y="343.5" stroke="none" data-name="PrismaAccountRepository">} &amp; { ...</text>
+<text x="0.0" y="358.5" stroke="none" data-name="PrismaAccountRepository">})[]&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="ICallRepository">
+<g fill="lightblue" stroke="#33322E" data-name="ICallRepository">
+<rect x="2660.5" y="577.5" height="115.0" width="246.0" data-name="ICallRepository"></rect>
+<path d="M2660.5 608.5 L2906.5 608.5" fill="none" data-name="ICallRepository"></path>
+<path d="M2660.5 616.5 L2906.5 616.5" fill="none" data-name="ICallRepository"></path>
+</g>
+<g transform="translate(2660.5, 577.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ICallRepository">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ICallRepository">
+<a id="src\server\repositories\Call\ICall.ts.ICallRepository" xlink:href="src\server\repositories\Call\ICall.ts"><text x="115.0" y="13.5" stroke="none" text-anchor="middle" data-name="ICallRepository">ICallRepository</text></a>
+
+</g>
+</g>
+<g transform="translate(2660.5, 608.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ICallRepository">
+<g transform="translate(8, 8)" fill="#33322E" data-name="ICallRepository">
+
+</g>
+</g>
+<g transform="translate(2660.5, 616.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ICallRepository">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ICallRepository">
+<text x="0.0" y="13.5" stroke="none" data-name="ICallRepository">+create(): Promise&lt;Call&gt;</text>
+<text x="0.0" y="28.5" stroke="none" data-name="ICallRepository">+end(): Promise&lt;Call&gt;</text>
+<text x="0.0" y="43.5" stroke="none" data-name="ICallRepository">+userJoin(): Promise&lt;Call&gt;</text>
+<text x="0.0" y="58.5" stroke="none" data-name="ICallRepository">+userLeave(): Promise&lt;Call&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="PrismaCallRepository">
+<g fill="#eee8d5" stroke="#33322E" data-name="PrismaCallRepository">
+<rect x="2493.5" y="1895.0" height="138.0" width="580.0" data-name="PrismaCallRepository"></rect>
+<path d="M2493.5 1926.0 L3073.5 1926.0" fill="none" data-name="PrismaCallRepository"></path>
+<path d="M2493.5 1957.0 L3073.5 1957.0" fill="none" data-name="PrismaCallRepository"></path>
+</g>
+<g transform="translate(2493.5, 1895)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="PrismaCallRepository">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="PrismaCallRepository">
+<a id="src\server\repositories\Call\PrismaCall.ts.PrismaCallRepository" xlink:href="src\server\repositories\Call\PrismaCall.ts"><text x="282.0" y="13.5" stroke="none" text-anchor="middle" data-name="PrismaCallRepository">PrismaCallRepository</text></a>
+
+</g>
+</g>
+<g transform="translate(2493.5, 1926)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="PrismaCallRepository">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="PrismaCallRepository">
+<text x="0.0" y="13.5" stroke="none" data-name="PrismaCallRepository">+#prismaClient: PrismaClient&lt;PrismaClientOptions, never, DefaultArgs&gt;</text>
+
+</g>
+</g>
+<g transform="translate(2493.5, 1957)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="PrismaCallRepository">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="PrismaCallRepository">
+<text x="0.0" y="13.5" stroke="none" data-name="PrismaCallRepository">+create(): Promise&lt;Call&gt;</text>
+<text x="0.0" y="28.5" stroke="none" data-name="PrismaCallRepository">+end(): Promise&lt;Call&gt;</text>
+<text x="0.0" y="43.5" stroke="none" data-name="PrismaCallRepository">+userJoin(): Promise&lt;Call&gt;</text>
+<text x="0.0" y="58.5" stroke="none" data-name="PrismaCallRepository">+userLeave(): Promise&lt;Call&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="IChatRepository">
+<g fill="lightblue" stroke="#33322E" data-name="IChatRepository">
+<rect x="3213.5" y="570.0" height="130.0" width="380.0" data-name="IChatRepository"></rect>
+<path d="M3213.5 601.0 L3593.5 601.0" fill="none" data-name="IChatRepository"></path>
+<path d="M3213.5 609.0 L3593.5 609.0" fill="none" data-name="IChatRepository"></path>
+</g>
+<g transform="translate(3213.5, 570)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IChatRepository">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="IChatRepository">
+<a id="src\server\repositories\Chat\IChat.ts.IChatRepository" xlink:href="src\server\repositories\Chat\IChat.ts"><text x="182.0" y="13.5" stroke="none" text-anchor="middle" data-name="IChatRepository">IChatRepository</text></a>
+
+</g>
+</g>
+<g transform="translate(3213.5, 601)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IChatRepository">
+<g transform="translate(8, 8)" fill="#33322E" data-name="IChatRepository">
+
+</g>
+</g>
+<g transform="translate(3213.5, 609)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IChatRepository">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="IChatRepository">
+<text x="0.0" y="13.5" stroke="none" data-name="IChatRepository">+findById(): Promise&lt;JoinedChat&gt;</text>
+<text x="0.0" y="28.5" stroke="none" data-name="IChatRepository">+findByParticipantId(): Promise&lt;JoinedChat[]&gt;</text>
+<text x="0.0" y="43.5" stroke="none" data-name="IChatRepository">+createPrivateChat(): Promise&lt;JoinedChat&gt;</text>
+<text x="0.0" y="58.5" stroke="none" data-name="IChatRepository">+createGroupChat(): Promise&lt;JoinedChat&gt;</text>
+<text x="0.0" y="73.5" stroke="none" data-name="IChatRepository">+addUser(): Promise&lt;JoinedChat&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="PrismaChatRepository">
+<g fill="#eee8d5" stroke="#33322E" data-name="PrismaChatRepository">
+<rect x="3113.5" y="1887.5" height="153.0" width="580.0" data-name="PrismaChatRepository"></rect>
+<path d="M3113.5 1918.5 L3693.5 1918.5" fill="none" data-name="PrismaChatRepository"></path>
+<path d="M3113.5 1949.5 L3693.5 1949.5" fill="none" data-name="PrismaChatRepository"></path>
+</g>
+<g transform="translate(3113.5, 1887.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="PrismaChatRepository">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="PrismaChatRepository">
+<a id="src\server\repositories\Chat\PrismaChat.ts.PrismaChatRepository" xlink:href="src\server\repositories\Chat\PrismaChat.ts"><text x="282.0" y="13.5" stroke="none" text-anchor="middle" data-name="PrismaChatRepository">PrismaChatRepository</text></a>
+
+</g>
+</g>
+<g transform="translate(3113.5, 1918.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="PrismaChatRepository">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="PrismaChatRepository">
+<text x="0.0" y="13.5" stroke="none" data-name="PrismaChatRepository">+#prismaClient: PrismaClient&lt;PrismaClientOptions, never, DefaultArgs&gt;</text>
+
+</g>
+</g>
+<g transform="translate(3113.5, 1949.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="PrismaChatRepository">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="PrismaChatRepository">
+<text x="0.0" y="13.5" stroke="none" data-name="PrismaChatRepository">+createPrivateChat(): Promise&lt;JoinedChat&gt;</text>
+<text x="0.0" y="28.5" stroke="none" data-name="PrismaChatRepository">+createGroupChat(): Promise&lt;JoinedChat&gt;</text>
+<text x="0.0" y="43.5" stroke="none" data-name="PrismaChatRepository">+findById(): Promise&lt;JoinedChat&gt;</text>
+<text x="0.0" y="58.5" stroke="none" data-name="PrismaChatRepository">+findByParticipantId(): Promise&lt;JoinedChat[]&gt;</text>
+<text x="0.0" y="73.5" stroke="none" data-name="PrismaChatRepository">+addUser(): Promise&lt;JoinedChat&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="IMessageRepository">
+<g fill="lightblue" stroke="#33322E" data-name="IMessageRepository">
+<rect x="3871.0" y="517.5" height="235.0" width="305.0" data-name="IMessageRepository"></rect>
+<path d="M3871.0 548.5 L4176.0 548.5" fill="none" data-name="IMessageRepository"></path>
+<path d="M3871.0 556.5 L4176.0 556.5" fill="none" data-name="IMessageRepository"></path>
+</g>
+<g transform="translate(3871, 517.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IMessageRepository">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="IMessageRepository">
+<a id="src\server\repositories\Message\IMessage.ts.IMessageRepository" xlink:href="src\server\repositories\Message\IMessage.ts"><text x="144.5" y="13.5" stroke="none" text-anchor="middle" data-name="IMessageRepository">IMessageRepository</text></a>
+
+</g>
+</g>
+<g transform="translate(3871, 548.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IMessageRepository">
+<g transform="translate(8, 8)" fill="#33322E" data-name="IMessageRepository">
+
+</g>
+</g>
+<g transform="translate(3871, 556.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IMessageRepository">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="IMessageRepository">
+<text x="0.0" y="13.5" stroke="none" data-name="IMessageRepository">+findByChatId(): Promise&lt;{ id: Buffer</text>
+<text x="0.0" y="28.5" stroke="none" data-name="IMessageRepository">text: string</text>
+<text x="0.0" y="43.5" stroke="none" data-name="IMessageRepository">sentAt: Date</text>
+<text x="0.0" y="58.5" stroke="none" data-name="IMessageRepository">senderId: Buffer</text>
+<text x="0.0" y="73.5" stroke="none" data-name="IMessageRepository">chatId: Buffer</text>
+<text x="0.0" y="88.5" stroke="none" data-name="IMessageRepository">}[]&gt;</text>
+<text x="0.0" y="103.5" stroke="none" data-name="IMessageRepository">+create(): Promise&lt;{ id: Buffer</text>
+<text x="0.0" y="118.5" stroke="none" data-name="IMessageRepository">text: string</text>
+<text x="0.0" y="133.5" stroke="none" data-name="IMessageRepository">sentAt: Date</text>
+<text x="0.0" y="148.5" stroke="none" data-name="IMessageRepository">senderId: Buffer</text>
+<text x="0.0" y="163.5" stroke="none" data-name="IMessageRepository">chatId: Buffer</text>
+<text x="0.0" y="178.5" stroke="none" data-name="IMessageRepository">}&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="PrismaMessageRepository">
+<g fill="#eee8d5" stroke="#33322E" data-name="PrismaMessageRepository">
+<rect x="3733.5" y="1835.0" height="258.0" width="580.0" data-name="PrismaMessageRepository"></rect>
+<path d="M3733.5 1866.0 L4313.5 1866.0" fill="none" data-name="PrismaMessageRepository"></path>
+<path d="M3733.5 1897.0 L4313.5 1897.0" fill="none" data-name="PrismaMessageRepository"></path>
+</g>
+<g transform="translate(3733.5, 1835)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="PrismaMessageRepository">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="PrismaMessageRepository">
+<a id="src\server\repositories\Message\PrismaMessage.ts.PrismaMessageRepository" xlink:href="src\server\repositories\Message\PrismaMessage.ts"><text x="282.0" y="13.5" stroke="none" text-anchor="middle" data-name="PrismaMessageRepository">PrismaMessageRepository</text></a>
+
+</g>
+</g>
+<g transform="translate(3733.5, 1866)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="PrismaMessageRepository">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="PrismaMessageRepository">
+<text x="0.0" y="13.5" stroke="none" data-name="PrismaMessageRepository">+#prismaClient: PrismaClient&lt;PrismaClientOptions, never, DefaultArgs&gt;</text>
+
+</g>
+</g>
+<g transform="translate(3733.5, 1897)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="PrismaMessageRepository">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="PrismaMessageRepository">
+<text x="0.0" y="13.5" stroke="none" data-name="PrismaMessageRepository">+findByChatId(): Promise&lt;{ id: Buffer</text>
+<text x="0.0" y="28.5" stroke="none" data-name="PrismaMessageRepository">text: string</text>
+<text x="0.0" y="43.5" stroke="none" data-name="PrismaMessageRepository">sentAt: Date</text>
+<text x="0.0" y="58.5" stroke="none" data-name="PrismaMessageRepository">senderId: Buffer</text>
+<text x="0.0" y="73.5" stroke="none" data-name="PrismaMessageRepository">chatId: Buffer</text>
+<text x="0.0" y="88.5" stroke="none" data-name="PrismaMessageRepository">}[]&gt;</text>
+<text x="0.0" y="103.5" stroke="none" data-name="PrismaMessageRepository">+create(): Promise&lt;{ id: Buffer</text>
+<text x="0.0" y="118.5" stroke="none" data-name="PrismaMessageRepository">text: string</text>
+<text x="0.0" y="133.5" stroke="none" data-name="PrismaMessageRepository">sentAt: Date</text>
+<text x="0.0" y="148.5" stroke="none" data-name="PrismaMessageRepository">senderId: Buffer</text>
+<text x="0.0" y="163.5" stroke="none" data-name="PrismaMessageRepository">chatId: Buffer</text>
+<text x="0.0" y="178.5" stroke="none" data-name="PrismaMessageRepository">}&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="IUserRepository">
+<g fill="lightblue" stroke="#33322E" data-name="IUserRepository">
+<rect x="4467.0" y="277.5" height="715.0" width="353.0" data-name="IUserRepository"></rect>
+<path d="M4467.0 308.5 L4820.0 308.5" fill="none" data-name="IUserRepository"></path>
+<path d="M4467.0 316.5 L4820.0 316.5" fill="none" data-name="IUserRepository"></path>
+</g>
+<g transform="translate(4467, 277.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IUserRepository">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="IUserRepository">
+<a id="src\server\repositories\User\IUser.ts.IUserRepository" xlink:href="src\server\repositories\User\IUser.ts"><text x="168.5" y="13.5" stroke="none" text-anchor="middle" data-name="IUserRepository">IUserRepository</text></a>
+
+</g>
+</g>
+<g transform="translate(4467, 308.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IUserRepository">
+<g transform="translate(8, 8)" fill="#33322E" data-name="IUserRepository">
+
+</g>
+</g>
+<g transform="translate(4467, 316.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IUserRepository">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="IUserRepository">
+<text x="0.0" y="13.5" stroke="none" data-name="IUserRepository">+findById(): Promise&lt;{ id: Buffer</text>
+<text x="0.0" y="28.5" stroke="none" data-name="IUserRepository">name: string</text>
+<text x="0.0" y="43.5" stroke="none" data-name="IUserRepository">email: string</text>
+<text x="0.0" y="58.5" stroke="none" data-name="IUserRepository">emailVerified: Date | null</text>
+<text x="0.0" y="73.5" stroke="none" data-name="IUserRepository">image: string</text>
+<text x="0.0" y="88.5" stroke="none" data-name="IUserRepository">createdAt: Date</text>
+<text x="0.0" y="103.5" stroke="none" data-name="IUserRepository">}&gt;</text>
+<text x="0.0" y="118.5" stroke="none" data-name="IUserRepository">+findByEmail(): Promise&lt;{ id: Buffer</text>
+<text x="0.0" y="133.5" stroke="none" data-name="IUserRepository">name: string</text>
+<text x="0.0" y="148.5" stroke="none" data-name="IUserRepository">email: string</text>
+<text x="0.0" y="163.5" stroke="none" data-name="IUserRepository">emailVerified: Date | null</text>
+<text x="0.0" y="178.5" stroke="none" data-name="IUserRepository">image: string</text>
+<text x="0.0" y="193.5" stroke="none" data-name="IUserRepository">createdAt: Date</text>
+<text x="0.0" y="208.5" stroke="none" data-name="IUserRepository">}&gt;</text>
+<text x="0.0" y="223.5" stroke="none" data-name="IUserRepository">+findByName(): Promise&lt;{ id: Buffer</text>
+<text x="0.0" y="238.5" stroke="none" data-name="IUserRepository">name: string</text>
+<text x="0.0" y="253.5" stroke="none" data-name="IUserRepository">email: string</text>
+<text x="0.0" y="268.5" stroke="none" data-name="IUserRepository">emailVerified: Date | null</text>
+<text x="0.0" y="283.5" stroke="none" data-name="IUserRepository">image: string</text>
+<text x="0.0" y="298.5" stroke="none" data-name="IUserRepository">createdAt: Date</text>
+<text x="0.0" y="313.5" stroke="none" data-name="IUserRepository">}[]&gt;</text>
+<text x="0.0" y="328.5" stroke="none" data-name="IUserRepository">+findContacts(): Promise&lt;{ id: Buffer</text>
+<text x="0.0" y="343.5" stroke="none" data-name="IUserRepository">name: string</text>
+<text x="0.0" y="358.5" stroke="none" data-name="IUserRepository">email: string</text>
+<text x="0.0" y="373.5" stroke="none" data-name="IUserRepository">emailVerified: Date | null</text>
+<text x="0.0" y="388.5" stroke="none" data-name="IUserRepository">image: string</text>
+<text x="0.0" y="403.5" stroke="none" data-name="IUserRepository">createdAt: Date</text>
+<text x="0.0" y="418.5" stroke="none" data-name="IUserRepository">}[]&gt;</text>
+<text x="0.0" y="433.5" stroke="none" data-name="IUserRepository">+create(): Promise&lt;{ id: Buffer</text>
+<text x="0.0" y="448.5" stroke="none" data-name="IUserRepository">name: string</text>
+<text x="0.0" y="463.5" stroke="none" data-name="IUserRepository">email: string</text>
+<text x="0.0" y="478.5" stroke="none" data-name="IUserRepository">emailVerified: Date | null</text>
+<text x="0.0" y="493.5" stroke="none" data-name="IUserRepository">image: string</text>
+<text x="0.0" y="508.5" stroke="none" data-name="IUserRepository">createdAt: Date</text>
+<text x="0.0" y="523.5" stroke="none" data-name="IUserRepository">}&gt;</text>
+<text x="0.0" y="538.5" stroke="none" data-name="IUserRepository">+addContact(): Promise&lt;void&gt;</text>
+<text x="0.0" y="553.5" stroke="none" data-name="IUserRepository">+removeContact(): Promise&lt;void&gt;</text>
+<text x="0.0" y="568.5" stroke="none" data-name="IUserRepository">+searchNewContact(): Promise&lt;{ id: Buffer</text>
+<text x="0.0" y="583.5" stroke="none" data-name="IUserRepository">name: string</text>
+<text x="0.0" y="598.5" stroke="none" data-name="IUserRepository">email: string</text>
+<text x="0.0" y="613.5" stroke="none" data-name="IUserRepository">emailVerified: Date | null</text>
+<text x="0.0" y="628.5" stroke="none" data-name="IUserRepository">image: string</text>
+<text x="0.0" y="643.5" stroke="none" data-name="IUserRepository">createdAt: Date</text>
+<text x="0.0" y="658.5" stroke="none" data-name="IUserRepository">}[]&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="PrismaUserRepository">
+<g fill="#eee8d5" stroke="#33322E" data-name="PrismaUserRepository">
+<rect x="4353.5" y="1595.0" height="738.0" width="580.0" data-name="PrismaUserRepository"></rect>
+<path d="M4353.5 1626.0 L4933.5 1626.0" fill="none" data-name="PrismaUserRepository"></path>
+<path d="M4353.5 1657.0 L4933.5 1657.0" fill="none" data-name="PrismaUserRepository"></path>
+</g>
+<g transform="translate(4353.5, 1595)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="PrismaUserRepository">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="PrismaUserRepository">
+<a id="src\server\repositories\User\PrismaUser.ts.PrismaUserRepository" xlink:href="src\server\repositories\User\PrismaUser.ts"><text x="282.0" y="13.5" stroke="none" text-anchor="middle" data-name="PrismaUserRepository">PrismaUserRepository</text></a>
+
+</g>
+</g>
+<g transform="translate(4353.5, 1626)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="PrismaUserRepository">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="PrismaUserRepository">
+<text x="0.0" y="13.5" stroke="none" data-name="PrismaUserRepository">+#prismaClient: PrismaClient&lt;PrismaClientOptions, never, DefaultArgs&gt;</text>
+
+</g>
+</g>
+<g transform="translate(4353.5, 1657)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="PrismaUserRepository">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="PrismaUserRepository">
+<text x="0.0" y="13.5" stroke="none" data-name="PrismaUserRepository">+findById(): Promise&lt;{ id: Buffer</text>
+<text x="0.0" y="28.5" stroke="none" data-name="PrismaUserRepository">name: string</text>
+<text x="0.0" y="43.5" stroke="none" data-name="PrismaUserRepository">email: string</text>
+<text x="0.0" y="58.5" stroke="none" data-name="PrismaUserRepository">emailVerified: Date | null</text>
+<text x="0.0" y="73.5" stroke="none" data-name="PrismaUserRepository">image: string</text>
+<text x="0.0" y="88.5" stroke="none" data-name="PrismaUserRepository">createdAt: Date</text>
+<text x="0.0" y="103.5" stroke="none" data-name="PrismaUserRepository">}&gt;</text>
+<text x="0.0" y="118.5" stroke="none" data-name="PrismaUserRepository">+findByName(): Promise&lt;{ id: Buffer</text>
+<text x="0.0" y="133.5" stroke="none" data-name="PrismaUserRepository">name: string</text>
+<text x="0.0" y="148.5" stroke="none" data-name="PrismaUserRepository">email: string</text>
+<text x="0.0" y="163.5" stroke="none" data-name="PrismaUserRepository">emailVerified: Date | null</text>
+<text x="0.0" y="178.5" stroke="none" data-name="PrismaUserRepository">image: string</text>
+<text x="0.0" y="193.5" stroke="none" data-name="PrismaUserRepository">createdAt: Date</text>
+<text x="0.0" y="208.5" stroke="none" data-name="PrismaUserRepository">}[]&gt;</text>
+<text x="0.0" y="223.5" stroke="none" data-name="PrismaUserRepository">+findByEmail(): Promise&lt;{ id: Buffer</text>
+<text x="0.0" y="238.5" stroke="none" data-name="PrismaUserRepository">name: string</text>
+<text x="0.0" y="253.5" stroke="none" data-name="PrismaUserRepository">email: string</text>
+<text x="0.0" y="268.5" stroke="none" data-name="PrismaUserRepository">emailVerified: Date | null</text>
+<text x="0.0" y="283.5" stroke="none" data-name="PrismaUserRepository">image: string</text>
+<text x="0.0" y="298.5" stroke="none" data-name="PrismaUserRepository">createdAt: Date</text>
+<text x="0.0" y="313.5" stroke="none" data-name="PrismaUserRepository">}&gt;</text>
+<text x="0.0" y="328.5" stroke="none" data-name="PrismaUserRepository">+findContacts(): Promise&lt;{ id: Buffer</text>
+<text x="0.0" y="343.5" stroke="none" data-name="PrismaUserRepository">name: string</text>
+<text x="0.0" y="358.5" stroke="none" data-name="PrismaUserRepository">email: string</text>
+<text x="0.0" y="373.5" stroke="none" data-name="PrismaUserRepository">emailVerified: Date | null</text>
+<text x="0.0" y="388.5" stroke="none" data-name="PrismaUserRepository">image: string</text>
+<text x="0.0" y="403.5" stroke="none" data-name="PrismaUserRepository">createdAt: Date</text>
+<text x="0.0" y="418.5" stroke="none" data-name="PrismaUserRepository">}[]&gt;</text>
+<text x="0.0" y="433.5" stroke="none" data-name="PrismaUserRepository">+create(): Promise&lt;{ id: Buffer</text>
+<text x="0.0" y="448.5" stroke="none" data-name="PrismaUserRepository">name: string</text>
+<text x="0.0" y="463.5" stroke="none" data-name="PrismaUserRepository">email: string</text>
+<text x="0.0" y="478.5" stroke="none" data-name="PrismaUserRepository">emailVerified: Date | null</text>
+<text x="0.0" y="493.5" stroke="none" data-name="PrismaUserRepository">image: string</text>
+<text x="0.0" y="508.5" stroke="none" data-name="PrismaUserRepository">createdAt: Date</text>
+<text x="0.0" y="523.5" stroke="none" data-name="PrismaUserRepository">}&gt;</text>
+<text x="0.0" y="538.5" stroke="none" data-name="PrismaUserRepository">+addContact(): Promise&lt;void&gt;</text>
+<text x="0.0" y="553.5" stroke="none" data-name="PrismaUserRepository">+removeContact(): Promise&lt;void&gt;</text>
+<text x="0.0" y="568.5" stroke="none" data-name="PrismaUserRepository">+searchNewContact(): Promise&lt;{ id: Buffer</text>
+<text x="0.0" y="583.5" stroke="none" data-name="PrismaUserRepository">name: string</text>
+<text x="0.0" y="598.5" stroke="none" data-name="PrismaUserRepository">email: string</text>
+<text x="0.0" y="613.5" stroke="none" data-name="PrismaUserRepository">emailVerified: Date | null</text>
+<text x="0.0" y="628.5" stroke="none" data-name="PrismaUserRepository">image: string</text>
+<text x="0.0" y="643.5" stroke="none" data-name="PrismaUserRepository">createdAt: Date</text>
+<text x="0.0" y="658.5" stroke="none" data-name="PrismaUserRepository">}[]&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="IUuidSerializer">
+<g fill="lightblue" stroke="#33322E" data-name="IUuidSerializer">
+<rect x="4973.5" y="585.0" height="100.0" width="294.0" data-name="IUuidSerializer"></rect>
+<path d="M4973.5 616.0 L5267.5 616.0" fill="none" data-name="IUuidSerializer"></path>
+<path d="M4973.5 624.0 L5267.5 624.0" fill="none" data-name="IUuidSerializer"></path>
+</g>
+<g transform="translate(4973.5, 585)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IUuidSerializer">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="IUuidSerializer">
+<a id="src\server\serializers\Uuid\IUuid.ts.IUuidSerializer" xlink:href="src\server\serializers\Uuid\IUuid.ts"><text x="139.0" y="13.5" stroke="none" text-anchor="middle" data-name="IUuidSerializer">IUuidSerializer</text></a>
+
+</g>
+</g>
+<g transform="translate(4973.5, 616)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IUuidSerializer">
+<g transform="translate(8, 8)" fill="#33322E" data-name="IUuidSerializer">
+
+</g>
+</g>
+<g transform="translate(4973.5, 624)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IUuidSerializer">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="IUuidSerializer">
+<text x="0.0" y="13.5" stroke="none" data-name="IUuidSerializer">+toBuffer(): Buffer</text>
+<text x="0.0" y="28.5" stroke="none" data-name="IUuidSerializer">+stringify(): string</text>
+<text x="0.0" y="43.5" stroke="none" data-name="IUuidSerializer">+deepStringify(): ReplaceBuffer&lt;T&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="UuidSerializer">
+<g fill="#eee8d5" stroke="#33322E" data-name="UuidSerializer">
+<rect x="4973.5" y="1914.0" height="100.0" width="294.0" data-name="UuidSerializer"></rect>
+<path d="M4973.5 1945.0 L5267.5 1945.0" fill="none" data-name="UuidSerializer"></path>
+<path d="M4973.5 1953.0 L5267.5 1953.0" fill="none" data-name="UuidSerializer"></path>
+</g>
+<g transform="translate(4973.5, 1914)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="UuidSerializer">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="UuidSerializer">
+<a id="src\server\serializers\Uuid\Uuid.ts.UuidSerializer" xlink:href="src\server\serializers\Uuid\Uuid.ts"><text x="139.0" y="13.5" stroke="none" text-anchor="middle" data-name="UuidSerializer">UuidSerializer</text></a>
+
+</g>
+</g>
+<g transform="translate(4973.5, 1945)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="UuidSerializer">
+<g transform="translate(8, 8)" fill="#33322E" data-name="UuidSerializer">
+
+</g>
+</g>
+<g transform="translate(4973.5, 1953)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="UuidSerializer">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="UuidSerializer">
+<text x="0.0" y="13.5" stroke="none" data-name="UuidSerializer">+toBuffer(): Buffer</text>
+<text x="0.0" y="28.5" stroke="none" data-name="UuidSerializer">+stringify(): string</text>
+<text x="0.0" y="43.5" stroke="none" data-name="UuidSerializer">+deepStringify(): ReplaceBuffer&lt;T&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="AuthService">
+<g fill="#eee8d5" stroke="#33322E" data-name="AuthService">
+<rect x="5307.5" y="1805.0" height="318.0" width="348.0" data-name="AuthService"></rect>
+<path d="M5307.5 1836.0 L5655.5 1836.0" fill="none" data-name="AuthService"></path>
+<path d="M5307.5 1912.0 L5655.5 1912.0" fill="none" data-name="AuthService"></path>
+</g>
+<g transform="translate(5307.5, 1805)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="AuthService">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="AuthService">
+<a id="src\server\services\Auth\Auth.ts.AuthService" xlink:href="src\server\services\Auth\Auth.ts"><text x="166.0" y="13.5" stroke="none" text-anchor="middle" data-name="AuthService">AuthService</text></a>
+
+</g>
+</g>
+<g transform="translate(5307.5, 1836)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AuthService">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AuthService">
+<text x="0.0" y="13.5" stroke="none" data-name="AuthService">+#accountRepository: IAccountRepository</text>
+<text x="0.0" y="28.5" stroke="none" data-name="AuthService">+#userRepository: IUserRepository</text>
+<text x="0.0" y="43.5" stroke="none" data-name="AuthService">+#passwordService: IPasswordService</text>
+<text x="0.0" y="58.5" stroke="none" data-name="AuthService">+#uuidSerializer: IUuidSerializer</text>
+
+</g>
+</g>
+<g transform="translate(5307.5, 1912)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AuthService">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AuthService">
+<text x="0.0" y="13.5" stroke="none" data-name="AuthService">+authenticate(): Promise&lt;{ name: string</text>
+<text x="0.0" y="28.5" stroke="none" data-name="AuthService">id: string</text>
+<text x="0.0" y="43.5" stroke="none" data-name="AuthService">image: string</text>
+<text x="0.0" y="58.5" stroke="none" data-name="AuthService">email: string</text>
+<text x="0.0" y="73.5" stroke="none" data-name="AuthService">createdAt: Date</text>
+<text x="0.0" y="88.5" stroke="none" data-name="AuthService">}&gt;</text>
+<text x="0.0" y="103.5" stroke="none" data-name="AuthService">+#signup(): Promise&lt;{ id: string</text>
+<text x="0.0" y="118.5" stroke="none" data-name="AuthService">name: string</text>
+<text x="0.0" y="133.5" stroke="none" data-name="AuthService">email: string</text>
+<text x="0.0" y="148.5" stroke="none" data-name="AuthService">emailVerified: Date | null</text>
+<text x="0.0" y="163.5" stroke="none" data-name="AuthService">image: string</text>
+<text x="0.0" y="178.5" stroke="none" data-name="AuthService">createdAt: Date</text>
+<text x="0.0" y="193.5" stroke="none" data-name="AuthService">}&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="IAuthService">
+<g fill="lightblue" stroke="#33322E" data-name="IAuthService">
+<rect x="5317.0" y="562.5" height="145.0" width="329.0" data-name="IAuthService"></rect>
+<path d="M5317.0 593.5 L5646.0 593.5" fill="none" data-name="IAuthService"></path>
+<path d="M5317.0 601.5 L5646.0 601.5" fill="none" data-name="IAuthService"></path>
+</g>
+<g transform="translate(5317, 562.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IAuthService">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="IAuthService">
+<a id="src\server\services\Auth\IAuth.ts.IAuthService" xlink:href="src\server\services\Auth\IAuth.ts"><text x="156.5" y="13.5" stroke="none" text-anchor="middle" data-name="IAuthService">IAuthService</text></a>
+
+</g>
+</g>
+<g transform="translate(5317, 593.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IAuthService">
+<g transform="translate(8, 8)" fill="#33322E" data-name="IAuthService">
+
+</g>
+</g>
+<g transform="translate(5317, 601.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IAuthService">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="IAuthService">
+<text x="0.0" y="13.5" stroke="none" data-name="IAuthService">+authenticate(): Promise&lt;{ name: string</text>
+<text x="0.0" y="28.5" stroke="none" data-name="IAuthService">id: string</text>
+<text x="0.0" y="43.5" stroke="none" data-name="IAuthService">image: string</text>
+<text x="0.0" y="58.5" stroke="none" data-name="IAuthService">email: string</text>
+<text x="0.0" y="73.5" stroke="none" data-name="IAuthService">createdAt: Date</text>
+<text x="0.0" y="88.5" stroke="none" data-name="IAuthService">}&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="Credentials">
+<g fill="lightblue" stroke="#33322E" data-name="Credentials">
+<rect x="5686.0" y="585.0" height="100.0" width="156.0" data-name="Credentials"></rect>
+<path d="M5686.0 616.0 L5842.0 616.0" fill="none" data-name="Credentials"></path>
+<path d="M5686.0 677.0 L5842.0 677.0" fill="none" data-name="Credentials"></path>
+</g>
+<g transform="translate(5686, 585)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Credentials">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="Credentials">
+<a id="src\server\services\Auth\IAuth.ts.Credentials" xlink:href="src\server\services\Auth\IAuth.ts"><text x="70.0" y="13.5" stroke="none" text-anchor="middle" data-name="Credentials">Credentials</text></a>
+
+</g>
+</g>
+<g transform="translate(5686, 616)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Credentials">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="Credentials">
+<text x="0.0" y="13.5" stroke="none" data-name="Credentials">+name?: string</text>
+<text x="0.0" y="28.5" stroke="none" data-name="Credentials">+email: string</text>
+<text x="0.0" y="43.5" stroke="none" data-name="Credentials">+password: string</text>
+
+</g>
+</g>
+<g transform="translate(5686, 677)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Credentials">
+<g transform="translate(8, 8)" fill="#33322E" data-name="Credentials">
+
+</g>
+</g>
+</g>
+<g data-name="CallService">
+<g fill="#eee8d5" stroke="#33322E" data-name="CallService">
+<rect x="5882.0" y="1587.5" height="753.0" width="492.0" data-name="CallService"></rect>
+<path d="M5882.0 1618.5 L6374.0 1618.5" fill="none" data-name="CallService"></path>
+<path d="M5882.0 1664.5 L6374.0 1664.5" fill="none" data-name="CallService"></path>
+</g>
+<g transform="translate(5882, 1587.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="CallService">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CallService">
+<a id="src\server\services\Call\Call.ts.CallService" xlink:href="src\server\services\Call\Call.ts"><text x="238.0" y="13.5" stroke="none" text-anchor="middle" data-name="CallService">CallService</text></a>
+
+</g>
+</g>
+<g transform="translate(5882, 1618.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CallService">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="CallService">
+<text x="0.0" y="13.5" stroke="none" data-name="CallService">+#callRepository: ICallRepository</text>
+<text x="0.0" y="28.5" stroke="none" data-name="CallService">+#uuidSerializer: IUuidSerializer</text>
+
+</g>
+</g>
+<g transform="translate(5882, 1664.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CallService">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="CallService">
+<text x="0.0" y="13.5" stroke="none" data-name="CallService">+create(): Promise&lt;{ participants?: { participantId: string</text>
+<text x="0.0" y="28.5" stroke="none" data-name="CallService">joinedAt: Date</text>
+<text x="0.0" y="43.5" stroke="none" data-name="CallService">leftAt: Date | null</text>
+<text x="0.0" y="58.5" stroke="none" data-name="CallService">}[] | undefined</text>
+<text x="0.0" y="73.5" stroke="none" data-name="CallService">id: string</text>
+<text x="0.0" y="88.5" stroke="none" data-name="CallService">chatId: string</text>
+<text x="0.0" y="103.5" stroke="none" data-name="CallService">callType: &quot;Audio&quot; | &quot;Video&quot;</text>
+<text x="0.0" y="118.5" stroke="none" data-name="CallService">callerId: string</text>
+<text x="0.0" y="133.5" stroke="none" data-name="CallService">startedAt: Date</text>
+<text x="0.0" y="148.5" stroke="none" data-name="CallService">endedAt: Date | null</text>
+<text x="0.0" y="163.5" stroke="none" data-name="CallService">}&gt;</text>
+<text x="0.0" y="178.5" stroke="none" data-name="CallService">+end(): Promise&lt;{ participants?: { participantId: string</text>
+<text x="0.0" y="193.5" stroke="none" data-name="CallService">joinedAt: Date</text>
+<text x="0.0" y="208.5" stroke="none" data-name="CallService">leftAt: Date | null</text>
+<text x="0.0" y="223.5" stroke="none" data-name="CallService">}[] | undefined</text>
+<text x="0.0" y="238.5" stroke="none" data-name="CallService">id: string</text>
+<text x="0.0" y="253.5" stroke="none" data-name="CallService">chatId: string</text>
+<text x="0.0" y="268.5" stroke="none" data-name="CallService">callType: &quot;Audio&quot; | &quot;Video&quot;</text>
+<text x="0.0" y="283.5" stroke="none" data-name="CallService">callerId: string</text>
+<text x="0.0" y="298.5" stroke="none" data-name="CallService">startedAt: Date</text>
+<text x="0.0" y="313.5" stroke="none" data-name="CallService">endedAt: Date | null</text>
+<text x="0.0" y="328.5" stroke="none" data-name="CallService">}&gt;</text>
+<text x="0.0" y="343.5" stroke="none" data-name="CallService">+userJoin(): Promise&lt;{ participants?: { participantId: string</text>
+<text x="0.0" y="358.5" stroke="none" data-name="CallService">joinedAt: Date</text>
+<text x="0.0" y="373.5" stroke="none" data-name="CallService">leftAt: Date | null</text>
+<text x="0.0" y="388.5" stroke="none" data-name="CallService">}[] | undefined</text>
+<text x="0.0" y="403.5" stroke="none" data-name="CallService">id: string</text>
+<text x="0.0" y="418.5" stroke="none" data-name="CallService">chatId: string</text>
+<text x="0.0" y="433.5" stroke="none" data-name="CallService">callType: &quot;Audio&quot; | &quot;Video&quot;</text>
+<text x="0.0" y="448.5" stroke="none" data-name="CallService">callerId: string</text>
+<text x="0.0" y="463.5" stroke="none" data-name="CallService">startedAt: Date</text>
+<text x="0.0" y="478.5" stroke="none" data-name="CallService">endedAt: Date | null</text>
+<text x="0.0" y="493.5" stroke="none" data-name="CallService">}&gt;</text>
+<text x="0.0" y="508.5" stroke="none" data-name="CallService">+userLeave(): Promise&lt;{ participants?: { participantId: string</text>
+<text x="0.0" y="523.5" stroke="none" data-name="CallService">joinedAt: Date</text>
+<text x="0.0" y="538.5" stroke="none" data-name="CallService">leftAt: Date | null</text>
+<text x="0.0" y="553.5" stroke="none" data-name="CallService">}[] | undefined</text>
+<text x="0.0" y="568.5" stroke="none" data-name="CallService">id: string</text>
+<text x="0.0" y="583.5" stroke="none" data-name="CallService">chatId: string</text>
+<text x="0.0" y="598.5" stroke="none" data-name="CallService">callType: &quot;Audio&quot; | &quot;Video&quot;</text>
+<text x="0.0" y="613.5" stroke="none" data-name="CallService">callerId: string</text>
+<text x="0.0" y="628.5" stroke="none" data-name="CallService">startedAt: Date</text>
+<text x="0.0" y="643.5" stroke="none" data-name="CallService">endedAt: Date | null</text>
+<text x="0.0" y="658.5" stroke="none" data-name="CallService">}&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="ICallService">
+<g fill="lightblue" stroke="#33322E" data-name="ICallService">
+<rect x="5882.0" y="277.5" height="715.0" width="492.0" data-name="ICallService"></rect>
+<path d="M5882.0 308.5 L6374.0 308.5" fill="none" data-name="ICallService"></path>
+<path d="M5882.0 316.5 L6374.0 316.5" fill="none" data-name="ICallService"></path>
+</g>
+<g transform="translate(5882, 277.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ICallService">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ICallService">
+<a id="src\server\services\Call\ICall.ts.ICallService" xlink:href="src\server\services\Call\ICall.ts"><text x="238.0" y="13.5" stroke="none" text-anchor="middle" data-name="ICallService">ICallService</text></a>
+
+</g>
+</g>
+<g transform="translate(5882, 308.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ICallService">
+<g transform="translate(8, 8)" fill="#33322E" data-name="ICallService">
+
+</g>
+</g>
+<g transform="translate(5882, 316.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ICallService">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ICallService">
+<text x="0.0" y="13.5" stroke="none" data-name="ICallService">+create(): Promise&lt;{ participants?: { participantId: string</text>
+<text x="0.0" y="28.5" stroke="none" data-name="ICallService">joinedAt: Date</text>
+<text x="0.0" y="43.5" stroke="none" data-name="ICallService">leftAt: Date | null</text>
+<text x="0.0" y="58.5" stroke="none" data-name="ICallService">}[] | undefined</text>
+<text x="0.0" y="73.5" stroke="none" data-name="ICallService">id: string</text>
+<text x="0.0" y="88.5" stroke="none" data-name="ICallService">chatId: string</text>
+<text x="0.0" y="103.5" stroke="none" data-name="ICallService">callType: &quot;Audio&quot; | &quot;Video&quot;</text>
+<text x="0.0" y="118.5" stroke="none" data-name="ICallService">callerId: string</text>
+<text x="0.0" y="133.5" stroke="none" data-name="ICallService">startedAt: Date</text>
+<text x="0.0" y="148.5" stroke="none" data-name="ICallService">endedAt: Date | null</text>
+<text x="0.0" y="163.5" stroke="none" data-name="ICallService">}&gt;</text>
+<text x="0.0" y="178.5" stroke="none" data-name="ICallService">+end(): Promise&lt;{ participants?: { participantId: string</text>
+<text x="0.0" y="193.5" stroke="none" data-name="ICallService">joinedAt: Date</text>
+<text x="0.0" y="208.5" stroke="none" data-name="ICallService">leftAt: Date | null</text>
+<text x="0.0" y="223.5" stroke="none" data-name="ICallService">}[] | undefined</text>
+<text x="0.0" y="238.5" stroke="none" data-name="ICallService">id: string</text>
+<text x="0.0" y="253.5" stroke="none" data-name="ICallService">chatId: string</text>
+<text x="0.0" y="268.5" stroke="none" data-name="ICallService">callType: &quot;Audio&quot; | &quot;Video&quot;</text>
+<text x="0.0" y="283.5" stroke="none" data-name="ICallService">callerId: string</text>
+<text x="0.0" y="298.5" stroke="none" data-name="ICallService">startedAt: Date</text>
+<text x="0.0" y="313.5" stroke="none" data-name="ICallService">endedAt: Date | null</text>
+<text x="0.0" y="328.5" stroke="none" data-name="ICallService">}&gt;</text>
+<text x="0.0" y="343.5" stroke="none" data-name="ICallService">+userJoin(): Promise&lt;{ participants?: { participantId: string</text>
+<text x="0.0" y="358.5" stroke="none" data-name="ICallService">joinedAt: Date</text>
+<text x="0.0" y="373.5" stroke="none" data-name="ICallService">leftAt: Date | null</text>
+<text x="0.0" y="388.5" stroke="none" data-name="ICallService">}[] | undefined</text>
+<text x="0.0" y="403.5" stroke="none" data-name="ICallService">id: string</text>
+<text x="0.0" y="418.5" stroke="none" data-name="ICallService">chatId: string</text>
+<text x="0.0" y="433.5" stroke="none" data-name="ICallService">callType: &quot;Audio&quot; | &quot;Video&quot;</text>
+<text x="0.0" y="448.5" stroke="none" data-name="ICallService">callerId: string</text>
+<text x="0.0" y="463.5" stroke="none" data-name="ICallService">startedAt: Date</text>
+<text x="0.0" y="478.5" stroke="none" data-name="ICallService">endedAt: Date | null</text>
+<text x="0.0" y="493.5" stroke="none" data-name="ICallService">}&gt;</text>
+<text x="0.0" y="508.5" stroke="none" data-name="ICallService">+userLeave(): Promise&lt;{ participants?: { participantId: string</text>
+<text x="0.0" y="523.5" stroke="none" data-name="ICallService">joinedAt: Date</text>
+<text x="0.0" y="538.5" stroke="none" data-name="ICallService">leftAt: Date | null</text>
+<text x="0.0" y="553.5" stroke="none" data-name="ICallService">}[] | undefined</text>
+<text x="0.0" y="568.5" stroke="none" data-name="ICallService">id: string</text>
+<text x="0.0" y="583.5" stroke="none" data-name="ICallService">chatId: string</text>
+<text x="0.0" y="598.5" stroke="none" data-name="ICallService">callType: &quot;Audio&quot; | &quot;Video&quot;</text>
+<text x="0.0" y="613.5" stroke="none" data-name="ICallService">callerId: string</text>
+<text x="0.0" y="628.5" stroke="none" data-name="ICallService">startedAt: Date</text>
+<text x="0.0" y="643.5" stroke="none" data-name="ICallService">endedAt: Date | null</text>
+<text x="0.0" y="658.5" stroke="none" data-name="ICallService">}&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="ChatService">
+<g fill="#eee8d5" stroke="#33322E" data-name="ChatService">
+<rect x="6414.0" y="1310.0" height="1308.0" width="422.0" data-name="ChatService"></rect>
+<path d="M6414.0 1341.0 L6836.0 1341.0" fill="none" data-name="ChatService"></path>
+<path d="M6414.0 1387.0 L6836.0 1387.0" fill="none" data-name="ChatService"></path>
+</g>
+<g transform="translate(6414, 1310)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="ChatService">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ChatService">
+<a id="src\server\services\Chat\Chat.ts.ChatService" xlink:href="src\server\services\Chat\Chat.ts"><text x="203.0" y="13.5" stroke="none" text-anchor="middle" data-name="ChatService">ChatService</text></a>
+
+</g>
+</g>
+<g transform="translate(6414, 1341)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ChatService">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ChatService">
+<text x="0.0" y="13.5" stroke="none" data-name="ChatService">+#chatRepository: IChatRepository</text>
+<text x="0.0" y="28.5" stroke="none" data-name="ChatService">+#uuidSerializer: IUuidSerializer</text>
+
+</g>
+</g>
+<g transform="translate(6414, 1387)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ChatService">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ChatService">
+<text x="0.0" y="13.5" stroke="none" data-name="ChatService">+createPrivateChat(): Promise&lt;{ name: string | null</text>
+<text x="0.0" y="28.5" stroke="none" data-name="ChatService">id: string</text>
+<text x="0.0" y="43.5" stroke="none" data-name="ChatService">thumbnailUrl: string | null</text>
+<text x="0.0" y="58.5" stroke="none" data-name="ChatService">chatType: &quot;GroupChat&quot; | &quot;PrivateChat&quot;</text>
+<text x="0.0" y="73.5" stroke="none" data-name="ChatService">messages: { id: string</text>
+<text x="0.0" y="88.5" stroke="none" data-name="ChatService">text: string</text>
+<text x="0.0" y="103.5" stroke="none" data-name="ChatService">sentAt: Date</text>
+<text x="0.0" y="118.5" stroke="none" data-name="ChatService">senderId: string</text>
+<text x="0.0" y="133.5" stroke="none" data-name="ChatService">chatId: string</text>
+<text x="0.0" y="148.5" stroke="none" data-name="ChatService">}[]</text>
+<text x="0.0" y="163.5" stroke="none" data-name="ChatService">users: { ...</text>
+<text x="0.0" y="178.5" stroke="none" data-name="ChatService">}[]</text>
+<text x="0.0" y="193.5" stroke="none" data-name="ChatService">createdAt: Date</text>
+<text x="0.0" y="208.5" stroke="none" data-name="ChatService">creator: { ...</text>
+<text x="0.0" y="223.5" stroke="none" data-name="ChatService">}</text>
+<text x="0.0" y="238.5" stroke="none" data-name="ChatService">}&gt;</text>
+<text x="0.0" y="253.5" stroke="none" data-name="ChatService">+createGroupChat(): Promise&lt;{ name: string | null</text>
+<text x="0.0" y="268.5" stroke="none" data-name="ChatService">id: string</text>
+<text x="0.0" y="283.5" stroke="none" data-name="ChatService">thumbnailUrl: string | null</text>
+<text x="0.0" y="298.5" stroke="none" data-name="ChatService">chatType: &quot;GroupChat&quot; | &quot;PrivateChat&quot;</text>
+<text x="0.0" y="313.5" stroke="none" data-name="ChatService">messages: { id: string</text>
+<text x="0.0" y="328.5" stroke="none" data-name="ChatService">text: string</text>
+<text x="0.0" y="343.5" stroke="none" data-name="ChatService">sentAt: Date</text>
+<text x="0.0" y="358.5" stroke="none" data-name="ChatService">senderId: string</text>
+<text x="0.0" y="373.5" stroke="none" data-name="ChatService">chatId: string</text>
+<text x="0.0" y="388.5" stroke="none" data-name="ChatService">}[]</text>
+<text x="0.0" y="403.5" stroke="none" data-name="ChatService">users: { ...</text>
+<text x="0.0" y="418.5" stroke="none" data-name="ChatService">}[]</text>
+<text x="0.0" y="433.5" stroke="none" data-name="ChatService">createdAt: Date</text>
+<text x="0.0" y="448.5" stroke="none" data-name="ChatService">creator: { ...</text>
+<text x="0.0" y="463.5" stroke="none" data-name="ChatService">}</text>
+<text x="0.0" y="478.5" stroke="none" data-name="ChatService">}&gt;</text>
+<text x="0.0" y="493.5" stroke="none" data-name="ChatService">+findById(): Promise&lt;{ name: string | null</text>
+<text x="0.0" y="508.5" stroke="none" data-name="ChatService">id: string</text>
+<text x="0.0" y="523.5" stroke="none" data-name="ChatService">thumbnailUrl: string | null</text>
+<text x="0.0" y="538.5" stroke="none" data-name="ChatService">chatType: &quot;GroupChat&quot; | &quot;PrivateChat&quot;</text>
+<text x="0.0" y="553.5" stroke="none" data-name="ChatService">messages: { id: string</text>
+<text x="0.0" y="568.5" stroke="none" data-name="ChatService">text: string</text>
+<text x="0.0" y="583.5" stroke="none" data-name="ChatService">sentAt: Date</text>
+<text x="0.0" y="598.5" stroke="none" data-name="ChatService">senderId: string</text>
+<text x="0.0" y="613.5" stroke="none" data-name="ChatService">chatId: string</text>
+<text x="0.0" y="628.5" stroke="none" data-name="ChatService">}[]</text>
+<text x="0.0" y="643.5" stroke="none" data-name="ChatService">users: { ...</text>
+<text x="0.0" y="658.5" stroke="none" data-name="ChatService">}[]</text>
+<text x="0.0" y="673.5" stroke="none" data-name="ChatService">createdAt: Date</text>
+<text x="0.0" y="688.5" stroke="none" data-name="ChatService">creator: { ...</text>
+<text x="0.0" y="703.5" stroke="none" data-name="ChatService">}</text>
+<text x="0.0" y="718.5" stroke="none" data-name="ChatService">}&gt;</text>
+<text x="0.0" y="733.5" stroke="none" data-name="ChatService">+findByParticipantId(): Promise&lt;{ name: string | null</text>
+<text x="0.0" y="748.5" stroke="none" data-name="ChatService">id: string</text>
+<text x="0.0" y="763.5" stroke="none" data-name="ChatService">thumbnailUrl: string | null</text>
+<text x="0.0" y="778.5" stroke="none" data-name="ChatService">chatType: &quot;GroupChat&quot; | &quot;PrivateChat&quot;</text>
+<text x="0.0" y="793.5" stroke="none" data-name="ChatService">messages: { id: string</text>
+<text x="0.0" y="808.5" stroke="none" data-name="ChatService">text: string</text>
+<text x="0.0" y="823.5" stroke="none" data-name="ChatService">sentAt: Date</text>
+<text x="0.0" y="838.5" stroke="none" data-name="ChatService">senderId: string</text>
+<text x="0.0" y="853.5" stroke="none" data-name="ChatService">chatId: string</text>
+<text x="0.0" y="868.5" stroke="none" data-name="ChatService">}[]</text>
+<text x="0.0" y="883.5" stroke="none" data-name="ChatService">users: { ...</text>
+<text x="0.0" y="898.5" stroke="none" data-name="ChatService">}[]</text>
+<text x="0.0" y="913.5" stroke="none" data-name="ChatService">createdAt: Date</text>
+<text x="0.0" y="928.5" stroke="none" data-name="ChatService">creator: { ...</text>
+<text x="0.0" y="943.5" stroke="none" data-name="ChatService">}</text>
+<text x="0.0" y="958.5" stroke="none" data-name="ChatService">}[]&gt;</text>
+<text x="0.0" y="973.5" stroke="none" data-name="ChatService">+addUser(): Promise&lt;{ name: string | null</text>
+<text x="0.0" y="988.5" stroke="none" data-name="ChatService">id: string</text>
+<text x="0.0" y="1003.5" stroke="none" data-name="ChatService">thumbnailUrl: string | null</text>
+<text x="0.0" y="1018.5" stroke="none" data-name="ChatService">chatType: &quot;GroupChat&quot; | &quot;PrivateChat&quot;</text>
+<text x="0.0" y="1033.5" stroke="none" data-name="ChatService">messages: { id: string</text>
+<text x="0.0" y="1048.5" stroke="none" data-name="ChatService">text: string</text>
+<text x="0.0" y="1063.5" stroke="none" data-name="ChatService">sentAt: Date</text>
+<text x="0.0" y="1078.5" stroke="none" data-name="ChatService">senderId: string</text>
+<text x="0.0" y="1093.5" stroke="none" data-name="ChatService">chatId: string</text>
+<text x="0.0" y="1108.5" stroke="none" data-name="ChatService">}[]</text>
+<text x="0.0" y="1123.5" stroke="none" data-name="ChatService">users: { ...</text>
+<text x="0.0" y="1138.5" stroke="none" data-name="ChatService">}[]</text>
+<text x="0.0" y="1153.5" stroke="none" data-name="ChatService">createdAt: Date</text>
+<text x="0.0" y="1168.5" stroke="none" data-name="ChatService">creator: { ...</text>
+<text x="0.0" y="1183.5" stroke="none" data-name="ChatService">}</text>
+<text x="0.0" y="1198.5" stroke="none" data-name="ChatService">}&gt;</text>
+<text x="0.0" y="1213.5" stroke="none" data-name="ChatService">+isUserMember(): Promise&lt;boolean&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="IChatService">
+<g fill="lightblue" stroke="#33322E" data-name="IChatService">
+<rect x="6414.0" y="0.0" height="1270.0" width="422.0" data-name="IChatService"></rect>
+<path d="M6414.0 31.0 L6836.0 31.0" fill="none" data-name="IChatService"></path>
+<path d="M6414.0 39.0 L6836.0 39.0" fill="none" data-name="IChatService"></path>
+</g>
+<g transform="translate(6414, 0)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IChatService">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="IChatService">
+<a id="src\server\services\Chat\IChat.ts.IChatService" xlink:href="src\server\services\Chat\IChat.ts"><text x="203.0" y="13.5" stroke="none" text-anchor="middle" data-name="IChatService">IChatService</text></a>
+
+</g>
+</g>
+<g transform="translate(6414, 31)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IChatService">
+<g transform="translate(8, 8)" fill="#33322E" data-name="IChatService">
+
+</g>
+</g>
+<g transform="translate(6414, 39)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IChatService">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="IChatService">
+<text x="0.0" y="13.5" stroke="none" data-name="IChatService">+createPrivateChat(): Promise&lt;{ name: string | null</text>
+<text x="0.0" y="28.5" stroke="none" data-name="IChatService">id: string</text>
+<text x="0.0" y="43.5" stroke="none" data-name="IChatService">thumbnailUrl: string | null</text>
+<text x="0.0" y="58.5" stroke="none" data-name="IChatService">chatType: &quot;GroupChat&quot; | &quot;PrivateChat&quot;</text>
+<text x="0.0" y="73.5" stroke="none" data-name="IChatService">messages: { id: string</text>
+<text x="0.0" y="88.5" stroke="none" data-name="IChatService">text: string</text>
+<text x="0.0" y="103.5" stroke="none" data-name="IChatService">sentAt: Date</text>
+<text x="0.0" y="118.5" stroke="none" data-name="IChatService">senderId: string</text>
+<text x="0.0" y="133.5" stroke="none" data-name="IChatService">chatId: string</text>
+<text x="0.0" y="148.5" stroke="none" data-name="IChatService">}[]</text>
+<text x="0.0" y="163.5" stroke="none" data-name="IChatService">users: { ...</text>
+<text x="0.0" y="178.5" stroke="none" data-name="IChatService">}[]</text>
+<text x="0.0" y="193.5" stroke="none" data-name="IChatService">createdAt: Date</text>
+<text x="0.0" y="208.5" stroke="none" data-name="IChatService">creator: { ...</text>
+<text x="0.0" y="223.5" stroke="none" data-name="IChatService">}</text>
+<text x="0.0" y="238.5" stroke="none" data-name="IChatService">}&gt;</text>
+<text x="0.0" y="253.5" stroke="none" data-name="IChatService">+createGroupChat(): Promise&lt;{ name: string | null</text>
+<text x="0.0" y="268.5" stroke="none" data-name="IChatService">id: string</text>
+<text x="0.0" y="283.5" stroke="none" data-name="IChatService">thumbnailUrl: string | null</text>
+<text x="0.0" y="298.5" stroke="none" data-name="IChatService">chatType: &quot;GroupChat&quot; | &quot;PrivateChat&quot;</text>
+<text x="0.0" y="313.5" stroke="none" data-name="IChatService">messages: { id: string</text>
+<text x="0.0" y="328.5" stroke="none" data-name="IChatService">text: string</text>
+<text x="0.0" y="343.5" stroke="none" data-name="IChatService">sentAt: Date</text>
+<text x="0.0" y="358.5" stroke="none" data-name="IChatService">senderId: string</text>
+<text x="0.0" y="373.5" stroke="none" data-name="IChatService">chatId: string</text>
+<text x="0.0" y="388.5" stroke="none" data-name="IChatService">}[]</text>
+<text x="0.0" y="403.5" stroke="none" data-name="IChatService">users: { ...</text>
+<text x="0.0" y="418.5" stroke="none" data-name="IChatService">}[]</text>
+<text x="0.0" y="433.5" stroke="none" data-name="IChatService">createdAt: Date</text>
+<text x="0.0" y="448.5" stroke="none" data-name="IChatService">creator: { ...</text>
+<text x="0.0" y="463.5" stroke="none" data-name="IChatService">}</text>
+<text x="0.0" y="478.5" stroke="none" data-name="IChatService">}&gt;</text>
+<text x="0.0" y="493.5" stroke="none" data-name="IChatService">+findById(): Promise&lt;{ name: string | null</text>
+<text x="0.0" y="508.5" stroke="none" data-name="IChatService">id: string</text>
+<text x="0.0" y="523.5" stroke="none" data-name="IChatService">thumbnailUrl: string | null</text>
+<text x="0.0" y="538.5" stroke="none" data-name="IChatService">chatType: &quot;GroupChat&quot; | &quot;PrivateChat&quot;</text>
+<text x="0.0" y="553.5" stroke="none" data-name="IChatService">messages: { id: string</text>
+<text x="0.0" y="568.5" stroke="none" data-name="IChatService">text: string</text>
+<text x="0.0" y="583.5" stroke="none" data-name="IChatService">sentAt: Date</text>
+<text x="0.0" y="598.5" stroke="none" data-name="IChatService">senderId: string</text>
+<text x="0.0" y="613.5" stroke="none" data-name="IChatService">chatId: string</text>
+<text x="0.0" y="628.5" stroke="none" data-name="IChatService">}[]</text>
+<text x="0.0" y="643.5" stroke="none" data-name="IChatService">users: { ...</text>
+<text x="0.0" y="658.5" stroke="none" data-name="IChatService">}[]</text>
+<text x="0.0" y="673.5" stroke="none" data-name="IChatService">createdAt: Date</text>
+<text x="0.0" y="688.5" stroke="none" data-name="IChatService">creator: { ...</text>
+<text x="0.0" y="703.5" stroke="none" data-name="IChatService">}</text>
+<text x="0.0" y="718.5" stroke="none" data-name="IChatService">}&gt;</text>
+<text x="0.0" y="733.5" stroke="none" data-name="IChatService">+findByParticipantId(): Promise&lt;{ name: string | null</text>
+<text x="0.0" y="748.5" stroke="none" data-name="IChatService">id: string</text>
+<text x="0.0" y="763.5" stroke="none" data-name="IChatService">thumbnailUrl: string | null</text>
+<text x="0.0" y="778.5" stroke="none" data-name="IChatService">chatType: &quot;GroupChat&quot; | &quot;PrivateChat&quot;</text>
+<text x="0.0" y="793.5" stroke="none" data-name="IChatService">messages: { id: string</text>
+<text x="0.0" y="808.5" stroke="none" data-name="IChatService">text: string</text>
+<text x="0.0" y="823.5" stroke="none" data-name="IChatService">sentAt: Date</text>
+<text x="0.0" y="838.5" stroke="none" data-name="IChatService">senderId: string</text>
+<text x="0.0" y="853.5" stroke="none" data-name="IChatService">chatId: string</text>
+<text x="0.0" y="868.5" stroke="none" data-name="IChatService">}[]</text>
+<text x="0.0" y="883.5" stroke="none" data-name="IChatService">users: { ...</text>
+<text x="0.0" y="898.5" stroke="none" data-name="IChatService">}[]</text>
+<text x="0.0" y="913.5" stroke="none" data-name="IChatService">createdAt: Date</text>
+<text x="0.0" y="928.5" stroke="none" data-name="IChatService">creator: { ...</text>
+<text x="0.0" y="943.5" stroke="none" data-name="IChatService">}</text>
+<text x="0.0" y="958.5" stroke="none" data-name="IChatService">}[]&gt;</text>
+<text x="0.0" y="973.5" stroke="none" data-name="IChatService">+addUser(): Promise&lt;{ name: string | null</text>
+<text x="0.0" y="988.5" stroke="none" data-name="IChatService">id: string</text>
+<text x="0.0" y="1003.5" stroke="none" data-name="IChatService">thumbnailUrl: string | null</text>
+<text x="0.0" y="1018.5" stroke="none" data-name="IChatService">chatType: &quot;GroupChat&quot; | &quot;PrivateChat&quot;</text>
+<text x="0.0" y="1033.5" stroke="none" data-name="IChatService">messages: { id: string</text>
+<text x="0.0" y="1048.5" stroke="none" data-name="IChatService">text: string</text>
+<text x="0.0" y="1063.5" stroke="none" data-name="IChatService">sentAt: Date</text>
+<text x="0.0" y="1078.5" stroke="none" data-name="IChatService">senderId: string</text>
+<text x="0.0" y="1093.5" stroke="none" data-name="IChatService">chatId: string</text>
+<text x="0.0" y="1108.5" stroke="none" data-name="IChatService">}[]</text>
+<text x="0.0" y="1123.5" stroke="none" data-name="IChatService">users: { ...</text>
+<text x="0.0" y="1138.5" stroke="none" data-name="IChatService">}[]</text>
+<text x="0.0" y="1153.5" stroke="none" data-name="IChatService">createdAt: Date</text>
+<text x="0.0" y="1168.5" stroke="none" data-name="IChatService">creator: { ...</text>
+<text x="0.0" y="1183.5" stroke="none" data-name="IChatService">}</text>
+<text x="0.0" y="1198.5" stroke="none" data-name="IChatService">}&gt;</text>
+<text x="0.0" y="1213.5" stroke="none" data-name="IChatService">+isUserMember(): Promise&lt;boolean&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="IMessageService">
+<g fill="lightblue" stroke="#33322E" data-name="IMessageService">
+<rect x="6907.5" y="517.5" height="235.0" width="302.0" data-name="IMessageService"></rect>
+<path d="M6907.5 548.5 L7209.5 548.5" fill="none" data-name="IMessageService"></path>
+<path d="M6907.5 556.5 L7209.5 556.5" fill="none" data-name="IMessageService"></path>
+</g>
+<g transform="translate(6907.5, 517.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IMessageService">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="IMessageService">
+<a id="src\server\services\Message\IMessage.ts.IMessageService" xlink:href="src\server\services\Message\IMessage.ts"><text x="143.0" y="13.5" stroke="none" text-anchor="middle" data-name="IMessageService">IMessageService</text></a>
+
+</g>
+</g>
+<g transform="translate(6907.5, 548.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IMessageService">
+<g transform="translate(8, 8)" fill="#33322E" data-name="IMessageService">
+
+</g>
+</g>
+<g transform="translate(6907.5, 556.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IMessageService">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="IMessageService">
+<text x="0.0" y="13.5" stroke="none" data-name="IMessageService">+create(): Promise&lt;{ id: string</text>
+<text x="0.0" y="28.5" stroke="none" data-name="IMessageService">text: string</text>
+<text x="0.0" y="43.5" stroke="none" data-name="IMessageService">sentAt: Date</text>
+<text x="0.0" y="58.5" stroke="none" data-name="IMessageService">senderId: string</text>
+<text x="0.0" y="73.5" stroke="none" data-name="IMessageService">chatId: string</text>
+<text x="0.0" y="88.5" stroke="none" data-name="IMessageService">}&gt;</text>
+<text x="0.0" y="103.5" stroke="none" data-name="IMessageService">+findByChatId(): Promise&lt;{ id: string</text>
+<text x="0.0" y="118.5" stroke="none" data-name="IMessageService">text: string</text>
+<text x="0.0" y="133.5" stroke="none" data-name="IMessageService">sentAt: Date</text>
+<text x="0.0" y="148.5" stroke="none" data-name="IMessageService">senderId: string</text>
+<text x="0.0" y="163.5" stroke="none" data-name="IMessageService">chatId: string</text>
+<text x="0.0" y="178.5" stroke="none" data-name="IMessageService">}[]&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="MessageService">
+<g fill="#eee8d5" stroke="#33322E" data-name="MessageService">
+<rect x="6876.0" y="1827.5" height="273.0" width="365.0" data-name="MessageService"></rect>
+<path d="M6876.0 1858.5 L7241.0 1858.5" fill="none" data-name="MessageService"></path>
+<path d="M6876.0 1904.5 L7241.0 1904.5" fill="none" data-name="MessageService"></path>
+</g>
+<g transform="translate(6876, 1827.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="MessageService">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="MessageService">
+<a id="src\server\services\Message\Message.ts.MessageService" xlink:href="src\server\services\Message\Message.ts"><text x="174.5" y="13.5" stroke="none" text-anchor="middle" data-name="MessageService">MessageService</text></a>
+
+</g>
+</g>
+<g transform="translate(6876, 1858.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="MessageService">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="MessageService">
+<text x="0.0" y="13.5" stroke="none" data-name="MessageService">+#messageRepository: IMessageRepository</text>
+<text x="0.0" y="28.5" stroke="none" data-name="MessageService">+#uuidSerializer: IUuidSerializer</text>
+
+</g>
+</g>
+<g transform="translate(6876, 1904.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="MessageService">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="MessageService">
+<text x="0.0" y="13.5" stroke="none" data-name="MessageService">+create(): Promise&lt;{ id: string</text>
+<text x="0.0" y="28.5" stroke="none" data-name="MessageService">text: string</text>
+<text x="0.0" y="43.5" stroke="none" data-name="MessageService">sentAt: Date</text>
+<text x="0.0" y="58.5" stroke="none" data-name="MessageService">senderId: string</text>
+<text x="0.0" y="73.5" stroke="none" data-name="MessageService">chatId: string</text>
+<text x="0.0" y="88.5" stroke="none" data-name="MessageService">}&gt;</text>
+<text x="0.0" y="103.5" stroke="none" data-name="MessageService">+findByChatId(): Promise&lt;{ id: string</text>
+<text x="0.0" y="118.5" stroke="none" data-name="MessageService">text: string</text>
+<text x="0.0" y="133.5" stroke="none" data-name="MessageService">sentAt: Date</text>
+<text x="0.0" y="148.5" stroke="none" data-name="MessageService">senderId: string</text>
+<text x="0.0" y="163.5" stroke="none" data-name="MessageService">chatId: string</text>
+<text x="0.0" y="178.5" stroke="none" data-name="MessageService">}[]&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="BcryptPasswordService">
+<g fill="#eee8d5" stroke="#33322E" data-name="BcryptPasswordService">
+<rect x="7281.0" y="1921.5" height="85.0" width="239.0" data-name="BcryptPasswordService"></rect>
+<path d="M7281.0 1952.5 L7520.0 1952.5" fill="none" data-name="BcryptPasswordService"></path>
+<path d="M7281.0 1960.5 L7520.0 1960.5" fill="none" data-name="BcryptPasswordService"></path>
+</g>
+<g transform="translate(7281, 1921.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="BcryptPasswordService">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="BcryptPasswordService">
+<a id="src\server\services\Password\BcryptPassword.ts.BcryptPasswordService" xlink:href="src\server\services\Password\BcryptPassword.ts"><text x="111.5" y="13.5" stroke="none" text-anchor="middle" data-name="BcryptPasswordService">BcryptPasswordService</text></a>
+
+</g>
+</g>
+<g transform="translate(7281, 1952.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="BcryptPasswordService">
+<g transform="translate(8, 8)" fill="#33322E" data-name="BcryptPasswordService">
+
+</g>
+</g>
+<g transform="translate(7281, 1960.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="BcryptPasswordService">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="BcryptPasswordService">
+<text x="0.0" y="13.5" stroke="none" data-name="BcryptPasswordService">+hash(): Promise&lt;string&gt;</text>
+<text x="0.0" y="28.5" stroke="none" data-name="BcryptPasswordService">+verify(): Promise&lt;boolean&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="IPasswordService">
+<g fill="lightblue" stroke="#33322E" data-name="IPasswordService">
+<rect x="7281.0" y="592.5" height="85.0" width="239.0" data-name="IPasswordService"></rect>
+<path d="M7281.0 623.5 L7520.0 623.5" fill="none" data-name="IPasswordService"></path>
+<path d="M7281.0 631.5 L7520.0 631.5" fill="none" data-name="IPasswordService"></path>
+</g>
+<g transform="translate(7281, 592.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IPasswordService">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="IPasswordService">
+<a id="src\server\services\Password\IPassword.ts.IPasswordService" xlink:href="src\server\services\Password\IPassword.ts"><text x="111.5" y="13.5" stroke="none" text-anchor="middle" data-name="IPasswordService">IPasswordService</text></a>
+
+</g>
+</g>
+<g transform="translate(7281, 623.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IPasswordService">
+<g transform="translate(8, 8)" fill="#33322E" data-name="IPasswordService">
+
+</g>
+</g>
+<g transform="translate(7281, 631.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IPasswordService">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="IPasswordService">
+<text x="0.0" y="13.5" stroke="none" data-name="IPasswordService">+hash(): Promise&lt;string&gt;</text>
+<text x="0.0" y="28.5" stroke="none" data-name="IPasswordService">+verify(): Promise&lt;boolean&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="IUserService">
+<g fill="lightblue" stroke="#33322E" data-name="IUserService">
+<rect x="7560.0" y="367.5" height="535.0" width="380.0" data-name="IUserService"></rect>
+<path d="M7560.0 398.5 L7940.0 398.5" fill="none" data-name="IUserService"></path>
+<path d="M7560.0 406.5 L7940.0 406.5" fill="none" data-name="IUserService"></path>
+</g>
+<g transform="translate(7560, 367.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IUserService">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="IUserService">
+<a id="src\server\services\User\IUser.ts.IUserService" xlink:href="src\server\services\User\IUser.ts"><text x="182.0" y="13.5" stroke="none" text-anchor="middle" data-name="IUserService">IUserService</text></a>
+
+</g>
+</g>
+<g transform="translate(7560, 398.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IUserService">
+<g transform="translate(8, 8)" fill="#33322E" data-name="IUserService">
+
+</g>
+</g>
+<g transform="translate(7560, 406.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="IUserService">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="IUserService">
+<text x="0.0" y="13.5" stroke="none" data-name="IUserService">+findById(): Promise&lt;{ name: string</text>
+<text x="0.0" y="28.5" stroke="none" data-name="IUserService">id: string</text>
+<text x="0.0" y="43.5" stroke="none" data-name="IUserService">image: string</text>
+<text x="0.0" y="58.5" stroke="none" data-name="IUserService">email: string</text>
+<text x="0.0" y="73.5" stroke="none" data-name="IUserService">createdAt: Date</text>
+<text x="0.0" y="88.5" stroke="none" data-name="IUserService">}&gt;</text>
+<text x="0.0" y="103.5" stroke="none" data-name="IUserService">+findByEmail(): Promise&lt;{ name: string</text>
+<text x="0.0" y="118.5" stroke="none" data-name="IUserService">id: string</text>
+<text x="0.0" y="133.5" stroke="none" data-name="IUserService">image: string</text>
+<text x="0.0" y="148.5" stroke="none" data-name="IUserService">email: string</text>
+<text x="0.0" y="163.5" stroke="none" data-name="IUserService">createdAt: Date</text>
+<text x="0.0" y="178.5" stroke="none" data-name="IUserService">}&gt;</text>
+<text x="0.0" y="193.5" stroke="none" data-name="IUserService">+findByName(): Promise&lt;{ name: string</text>
+<text x="0.0" y="208.5" stroke="none" data-name="IUserService">id: string</text>
+<text x="0.0" y="223.5" stroke="none" data-name="IUserService">image: string</text>
+<text x="0.0" y="238.5" stroke="none" data-name="IUserService">email: string</text>
+<text x="0.0" y="253.5" stroke="none" data-name="IUserService">createdAt: Date</text>
+<text x="0.0" y="268.5" stroke="none" data-name="IUserService">}[]&gt;</text>
+<text x="0.0" y="283.5" stroke="none" data-name="IUserService">+findContacts(): Promise&lt;{ name: string</text>
+<text x="0.0" y="298.5" stroke="none" data-name="IUserService">id: string</text>
+<text x="0.0" y="313.5" stroke="none" data-name="IUserService">image: string</text>
+<text x="0.0" y="328.5" stroke="none" data-name="IUserService">email: string</text>
+<text x="0.0" y="343.5" stroke="none" data-name="IUserService">createdAt: Date</text>
+<text x="0.0" y="358.5" stroke="none" data-name="IUserService">}[]&gt;</text>
+<text x="0.0" y="373.5" stroke="none" data-name="IUserService">+addContact(): Promise&lt;void&gt;</text>
+<text x="0.0" y="388.5" stroke="none" data-name="IUserService">+removeContact(): Promise&lt;void&gt;</text>
+<text x="0.0" y="403.5" stroke="none" data-name="IUserService">+searchNewContact(): Promise&lt;{ name: string</text>
+<text x="0.0" y="418.5" stroke="none" data-name="IUserService">id: string</text>
+<text x="0.0" y="433.5" stroke="none" data-name="IUserService">image: string</text>
+<text x="0.0" y="448.5" stroke="none" data-name="IUserService">email: string</text>
+<text x="0.0" y="463.5" stroke="none" data-name="IUserService">createdAt: Date</text>
+<text x="0.0" y="478.5" stroke="none" data-name="IUserService">}[]&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="UserService">
+<g fill="#eee8d5" stroke="#33322E" data-name="UserService">
+<rect x="7560.0" y="1677.5" height="573.0" width="380.0" data-name="UserService"></rect>
+<path d="M7560.0 1708.5 L7940.0 1708.5" fill="none" data-name="UserService"></path>
+<path d="M7560.0 1754.5 L7940.0 1754.5" fill="none" data-name="UserService"></path>
+</g>
+<g transform="translate(7560, 1677.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="UserService">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="UserService">
+<a id="src\server\services\User\User.ts.UserService" xlink:href="src\server\services\User\User.ts"><text x="182.0" y="13.5" stroke="none" text-anchor="middle" data-name="UserService">UserService</text></a>
+
+</g>
+</g>
+<g transform="translate(7560, 1708.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="UserService">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="UserService">
+<text x="0.0" y="13.5" stroke="none" data-name="UserService">+#userRepository: IUserRepository</text>
+<text x="0.0" y="28.5" stroke="none" data-name="UserService">+#uuidSerializer: IUuidSerializer</text>
+
+</g>
+</g>
+<g transform="translate(7560, 1754.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="UserService">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="UserService">
+<text x="0.0" y="13.5" stroke="none" data-name="UserService">+findById(): Promise&lt;{ name: string</text>
+<text x="0.0" y="28.5" stroke="none" data-name="UserService">id: string</text>
+<text x="0.0" y="43.5" stroke="none" data-name="UserService">image: string</text>
+<text x="0.0" y="58.5" stroke="none" data-name="UserService">email: string</text>
+<text x="0.0" y="73.5" stroke="none" data-name="UserService">createdAt: Date</text>
+<text x="0.0" y="88.5" stroke="none" data-name="UserService">}&gt;</text>
+<text x="0.0" y="103.5" stroke="none" data-name="UserService">+findByName(): Promise&lt;{ name: string</text>
+<text x="0.0" y="118.5" stroke="none" data-name="UserService">id: string</text>
+<text x="0.0" y="133.5" stroke="none" data-name="UserService">image: string</text>
+<text x="0.0" y="148.5" stroke="none" data-name="UserService">email: string</text>
+<text x="0.0" y="163.5" stroke="none" data-name="UserService">createdAt: Date</text>
+<text x="0.0" y="178.5" stroke="none" data-name="UserService">}[]&gt;</text>
+<text x="0.0" y="193.5" stroke="none" data-name="UserService">+findByEmail(): Promise&lt;{ name: string</text>
+<text x="0.0" y="208.5" stroke="none" data-name="UserService">id: string</text>
+<text x="0.0" y="223.5" stroke="none" data-name="UserService">image: string</text>
+<text x="0.0" y="238.5" stroke="none" data-name="UserService">email: string</text>
+<text x="0.0" y="253.5" stroke="none" data-name="UserService">createdAt: Date</text>
+<text x="0.0" y="268.5" stroke="none" data-name="UserService">}&gt;</text>
+<text x="0.0" y="283.5" stroke="none" data-name="UserService">+findContacts(): Promise&lt;{ name: string</text>
+<text x="0.0" y="298.5" stroke="none" data-name="UserService">id: string</text>
+<text x="0.0" y="313.5" stroke="none" data-name="UserService">image: string</text>
+<text x="0.0" y="328.5" stroke="none" data-name="UserService">email: string</text>
+<text x="0.0" y="343.5" stroke="none" data-name="UserService">createdAt: Date</text>
+<text x="0.0" y="358.5" stroke="none" data-name="UserService">}[]&gt;</text>
+<text x="0.0" y="373.5" stroke="none" data-name="UserService">+addContact(): Promise&lt;void&gt;</text>
+<text x="0.0" y="388.5" stroke="none" data-name="UserService">+removeContact(): Promise&lt;void&gt;</text>
+<text x="0.0" y="403.5" stroke="none" data-name="UserService">+searchNewContact(): Promise&lt;{ name: string</text>
+<text x="0.0" y="418.5" stroke="none" data-name="UserService">id: string</text>
+<text x="0.0" y="433.5" stroke="none" data-name="UserService">image: string</text>
+<text x="0.0" y="448.5" stroke="none" data-name="UserService">email: string</text>
+<text x="0.0" y="463.5" stroke="none" data-name="UserService">createdAt: Date</text>
+<text x="0.0" y="478.5" stroke="none" data-name="UserService">}[]&gt;</text>
+
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg>
